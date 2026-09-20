@@ -1,0 +1,24 @@
+TRASH ACCUMULATION VISUALIZATION
+
+Open Assets/Scenes/Trash_Accumulation.unity and press Play.
+The ocean and debris are generated at runtime; the scene uses a normal monitor camera.
+
+Select Trash Accumulation in the Hierarchy to configure:
+- Total Amount: the estimated total from your dataset (78,909 metric tonnes from Lebreton et al., 2018; historical 2015-2016 surveys).
+- Unit: items, kg, tonnes, etc. Use the same unit as your source.
+- Dataset Label: location and time period, including whether this is a stock or a flow.
+- Source: citation or URL for the data.
+- Target Count: number of visual blocks, from 1 to 1000 (default 400).
+- Items Per Second: visual block reveal speed, not an environmental dumping rate.
+
+Each block represents Total Amount / Target Count in the specified unit.
+Blocks fall and settle on the wave surface. The counter increases on landing.
+Blocks do not form a rigid stack or collide: they illustrate a growing surface patch.
+Their colors and sizes are illustrative, not category or mass measurements.
+The display identifies the source and the amount represented by each block.
+Pause/Resume, Restart and reveal-speed controls are available during Play.
+Set dataset fields before Play. After changing Target Count, click Restart.
+
+The default is the historical GPGP mass estimate, not a current census.
+See Assets/Debris/Great Pacific Garbage Patch Data.txt for uncertainty and sources.
+Setting Total Amount to 0 displays Waiting for dataset and prevents spawning.

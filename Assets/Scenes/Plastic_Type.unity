@@ -100194,8 +100194,24 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
+      propertyPath: nextKey
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
+      propertyPath: playKey
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
       propertyPath: journeyTime
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
+      propertyPath: loopPlayback
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
+      propertyPath: enablePlayButton
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8151645122749090487, guid: 5e7c7f63928158a41a61f235324e98ab, type: 3}
       propertyPath: soundToPlayOnSave

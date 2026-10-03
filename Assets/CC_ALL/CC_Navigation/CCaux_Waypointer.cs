@@ -301,7 +301,7 @@ public class CCaux_Waypointer : MonoBehaviour {
         return playMode;
     }
 
-    void NextFrame() {
+    public void NextFrame() {
         if (navPositionList.Count > 0) {
             currentFramePos = currentFramePos.Next;
             currentFrameRot = currentFrameRot.Next;

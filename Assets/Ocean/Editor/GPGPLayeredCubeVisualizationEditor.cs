@@ -7,6 +7,7 @@ using UnityEngine;
 public sealed class GPGPLayeredCubeVisualizationEditor : Editor
 {
     const string BakedMaterialPath = "Assets/Ocean/Materials/MAT_GPGP_Water_Continuous_Baked.mat";
+    const string SideMaterialPath = "Assets/Ocean/Materials/MAT_GPGP_WaterSide.mat";
 
     public override void OnInspectorGUI()
     {
@@ -16,18 +17,18 @@ public sealed class GPGPLayeredCubeVisualizationEditor : Editor
         EditorGUILayout.Space(10);
         EditorGUILayout.LabelField("Scene Authoring", EditorStyles.boldLabel);
         EditorGUILayout.HelpBox(exhibit.bakedIntoScene
-            ? "The exhibit is baked into the scene and can be expanded and edited in the Hierarchy."
-            : "Bake once to create visible, editable scene objects without entering Play Mode.",
+            ? "The water cube and debris are baked and editable in the Hierarchy. Rebuild only replaces the water volume, debris bands, and boundary lines."
+            : "Bake the water cube and debris without entering Play Mode. Floor, human, UI, lighting, and other scene objects are preserved.",
             MessageType.Info);
 
         using (new EditorGUI.DisabledScope(Application.isPlaying))
         {
-            string bakeLabel = exhibit.bakedIntoScene ? "Rebuild Baked Exhibit" : "Bake Exhibit Into Scene";
+            string bakeLabel = exhibit.bakedIntoScene ? "Rebuild Water Cube + Debris" : "Bake Water Cube + Debris";
             if (GUILayout.Button(bakeLabel, GUILayout.Height(34))) Bake(exhibit);
 
             using (new EditorGUI.DisabledScope(!exhibit.bakedIntoScene))
             {
-                if (GUILayout.Button("Clear Baked Exhibit", GUILayout.Height(26))) Clear(exhibit);
+                if (GUILayout.Button("Clear Water Cube + Debris", GUILayout.Height(26))) Clear(exhibit);
             }
         }
 
@@ -52,6 +53,16 @@ public sealed class GPGPLayeredCubeVisualizationEditor : Editor
                 name = "MAT_GPGP_Water_Continuous_Baked"
             };
             AssetDatabase.CreateAsset(material, BakedMaterialPath);
+        }
+
+        // The cube walls use a dedicated transparent underwater material. A
+        // surface-ocean Shader Graph here makes every wall look like a tiled
+        // water surface and visually flattens the debris behind it.
+        Material sideMaterial = AssetDatabase.LoadAssetAtPath<Material>(SideMaterialPath);
+        if (sideMaterial)
+        {
+            exhibit.waterSideMaterial = sideMaterial;
+            exhibit.useTexturedOceanSides = true;
         }
 
         Undo.RegisterFullObjectHierarchyUndo(exhibit.gameObject, "Bake GPGP exhibit");

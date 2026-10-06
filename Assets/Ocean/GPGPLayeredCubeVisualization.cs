@@ -7,6 +7,11 @@ using UnityEngine.Rendering;
 /// </summary>
 public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
 {
+    [System.Serializable]
+    public sealed class DebrisModelGroup
+    {
+        public GameObject[] models;
+    }
     [Header("Exhibit dimensions")]
     public Vector3 cubeSize = new Vector3(4f, 5f, 3.5f);
     [Range(0.05f, 1f)] public float debrisDensity = 0.72f;
@@ -22,19 +27,31 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
 
     [Header("Debris")]
     public Material[] debrisMaterials;
+    [Tooltip("Overall multiplier for baked debris meshes. 0.5 makes the props read as smaller pieces inside the exhibit.")]
+    [Range(.1f, 1f)] public float debrisSizeMultiplier = .5f;
+    [Tooltip("Optional FBX models for Micro, Meso, Macro and Mega debris. Each category can contain multiple models; one is chosen randomly per piece.")]
+    public DebrisModelGroup[] debrisModelGroups = new DebrisModelGroup[4];
     public Material separatorMaterial;
 
     [Header("Presentation")]
     [Tooltip("Screen-space labels are optional because the CyberCANOE output is side-by-side stereo.")]
     public bool showLabels;
-    public bool createScaleHuman = true;
-    public bool createFloor = true;
-    public bool createGalleryEnvironment = true;
+    [HideInInspector] public bool createScaleHuman = true;
+    [HideInInspector] public bool createFloor = true;
+    [HideInInspector] public bool createGalleryEnvironment = true;
 
     [HideInInspector] public bool bakedIntoScene;
     [HideInInspector] public Material bakedWaterMaterial;
 
     static readonly float[] Shares = { .08f, .13f, .25f, .54f };
+    const float BandGap = .025f;
+    const string GeneratedRootName = "WaterCube - one continuous volume";
+    static readonly string[] GeneratedCubeChildNames =
+    {
+        "OuterVolume and single WaterSurface",
+        "Four mass-share debris bands",
+        "Mass-share boundary lines"
+    };
     static readonly string[] CategoryLabels =
     {
         "MICROPLASTICS   0.5-5 mm   6,400 t   ~8%",
@@ -49,6 +66,14 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
     GUIStyle titleStyle;
     GUIStyle labelStyle;
     GUIStyle noteStyle;
+
+    void OnValidate()
+    {
+        if (debrisModelGroups == null || debrisModelGroups.Length != 4)
+            System.Array.Resize(ref debrisModelGroups, 4);
+        for (int i = 0; i < debrisModelGroups.Length; i++)
+            if (debrisModelGroups[i] == null) debrisModelGroups[i] = new DebrisModelGroup();
+    }
 
     void Start()
     {
@@ -65,9 +90,17 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
 
     public void ClearBakedExhibit()
     {
-        Transform existing = generatedRoot ? generatedRoot : transform.Find("WaterCube - one continuous volume");
-        if (existing) Release(existing.gameObject);
-        generatedRoot = null;
+        generatedRoot = generatedRoot ? generatedRoot : transform.Find(GeneratedRootName);
+        if (generatedRoot)
+        {
+            // Only remove content owned by the cube/debris generator. Anything
+            // else under this root was authored in the scene and must survive.
+            for (int i = generatedRoot.childCount - 1; i >= 0; i--)
+            {
+                Transform child = generatedRoot.GetChild(i);
+                if (IsGeneratedCubeChild(child.name)) Release(child.gameObject);
+            }
+        }
         continuousWaterMaterial = null;
         ownsWaterMaterial = false;
         bakedIntoScene = false;
@@ -101,8 +134,12 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         if (sourceCollider) sourceCollider.enabled = false;
 
         cubeSize = new Vector3(Mathf.Max(.5f, cubeSize.x), Mathf.Max(.5f, cubeSize.y), Mathf.Max(.5f, cubeSize.z));
-        generatedRoot = new GameObject("WaterCube - one continuous volume").transform;
-        generatedRoot.SetParent(transform, false);
+        generatedRoot = transform.Find(GeneratedRootName);
+        if (!generatedRoot)
+        {
+            generatedRoot = new GameObject(GeneratedRootName).transform;
+            generatedRoot.SetParent(transform, false);
+        }
 
         ownsWaterMaterial = !bakedWaterMaterial;
         continuousWaterMaterial = bakedWaterMaterial
@@ -127,15 +164,20 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         bands.fill = Mathf.Clamp01(debrisDensity) * (lowQualityMode ? .42f : 1f);
         bands.microCountMultiplier = smallDebrisEmphasis;
         bands.mesoCountMultiplier = Mathf.Lerp(1f, smallDebrisEmphasis, .45f);
+        bands.debrisSizeMultiplier = debrisSizeMultiplier;
         // Use only scale-controlled low-poly placeholders. Photo-atlas cards
         // are intentionally disabled because their pictured objects do not
         // preserve a meaningful relative scale between categories.
-        bands.Build(cubeSize, debrisMaterials, null, continuousWaterMaterial);
+        bands.Build(cubeSize, debrisMaterials, null, continuousWaterMaterial, debrisModelGroups);
 
         CreateBandSeparators();
-        if (createScaleHuman) CreateHuman();
-        if (createFloor) CreateGalleryFloor();
-        if (createGalleryEnvironment) CreateGalleryEnvironment();
+    }
+
+    static bool IsGeneratedCubeChild(string objectName)
+    {
+        for (int i = 0; i < GeneratedCubeChildNames.Length; i++)
+            if (objectName == GeneratedCubeChildNames[i]) return true;
+        return false;
     }
 
     void ConfigureWaterMaterial()
@@ -165,16 +207,16 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         float cumulative = 0f;
         for (int i = 0; i < Shares.Length - 1; i++)
         {
-            cumulative += Shares[i];
-            float y = -cubeSize.y * .5f + cubeSize.y * cumulative;
+            cumulative += Shares[i] * (1f - BandGap * 3f);
+            float y = -cubeSize.y * .5f + cubeSize.y * (cumulative + BandGap * (i + .5f));
             CreateSeparatorEdge(root, "Boundary " + Mathf.RoundToInt(cumulative * 100f) + "% front",
-                new Vector3(0, y, -cubeSize.z * .501f), new Vector3(cubeSize.x, .008f, .008f));
+                new Vector3(0, y, -cubeSize.z * .501f), new Vector3(cubeSize.x, .035f, .018f));
             CreateSeparatorEdge(root, "Boundary " + Mathf.RoundToInt(cumulative * 100f) + "% back",
-                new Vector3(0, y, cubeSize.z * .501f), new Vector3(cubeSize.x, .008f, .008f));
+                new Vector3(0, y, cubeSize.z * .501f), new Vector3(cubeSize.x, .035f, .018f));
             CreateSeparatorEdge(root, "Boundary " + Mathf.RoundToInt(cumulative * 100f) + "% left",
-                new Vector3(-cubeSize.x * .501f, y, 0), new Vector3(.008f, .008f, cubeSize.z));
+                new Vector3(-cubeSize.x * .501f, y, 0), new Vector3(.018f, .035f, cubeSize.z));
             CreateSeparatorEdge(root, "Boundary " + Mathf.RoundToInt(cumulative * 100f) + "% right",
-                new Vector3(cubeSize.x * .501f, y, 0), new Vector3(.008f, .008f, cubeSize.z));
+                new Vector3(cubeSize.x * .501f, y, 0), new Vector3(.018f, .035f, cubeSize.z));
         }
     }
 
@@ -192,6 +234,10 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         var properties = new MaterialPropertyBlock();
         properties.SetColor("_BaseColor", new Color(.06f, .48f, .68f, 1f));
         properties.SetColor("_Color", new Color(.06f, .48f, .68f, 1f));
+        Color glow = new Color(.02f, .65f, 1f, 1f);
+        properties.SetColor("_EmissionColor", glow);
+        properties.SetColor("_Emission", glow);
+        properties.SetFloat("_EmissionStrength", 3.5f);
         renderer.SetPropertyBlock(properties);
     }
 

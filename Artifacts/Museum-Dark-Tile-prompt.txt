@@ -1,0 +1,17 @@
+Museum Dark Tile
+Generated with the built-in image generator.
+Final asset: Assets/PacificExhibit/Textures/Museum_Dark_Tile_BaseColor.png
+Output: 1254 x 1254 PNG base-color texture.
+
+Initial generation prompt:
+Use case: photorealistic-natural
+Asset type: seamless tileable square base-color/albedo texture for a Unity museum floor.
+Primary request: dark museum floor tile, elegant large-format charcoal honed basalt / dark porcelain stone.
+Composition: flat orthographic top-down texture filling the entire square canvas edge to edge; a straight aligned 2 by 2 grid of four equally sized square 60 cm tiles, covering 1.2 by 1.2 metres. Very narrow almost-black grout lines, about 2 mm wide. Grout lines continue seamlessly across opposite image edges. Opposite edges must match precisely when repeated horizontally and vertically.
+Materials: very dark graphite charcoal stone with a cool neutral slate undertone, fine subtle mineral speckle and softly mottled natural variation, restrained faint irregular stone details. Sophisticated quiet contemporary museum floor, clean and well maintained. Four tiles differ only very slightly in tone. Fine smooth honed/polished stone suited to later glossy reflections supplied by a 3D material.
+Lighting: evenly lit, flat diffuse albedo only; visible subtle stone detail even though the surface is dark. No baked highlights, reflections, gradients, perspective, directional light, edge bevel shading, or ambient shadows. Midtones predominantly dark charcoal grey, not pure featureless black.
+Constraints: produce exactly one high-resolution square seamless texture, preferably 2048 by 2048 pixels. No room, furniture, exhibit, people, objects, writing, logos, watermarks, bright veins, cracks, damage, borders, margin, or texture sample presentation.
+
+Refinement prompt:
+Edit this square dark museum stone floor base-color texture. Preserve the exact charcoal color, mineral grain, flat diffuse lighting and existing 2 by 2 square tile layout. Change ONLY the outer boundary: add a narrow almost-black grout seam along all FOUR outside edges, with each boundary strip HALF the width of the current central horizontal and vertical grout seams. When repeated, the two adjoining half-width strips must form one seam with exactly the same width and color as the existing internal seams, producing a uniform regular tiled floor. The four corner junctions must join correctly. Make left/right stone grain and top/bottom stone grain edge-compatible with the least possible change. Keep everything orthographic, no lighting gradient, no baked reflection, no text, no border or margin outside the texture. Output one square seamless repeating Unity albedo texture; preserve resolution and detail.
+

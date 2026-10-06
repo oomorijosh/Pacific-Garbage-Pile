@@ -28,8 +28,10 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
     public Material screenMaterialTemplate;
 
     [Header("Campus Calibration")]
-    [Tooltip("Distance from the centre of the screen to the viewer, in metres. Twenty feet is 6.096 metres.")]
+    [Tooltip("Distance from the screen plane to the viewer, in metres. Twenty feet is 6.096 metres.")]
     [Min(0.05f)] public float viewingDistanceMeters = 6.096f;
+    [Tooltip("Viewer offset from the screen centre in metres: horizontal and vertical. Used for a wall calibration whose head position is off-centre.")]
+    public Vector2 viewerOffsetMeters;
 
     [Header("Runtime")]
     [InspectorName("Per-Eye Texture Width")]
@@ -38,6 +40,8 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
     [InspectorName("Per-Eye Texture Height")]
     [Tooltip("Pixels in each eye image, independent of the physical screen aspect ratio.")]
     [Min(1)] public int textureHeight = 1152;
+    [Tooltip("Preserve HDR emission and bloom in the exhibit's stereo content cameras.")]
+    public bool useHDRContentTextures;
     public bool initializeXR = true;
 
     public string Status { get; private set; } = "Not running.";
@@ -279,10 +283,10 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
             Vector3.Distance(leftContentCamera.transform.position, rightContentCamera.transform.position);
         bool invertStereo = settings ? settings.invertStereo :
             Vector3.Dot(rightContentCamera.transform.position - leftContentCamera.transform.position, sourceScreen.right) < 0f;
-        // CC_CAMERA_SETUP caches world positions in Start. Suspend it while using
-        // this calibrated viewing point so later setting changes cannot move the eyes back.
+        // Suspend the shared rig setup while the simulator owns the calibrated
+        // eye positions so later setting changes cannot override this viewing point.
         if (sourceCameraSetup) sourceCameraSetup.enabled = false;
-        Vector3 contentViewer = CalculateCenteredViewer(sourceScreen, viewingDistanceMeters);
+        Vector3 contentViewer = CalculateViewerPosition(sourceScreen, viewingDistanceMeters, viewerOffsetMeters);
         Quaternion facingScreen = Quaternion.LookRotation(sourceScreen.forward, sourceScreen.up);
         ccHead.SetPositionAndRotation(contentViewer, facingScreen);
         Vector3 eyeOffset = sourceScreen.right.normalized * (separation * 0.5f);
@@ -294,8 +298,8 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
 
         int pixelWidth = Mathf.Clamp(textureWidth, 256, Mathf.Max(256, SystemInfo.maxTextureSize));
         int pixelHeight = Mathf.Clamp(textureHeight, 1, Mathf.Max(1, SystemInfo.maxTextureSize));
-        leftTexture = CreateTexture("Cyber Canoe Simulator Left", pixelWidth, pixelHeight);
-        rightTexture = CreateTexture("Cyber Canoe Simulator Right", pixelWidth, pixelHeight);
+        leftTexture = CreateTexture("Cyber Canoe Simulator Left", pixelWidth, pixelHeight, useHDRContentTextures);
+        rightTexture = CreateTexture("Cyber Canoe Simulator Right", pixelWidth, pixelHeight, useHDRContentTextures);
         screenMaterial = new Material(screenMaterialTemplate) { name = "Cyber Canoe Simulator Screen (Runtime)" };
         screenMaterial.SetTexture(LeftTextureId, leftTexture);
         screenMaterial.SetTexture(RightTextureId, rightTexture);
@@ -350,9 +354,10 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
         return result;
     }
 
-    static RenderTexture CreateTexture(string name, int width, int height)
+    static RenderTexture CreateTexture(string name, int width, int height, bool hdr = false)
     {
-        RenderTexture texture = new RenderTexture(width, height, 24, RenderTextureFormat.ARGB32)
+        RenderTexture texture = new RenderTexture(width, height, 24,
+            hdr ? RenderTextureFormat.DefaultHDR : RenderTextureFormat.ARGB32)
         {
             name = name,
             filterMode = FilterMode.Bilinear,
@@ -448,7 +453,12 @@ public sealed class CyberCanoeHeadsetSimulator : MonoBehaviour
     public static Vector3 CalculateCenteredViewer(Transform screen, float distanceMeters) =>
         screen.position - screen.forward.normalized * Mathf.Max(0.05f, distanceMeters);
 
-    /// <summary>Places the current headset pose at the calibrated, centred viewing point, facing the screen.</summary>
+    /// <summary>Returns the calibrated viewer position, including offsets along the screen axes.</summary>
+    public static Vector3 CalculateViewerPosition(Transform screen, float distanceMeters, Vector2 offsetMeters) =>
+        CalculateCenteredViewer(screen, distanceMeters) +
+        screen.right.normalized * offsetMeters.x + screen.up.normalized * offsetMeters.y;
+
+    /// <summary>Places the current headset pose at the calibrated viewing point, facing the screen.</summary>
     public void RecenterViewer()
     {
         if (!Application.isPlaying || !ready) return;

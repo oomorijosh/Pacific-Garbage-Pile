@@ -28,32 +28,28 @@ public class CC_CAMERA_SETUP : MonoBehaviour
             }
         }
 
-        leftCamPosition = leftCamera.transform.position;
-        rightCamPosition = rightCamera.transform.position;
-        currentStereo = CCSettings.invertStereo;
-        currentEyeSeparation = CCSettings.eyeSeparation;
-
-        if (!CCSettings.invertStereo){
-            leftCamera.transform.position = leftCamPosition +new Vector3(-CCSettings.eyeSeparation/2.0f,0,0);
-            rightCamera.transform.position = rightCamPosition +new Vector3(CCSettings.eyeSeparation/2.0f,0,0);
-        } else {
-            leftCamera.transform.position = leftCamPosition + new Vector3(CCSettings.eyeSeparation/2.0f,0,0);
-            rightCamera.transform.position = rightCamPosition + new Vector3(-CCSettings.eyeSeparation/2.0f,0,0);
-        }
-
+        // Keep the authored eye positions relative to CC_HEAD so navigation
+        // and live stereo changes preserve the rig's current position and rotation.
+        leftCamPosition = leftCamera.transform.localPosition;
+        rightCamPosition = rightCamera.transform.localPosition;
+        ApplyEyeSeparation();
     }
 
     // Update is called once per frame
     void Update()
     {
         if ((currentStereo == CCSettings.invertStereo) && (currentEyeSeparation == CCSettings.eyeSeparation)) return;
+        ApplyEyeSeparation();
+    }
+
+    void ApplyEyeSeparation()
+    {
         currentStereo = CCSettings.invertStereo;
-        if (!CCSettings.invertStereo){
-            leftCamera.transform.position = leftCamPosition +new Vector3(-CCSettings.eyeSeparation/2.0f,0,0);
-            rightCamera.transform.position = rightCamPosition +new Vector3(CCSettings.eyeSeparation/2.0f,0,0);
-        } else {
-            leftCamera.transform.position = leftCamPosition + new Vector3(CCSettings.eyeSeparation/2.0f,0,0);
-            rightCamera.transform.position = rightCamPosition + new Vector3(-CCSettings.eyeSeparation/2.0f,0,0);
-        }
+        currentEyeSeparation = CCSettings.eyeSeparation;
+        float halfSeparation = currentEyeSeparation * 0.5f;
+        if (currentStereo) halfSeparation = -halfSeparation;
+        Vector3 eyeOffset = new Vector3(halfSeparation, 0f, 0f);
+        leftCamera.transform.localPosition = leftCamPosition - eyeOffset;
+        rightCamera.transform.localPosition = rightCamPosition + eyeOffset;
     }
 }

@@ -191,6 +191,7 @@ public static class CyberCanoeHeadsetSetup
         simulator.textureWidth = CampusEyeWidth;
         simulator.textureHeight = CampusEyeHeight;
         simulator.viewingDistanceMeters = CampusViewingDistance;
+        simulator.viewerOffsetMeters = Vector2.zero;
         if (simulator.virtualScreen && simulator.trackingSpace)
         {
             Undo.RecordObject(simulator.trackingSpace, "Calibrate Cyber Canoe headset viewer");
@@ -349,7 +350,7 @@ public sealed class CyberCanoeHeadsetSimulatorEditor : Editor
     public override void OnInspectorGUI()
     {
         EditorGUILayout.HelpBox("Wear your headset and enter Play mode with SteamVR running. The virtual wall matches " +
-                                "the configured Cyber Canoe screen. Content uses the centered, calibrated CC_HEAD viewpoint; " +
+                                "the configured Cyber Canoe screen. Content uses the calibrated CC_HEAD viewpoint; " +
                                 "headset motion changes where you view the wall from.", MessageType.Info);
         DrawDefaultInspector();
         var simulator = (CyberCanoeHeadsetSimulator)target;

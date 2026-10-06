@@ -1,0 +1,43 @@
+CyberCanoe camera verification - current saved exhibit scene
+PASS Stereo rig and settings are wired and enabled.
+PASS Eye setup references the original left and right cameras.
+PASS Saved stereo mode is side by side, normal ordering, 61 mm separation.
+PASS Both off-axis cameras reference the same physical wall.
+PASS CenterCamera is enabled, has HDR and post-processing, and uses mono content rendering.
+PASS CenterCamera has matching valid clipping and culling settings.
+PASS CC_LEFT_CAMERA is enabled, has HDR and post-processing, and uses mono content rendering.
+PASS CC_LEFT_CAMERA has matching valid clipping and culling settings.
+PASS CC_RIGHT_CAMERA is enabled, has HDR and post-processing, and uses mono content rendering.
+PASS CC_RIGHT_CAMERA has matching valid clipping and culling settings.
+PASS CC_LEFT_CAMERA has its HDR eye texture.
+PASS CC_RIGHT_CAMERA has its HDR eye texture.
+PASS LEFT legacy eye texture imports successfully at 2040 x 1152.
+PASS RIGHT legacy eye texture imports successfully at 2040 x 1152.
+PASS Desktop startup is Windowed with fullscreen switching allowed, matching the supplied guide.
+PASS Headset simulator shares the calibrated content rig and keeps HDR.
+PASS Headset room is isolated on its own layer and hidden until the simulator runs.
+PASS Exactly one active audio listener is present.
+INFO Physical wall: 6.1887 x 1.7500 m; saved CC_HEAD local position: (0.00, 1.76, -2.00)
+INFO Headset simulator viewing distance: 6.096 m.
+INFO Clip range: 0.01 to 100000 m.
+INFO Build scene selection was not changed; the current build list uses the original LCD wall demo.
+INFO No physical display or live headset is connected by this validation.
+PASS A rig rotated before startup produces eyes along the head's horizontal axis.
+PASS Changing IPD after moving and rotating the rig keeps eyes at the current head pose.
+PASS A live IPD change updates the cache and remains stable across 120 updates.
+PASS Inverted stereo swaps the eye baseline without moving its center.
+PASS Zero eye separation collapses both eyes at the authored center.
+PASS The saved rig produces the configured 61 mm stereo baseline.
+PASS CC_LEFT_CAMERA projects all four physical wall corners correctly.
+PASS CC_RIGHT_CAMERA projects all four physical wall corners correctly.
+PASS CenterCamera renders visible content with HDR/post-processing.
+PASS CenterCamera applies the exhibit bloom volume.
+PASS CenterCamera binds its floor reflection.
+PASS CC_LEFT_CAMERA renders visible content with HDR/post-processing.
+PASS CC_LEFT_CAMERA applies the exhibit bloom volume.
+PASS CC_LEFT_CAMERA binds its floor reflection.
+PASS CC_RIGHT_CAMERA renders visible content with HDR/post-processing.
+PASS CC_RIGHT_CAMERA applies the exhibit bloom volume.
+PASS CC_RIGHT_CAMERA binds its floor reflection.
+PASS Exhibit shaders have no compilation errors.
+RESULT PASS: saved camera rig, stereo navigation, off-axis projection and actual rendered camera images.

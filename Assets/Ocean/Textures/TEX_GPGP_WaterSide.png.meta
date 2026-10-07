@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: b693dbc240094ac49d4e97f7bfb8ffe1
+TextureImporter:
+  serializedVersion: 13
+  internalIDToNameTable: []
+  externalObjects: {}
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    sRGBTexture: 1
+  isReadable: 0
+  textureType: 0
+  textureShape: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 2
+    aniso: 4
+    mipBias: 0
+    wrapU: 0
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  alphaSource: 0
+  alphaIsTransparency: 0
+  textureCompression: 0
+  userData: Generated water-volume side texture; horizontal repeat, vertical clamp.

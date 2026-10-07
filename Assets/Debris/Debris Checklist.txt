@@ -1,0 +1,27 @@
+DEBRIS CHECKLIST
+Mark [x] when the model and its textures have been added to the matching folder.
+
+Megaplastic
+[ ] Fishing Net
+[ ] Buoy
+[ ] Rope
+[ ] Crate
+[ ] Drum
+[ ] Jerry Can
+
+Macroplastic
+[ ] Bottle
+[ ] Bucket
+[ ] Container
+[ ] Life Ring
+
+Mesoplastic
+[ ] Bottle Cap
+[ ] Plastic Fragment
+[ ] Foam Fragment
+
+Microplastic
+[ ] Tiny Fragment
+[ ] Pellet
+[ ] Fiber
+[ ] Flake

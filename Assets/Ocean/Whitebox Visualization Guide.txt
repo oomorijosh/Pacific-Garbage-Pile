@@ -1,0 +1,25 @@
+GPGP MASS WHITEBOX
+
+Open Assets/Scenes/Trash_Whitebox.unity and press Play.
+
+The scene deliberately contains no ocean. It uses the Cyber Canoe CC_HUB,
+stereo render textures, display-wall canvas and interlace setup from the
+CC_LAVA_LED_WALL_SCENE example. There is no standalone Main Camera.
+
+A neutral studio floor receives soft directional shadows. Colored blocks fall
+onto the floor and settle into a grid.
+
+Each block represents an equal share of the historical 78,909 metric-tonne
+estimate. With the default 400 blocks, one block represents about 197.27 tonnes.
+Colors encode the four measured size classes. The default allocation is:
+- Megaplastic: 215 blocks
+- Macroplastic: 102 blocks
+- Mesoplastic: 51 blocks
+- Microplastic: 32 blocks
+
+These counts are rounded from the mass shares in Lebreton et al. (2018), Table 1.
+The falling animation, floor coverage and block dimensions are illustrative.
+They do not show actual debris density, physical item size, or dumping rate.
+
+Select GPGP Whitebox in the Hierarchy to change Marker Count and Reveal Speed.
+Press Restart in Play mode after changing Marker Count.

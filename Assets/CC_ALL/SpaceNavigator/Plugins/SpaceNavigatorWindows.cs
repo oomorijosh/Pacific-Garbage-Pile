@@ -53,7 +53,18 @@ namespace SpaceNavigatorDriver {
 					_device.Connect();
 			}
 			catch (COMException ex) {
-				Debug.LogError(ex.ToString());
+				// This optional device is unavailable when its COM driver is not installed.
+				// Keep the singleton alive with neutral input instead of retrying each update.
+				_sensor = null;
+				if (ex.ErrorCode == unchecked((int)0x80040154)) {
+					_device = null;
+					Debug.LogWarning("SpaceNavigator input is disabled: its Windows COM driver is not registered. " +
+						"If you use a 3Dconnexion SpaceMouse, install or repair its compatible driver and restart Unity. " +
+						"Otherwise, no action is needed; normal mouse and keyboard controls remain available.");
+				}
+				else {
+					Debug.LogError(ex.ToString());
+				}
 			}
 		}
 

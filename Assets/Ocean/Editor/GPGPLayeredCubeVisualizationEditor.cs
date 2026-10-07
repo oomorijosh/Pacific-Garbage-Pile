@@ -6,12 +6,24 @@ using UnityEngine;
 [CustomEditor(typeof(GPGPLayeredCubeVisualization))]
 public sealed class GPGPLayeredCubeVisualizationEditor : Editor
 {
+    static readonly string[] PoolLabels = { "Micro Models", "Meso Models", "Macro Models", "Mega Models" };
     const string BakedMaterialPath = "Assets/Ocean/Materials/MAT_GPGP_Water_Continuous_Baked.mat";
     const string SideMaterialPath = "Assets/Ocean/Materials/MAT_GPGP_WaterSide.mat";
 
     public override void OnInspectorGUI()
     {
-        DrawDefaultInspector();
+        serializedObject.Update();
+        using (new EditorGUI.DisabledScope(true))
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("m_Script"));
+        DrawPropertiesExcluding(serializedObject, "m_Script", "debrisModelGroups");
+        EditorGUILayout.Space(8);
+        EditorGUILayout.LabelField("Debris Model Pools", EditorStyles.boldLabel);
+        SerializedProperty groups = serializedObject.FindProperty("debrisModelGroups");
+        if (groups.arraySize != PoolLabels.Length) groups.arraySize = PoolLabels.Length;
+        for (int category = 0; category < PoolLabels.Length; category++)
+            EditorGUILayout.PropertyField(groups.GetArrayElementAtIndex(category).FindPropertyRelative("models"),
+                new GUIContent(PoolLabels[category]), true);
+        serializedObject.ApplyModifiedProperties();
         var exhibit = (GPGPLayeredCubeVisualization)target;
 
         EditorGUILayout.Space(10);
@@ -28,6 +40,16 @@ public sealed class GPGPLayeredCubeVisualizationEditor : Editor
 
             using (new EditorGUI.DisabledScope(!exhibit.bakedIntoScene))
             {
+                EditorGUILayout.HelpBox("Apply Updated Debris + Turtle refreshes clutter, adds turtle, balances existing lighting; save scene afterward.", MessageType.Info);
+                using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode ||
+                    PrefabStageUtility.GetCurrentPrefabStage() != null || !exhibit.gameObject.scene.IsValid() ||
+                    !exhibit.gameObject.scene.isLoaded || EditorUtility.IsPersistent(exhibit)))
+                    if (GUILayout.Button("Apply Updated Debris + Turtle", GUILayout.Height(36)))
+                        GPGPExhibitContentAuthoring.Apply(exhibit);
+                if (GUILayout.Button("Refresh Debris Pools + Rebuild", GUILayout.Height(30)))
+                    GPGPDebrisModelAuthoring.Populate(exhibit);
+                if (GUILayout.Button("Rebuild From Current Pools", GUILayout.Height(28)))
+                    GPGPDebrisModelAuthoring.RebuildAssigned(exhibit);
                 if (GUILayout.Button("Clear Water Cube + Debris", GUILayout.Height(26))) Clear(exhibit);
             }
         }

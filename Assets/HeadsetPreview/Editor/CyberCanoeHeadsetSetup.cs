@@ -354,6 +354,11 @@ public sealed class CyberCanoeHeadsetSimulatorEditor : Editor
                                 "headset motion changes where you view the wall from.", MessageType.Info);
         DrawDefaultInspector();
         var simulator = (CyberCanoeHeadsetSimulator)target;
+        using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode ||
+            PrefabStageUtility.GetCurrentPrefabStage() != null || !simulator.gameObject.scene.IsValid() ||
+            !simulator.gameObject.scene.isLoaded || EditorUtility.IsPersistent(simulator)))
+            if (GUILayout.Button("Apply LavaLab LED Wall Calibration (Keller 102)", GUILayout.Height(30)))
+                PacificKeller102Preview.ApplyCalibration(simulator);
         using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
             if (GUILayout.Button("Apply 4080 x 1152 SBS / 20 ft Center Calibration"))
                 CyberCanoeHeadsetSetup.ApplyCampusCalibration(simulator);

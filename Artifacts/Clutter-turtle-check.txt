@@ -1,0 +1,11 @@
+Clutter validation; Unity 6000.6.0f1; editor only, no Play mode/XR.
+Existing final scene: destination counts=810,202,148,215; Meso into Macro=71, Meso into Mega=111, Macro into Mega=50; unique matte URP materials=16; textured renderer slots=102.
+Reload registration: 565 unique moving pieces; all Micro static; repeated Start preserves saved poses/scales.
+Sea turtle: one persistent-model branch, matte supported URP materials; bounds inside water=Center: (-0.80, 2.09, -2.01), Extents: (0.78, 0.38, 0.82).
+RESULT PASS: clutter, upward mixing, static Micro, rotations, containment, matte textures and turtle.
+
+Full build audit also passed repeated seeded rebuild, save/reopen fingerprint, and nonuniform water resize/rebuild containment.
+Partial scene merge preserved 320 authored scene blocks byte-for-byte; only 7 generator, parent-list and spotlight blocks changed outside debris/turtle.
+Generated assets match the isolated reload/render validation; existing wildlife source GUIDs were retained.
+Four presentation cameras captured; per-camera floor reflections nonempty and custom presentation shaders valid.
+Final scene SHA256: ac74c49eea53e8086b669c31712f89a9b7a27c79d0be9873654502a28e35518b

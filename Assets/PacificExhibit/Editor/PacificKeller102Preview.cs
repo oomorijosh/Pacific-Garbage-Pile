@@ -13,6 +13,8 @@ using Object = UnityEngine.Object;
 public static class PacificKeller102Preview
 {
     const string ScenePath = "Assets/Scenes/PacificExhibit_CyberCanoe.unity";
+    const string CalibrationMenuPath = "Tools/Cyber Canoe/Apply LavaLab LED Wall Calibration (Keller 102)";
+    const string LegacyCalibrationMenuPath = "Tools/Pacific Exhibit/Apply Keller 102 Headset Calibration";
     const float WallWidth = 6.047f;
     const float WallHeight = 2.042f;
     const float ViewingDistance = 4.282f;
@@ -23,18 +25,30 @@ public static class PacificKeller102Preview
     static int frames;
     static double deadline;
 
-    [MenuItem("Tools/Pacific Exhibit/Apply Keller 102 Headset Calibration")]
+    [MenuItem(LegacyCalibrationMenuPath)]
     public static void ApplyCalibration()
+    {
+        ApplyCalibration(FindSimulator());
+    }
+
+    [MenuItem(CalibrationMenuPath)]
+    static void ApplyLavaLabCalibration() => ApplyCalibration();
+
+    [MenuItem(CalibrationMenuPath, true)]
+    [MenuItem(LegacyCalibrationMenuPath, true)]
+    static bool CanApplyCalibration() => !EditorApplication.isPlayingOrWillChangePlaymode &&
+        PrefabStageUtility.GetCurrentPrefabStage() == null &&
+        UnityEngine.SceneManagement.SceneManager.GetActiveScene().IsValid() &&
+        UnityEngine.SceneManagement.SceneManager.GetActiveScene().isLoaded;
+
+    public static void ApplyCalibration(CyberCanoeHeadsetSimulator simulator)
     {
         if (EditorApplication.isPlayingOrWillChangePlaymode)
             throw new InvalidOperationException("Stop Play mode before applying the Keller 102 calibration.");
-        var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-        if (scene.path != ScenePath)
-        {
-            if (!Application.isBatchMode && !EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
-            scene = EditorSceneManager.OpenScene(ScenePath);
-        }
-        var simulator = FindSimulator();
+        if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+            throw new InvalidOperationException("Close Prefab mode before applying a scene wall calibration.");
+        ValidateCalibrationSetup(simulator);
+        var scene = simulator.gameObject.scene;
         var setup = simulator.ccHead.GetComponent<CC_CAMERA_SETUP>();
         if (!setup || !setup.CCSettings || Mathf.Abs(setup.CCSettings.eyeSeparation - 0.061f) > 0.00001f ||
             setup.CCSettings.invertStereo || setup.CCSettings.stereoMode != CC_StereoMode.sidebyside)
@@ -61,7 +75,6 @@ public static class PacificKeller102Preview
             simulator.viewerOffsetMeters = new Vector2(0f, 0.01f);
             simulator.textureWidth = EyeWidth;
             simulator.textureHeight = EyeHeight;
-            simulator.useHDRContentTextures = true;
             Record(simulator);
             ResizeRoom(simulator);
             EditorSceneManager.MarkSceneDirty(scene);
@@ -73,6 +86,56 @@ public static class PacificKeller102Preview
             Undo.RevertAllDownToGroup(group);
             throw;
         }
+    }
+
+    static void ValidateCalibrationSetup(CyberCanoeHeadsetSimulator simulator)
+    {
+        if (!simulator) throw new ArgumentNullException(nameof(simulator));
+        var scene = simulator.gameObject.scene;
+        if (EditorUtility.IsPersistent(simulator) || !scene.IsValid() || !scene.isLoaded ||
+            scene != UnityEngine.SceneManagement.SceneManager.GetActiveScene())
+            throw new InvalidOperationException("Choose a headset simulator in the current active scene.");
+        if (!simulator.ccHub || !simulator.ccHead || !simulator.sourceScreen || !simulator.roomRoot ||
+            !simulator.virtualScreen || !simulator.trackingSpace || !simulator.leftContentCamera ||
+            !simulator.rightContentCamera || !simulator.headsetCamera || !simulator.virtualScreenRenderer)
+            throw new InvalidOperationException("Assign the Cyber Canoe rig, content cameras and complete headset room before calibration.");
+        if (simulator.ccHead == simulator.ccHub || simulator.sourceScreen == simulator.ccHub ||
+            simulator.sourceScreen == simulator.ccHead || simulator.virtualScreen == simulator.trackingSpace ||
+            simulator.leftContentCamera == simulator.rightContentCamera ||
+            simulator.leftContentCamera == simulator.headsetCamera || simulator.rightContentCamera == simulator.headsetCamera)
+            throw new InvalidOperationException("Use distinct hub, head, screens, tracking space and content/headset cameras.");
+        foreach (Transform target in new[] { simulator.ccHub, simulator.ccHead, simulator.sourceScreen,
+            simulator.roomRoot, simulator.virtualScreen, simulator.trackingSpace,
+            simulator.leftContentCamera.transform, simulator.rightContentCamera.transform,
+            simulator.headsetCamera.transform, simulator.virtualScreenRenderer.transform })
+            if (target.gameObject.scene != scene)
+                throw new InvalidOperationException("All calibrated rig and headset room references must belong to the simulator's scene.");
+        if (simulator.roomRoot.parent != simulator.transform || simulator.virtualScreen.parent != simulator.roomRoot ||
+            simulator.trackingSpace.parent != simulator.roomRoot || simulator.headsetCamera.transform.parent != simulator.trackingSpace ||
+            simulator.virtualScreenRenderer.transform != simulator.virtualScreen || simulator.roomRoot.IsChildOf(simulator.ccHub) ||
+            !simulator.ccHead.IsChildOf(simulator.ccHub) || !simulator.sourceScreen.IsChildOf(simulator.ccHub))
+            throw new InvalidOperationException("Keep the calibrated CC head/screen under CC_HUB and the independent headset room under its simulator.");
+        foreach (Transform target in new[] { simulator.ccHub, simulator.ccHead, simulator.sourceScreen.parent,
+            simulator.ccHead.parent, simulator.transform.parent })
+            if (target && (target.lossyScale - Vector3.one).sqrMagnitude > 0.000001f)
+                throw new InvalidOperationException("Keller 102's metre measurements require unit-scale CC_HUB and rig parents.");
+        var setup = simulator.ccHead.GetComponent<CC_CAMERA_SETUP>();
+        if (!setup || setup.leftCamera != simulator.leftContentCamera.gameObject ||
+            setup.rightCamera != simulator.rightContentCamera.gameObject ||
+            !simulator.leftContentCamera.transform.IsChildOf(simulator.ccHead) ||
+            !simulator.rightContentCamera.transform.IsChildOf(simulator.ccHead))
+            throw new InvalidOperationException("Use the simulator's two content cameras beneath the configured CC_HEAD.");
+        foreach (Camera camera in new[] { simulator.leftContentCamera, simulator.rightContentCamera })
+        {
+            var offset = camera.GetComponent<CC_CAMERAOFFSET>();
+            if (!offset || !offset.projectionScreen || offset.projectionScreen.transform != simulator.sourceScreen)
+                throw new InvalidOperationException("Both content cameras must project onto the calibrated Cyber Canoe source screen.");
+        }
+        Transform frame = RequiredChild(simulator.virtualScreen, "ScreenFrame");
+        foreach (string name in new[] { "FrameBottom", "FrameTop", "FrameLeft", "FrameRight" }) RequiredChild(frame, name);
+        Transform floor = RequiredChild(simulator.roomRoot, "RoomFloor");
+        if (floor == simulator.virtualScreen || floor == simulator.trackingSpace)
+            throw new InvalidOperationException("Keep the headset room floor separate from its screen and tracking space.");
     }
 
     static void SetPose(Transform target, Vector3 position, Quaternion rotation, Vector3 scale)
@@ -131,6 +194,7 @@ public static class PacificKeller102Preview
     {
         try
         {
+            EditorSceneManager.OpenScene(ScenePath);
             ApplyCalibration();
             var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
             if (scene.path != ScenePath || !EditorSceneManager.SaveScene(scene, ScenePath))
@@ -350,9 +414,24 @@ public static class PacificKeller102Preview
 
     static CyberCanoeHeadsetSimulator FindSimulator()
     {
+        var scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
+        if (!scene.IsValid() || !scene.isLoaded)
+            throw new InvalidOperationException("Open a scene containing the Cyber Canoe headset simulator first.");
+        GameObject selected = Selection.activeGameObject;
+        if (selected && selected.scene == scene)
+        {
+            var selectedSimulator = selected.GetComponentInParent<CyberCanoeHeadsetSimulator>(true);
+            if (selectedSimulator) return selectedSimulator;
+        }
+        CyberCanoeHeadsetSimulator found = null;
         foreach (var simulator in Object.FindObjectsByType<CyberCanoeHeadsetSimulator>(FindObjectsInactive.Include))
-            if (simulator.gameObject.scene.path == ScenePath) return simulator;
-        throw new InvalidOperationException("The Pacific exhibit headset simulator is missing.");
+        {
+            if (simulator.gameObject.scene != scene) continue;
+            if (found) throw new InvalidOperationException("Select the headset simulator to calibrate when the current scene contains more than one.");
+            found = simulator;
+        }
+        if (found) return found;
+        throw new InvalidOperationException("The current scene has no Cyber Canoe headset simulator. Add one from Tools > Cyber Canoe first.");
     }
 
     static void Finish(int code)

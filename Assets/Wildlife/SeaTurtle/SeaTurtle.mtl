@@ -1,0 +1,33 @@
+# Original glTF linear baseColorFactor values retained as Kd.
+newmtl Mat
+Ka 0 0 0
+Kd 0.06979 0.14 0.0686
+Ks 0.04 0.04 0.04
+Ns 10
+d 1
+illum 2
+
+newmtl Brown
+Ka 0 0 0
+Kd 0.58 0.386667 0
+Ks 0.04 0.04 0.04
+Ns 10
+d 1
+illum 2
+
+newmtl WhiteShell
+Ka 0 0 0
+Kd 0.73458 0.77 0.5929
+Ks 0.04 0.04 0.04
+Ns 10
+d 1
+illum 2
+
+newmtl GreenSkin
+Ka 0 0 0
+Kd 0.43741 0.62 0.0434
+Ks 0.04 0.04 0.04
+Ns 10
+d 1
+illum 2
+

@@ -1,85 +1,13 @@
-Cyber Canoe screen in your real headset
-======================================
+CyberCanoe headset guide
 
-This simulator lets you wear your Steam Frame and view the Unity scene on a
-virtual Cyber Canoe display. The virtual display occupies a fixed position in
-a simple room. Each headset eye receives the corresponding Cyber Canoe image,
-so the scene has the stereo depth produced by the existing CC cameras.
+The current VR setup and usage instructions are in README.txt in this folder:
 
-Start the simulator
--------------------
-1. Connect Steam Frame to your PC through SteamVR. Check that SteamVR recognizes
-   the headset and is the active OpenXR runtime.
-2. Open your Cyber Canoe scene, such as Assets/Scenes/Plastic_Type.unity.
-3. In Unity, choose Tools > Cyber Canoe > Add Headset Screen Simulator.
-   If you added the simulator earlier, click Apply 4080 x 1152 SBS / 20 ft Center
-   Calibration in its Inspector, or use the Apply Campus Calibration menu.
-4. Enter Play mode and wear the headset. Look toward the virtual screen.
-5. If placement needs adjusting, select CyberCanoe_HeadsetSimulator and use
-   Recenter Viewer in its Inspector while looking toward your desired forward
-   direction. The first tracked pose also sets your initial viewing position.
+    Assets/HeadsetPreview/README.txt
 
-The setup uses the OpenXR packages and loader already configured in this
-project. The simulator starts XR while active when automatic initialization is
-disabled. Stop Play mode to return to the usual Cyber Canoe display output.
+That README covers Meta Quest and SteamVR connections, turning VR on and off,
+recentering, preview calibration, troubleshooting and LAVA presentation builds.
 
-Campus screen calibration
---------------------------
-The generated screen uses the size and pose configured on the scene's CC
-projection screen. In Plastic_Type these are currently:
-
-    Width:                  6.1887 metres
-    Height:                 1.75 metres
-    Screen centre height:   1.85 metres
-    Initial eye height:     1.85 metres (screen centre)
-    Eye-to-screen distance: 6.096 metres (20 feet), centred
-    Full stereo feed:       4080 x 1152 pixels, side by side
-    Left-eye image:         2040 x 1152 pixels
-    Right-eye image:        2040 x 1152 pixels
-
-The 4080-pixel width is split between the packed left and right images. Each
-eye image covers the whole physical screen; the screen's physical width is
-not halved. Texture dimensions are independent of the wall's size in metres.
-
-These values describe the current Unity configuration. Verify them against
-the campus installation if you need a measured match. Select the generated
-virtual screen to adjust its scale before Play mode, and keep room/root scale
-at (1, 1, 1). The pixel resolution does not establish the physical wall size;
-use measured campus dimensions to adjust width and height. Viewing Distance
-Meters sets the centred viewing distance. Recreate the simulator after moving
-the original CC screen to use its newly authored pose.
-
-Viewing behavior
-----------------
-Headset tracking lets you turn and move around the stationary virtual display.
-The scene images use CC_HEAD centred 20 feet from the screen and retain the
-off-axis wall projection, matching a fixed Cyber Canoe stereo feed. Both the
-source viewpoint and initial headset viewing position use this calibration.
-The existing navigation and waypoints move the content, while the simulated
-room stays stationary.
-World-space scene labels remain part of the screen images.
-
-The simulator owns its render textures and temporarily redirects the CC
-camera output. It restores the original head/eye poses, projection matrices,
-camera setup and camera/canvas settings when disabled.
-There is one headset presentation camera and no additional AudioListener.
-
-Useful checks
--------------
-If there is no headset output, check the simulator's Inspector status, SteamVR
-connection, and Project Settings > XR Plug-in Management > PC OpenXR loader.
-Start SteamVR before entering Play mode. If the room is visible but the screen
-is blank, check the assigned CC eye cameras, source screen, and screen material.
-Per-Eye Texture Width and Height default to the campus feed's 2040 x 1152
-pixels per eye. Lower them together if you need to reduce rendering cost.
-
-This is a way to review scene scale, framing, stereo placement and readability.
-The actual campus panel brightness, resolution, crosstalk and viewing limits
-still depend on the physical display. Device performance and stereo comfort
-must be checked while wearing the headset.
-
-Valve's Unity/OpenXR and SteamVR Play-in-Editor instructions:
-https://partner.steamgames.com/doc/steamhardware/steamframe/engines/unity
-
-The separate Tools > Headset Preview menu is the earlier desktop camera
-preview. Use Tools > Cyber Canoe for the real-headset virtual-screen simulator.
+Start with One time Unity setup. The VR mode switch is the checkbox beside
+the Cyber Canoe Headset Simulator component's title on
+CyberCanoe_HeadsetSimulator. Keep global Initialize XR on Startup off and the
+simulator's Initialize XR field on so the component controls headset startup.

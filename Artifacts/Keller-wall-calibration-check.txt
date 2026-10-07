@@ -1,0 +1,8 @@
+Keller wall calibration audit; Unity 6000.6.0f1; editor only, no Play mode/XR/window APIs.
+Apply: current Plastic_Type scene preserved; all artwork/hub/cameras/assets unchanged; only calibrated room geometry/parameters changed; scene dirty, file unchanged.
+Single Undo: all original transforms, simulator settings and references restored exactly; enabled/initializeXR unchanged.
+CC_LEFT_CAMERA authored sculpture framing: NDC x=-0.856..0.841, y=-2.568..2.960; cropped=True; navigation/artwork poses preserved (full wall limits are -1..1).
+CC_RIGHT_CAMERA authored sculpture framing: NDC x=-0.841..0.856, y=-2.568..2.960; cropped=True; navigation/artwork poses preserved (full wall limits are -1..1).
+Both physical eye frusta project all four wall corners to NDC (-1,-1)/(1,1); IPD=.061m; XML read as data only.
+RESULT PASS: current-scene calibration, protected artwork, no implicit save, single Undo and exact stereo projection.
+Editor left-eye proof captured at 1600x540 in Artifacts; original eye poses and camera matrices restored afterward.

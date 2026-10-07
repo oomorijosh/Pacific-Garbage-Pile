@@ -29,7 +29,7 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
     public Material[] debrisMaterials;
     [Tooltip("Overall multiplier for baked debris meshes. 0.5 makes the props read as smaller pieces inside the exhibit.")]
     [Range(.1f, 1f)] public float debrisSizeMultiplier = .5f;
-    [Tooltip("Optional FBX models for Micro, Meso, Macro and Mega debris. Each category can contain multiple models; one is chosen randomly per piece.")]
+    [Tooltip("Models or textured prefabs for the Micro, Meso, Macro and Mega pools. Each model appears once before random repetitions. Rebuild From Current Pools applies your manual edits.")]
     public DebrisModelGroup[] debrisModelGroups = new DebrisModelGroup[4];
     public Material separatorMaterial;
 
@@ -165,9 +165,8 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         bands.microCountMultiplier = smallDebrisEmphasis;
         bands.mesoCountMultiplier = Mathf.Lerp(1f, smallDebrisEmphasis, .45f);
         bands.debrisSizeMultiplier = debrisSizeMultiplier;
-        // Use only scale-controlled low-poly placeholders. Photo-atlas cards
-        // are intentionally disabled because their pictured objects do not
-        // preserve a meaningful relative scale between categories.
+        // Use category models when assigned, with scale-controlled placeholders
+        // as a fallback. Photo-atlas cards cannot preserve category sizes.
         bands.Build(cubeSize, debrisMaterials, null, continuousWaterMaterial, debrisModelGroups);
 
         CreateBandSeparators();
@@ -232,7 +231,11 @@ public sealed class GPGPLayeredCubeVisualization : MonoBehaviour
         renderer.sharedMaterial = separatorMaterial ? separatorMaterial : debrisMaterials[0];
         renderer.shadowCastingMode = ShadowCastingMode.Off;
         var properties = new MaterialPropertyBlock();
-        properties.SetColor("_BaseColor", new Color(.06f, .48f, .68f, 1f));
+        // The Pacific glow shader reads HDR _BaseColor directly. Keep neon
+        // brightness when the water/debris hierarchy is baked again.
+        properties.SetColor("_BaseColor", separatorMaterial && separatorMaterial.shader.name == "PacificExhibit/Glow"
+            ? separatorMaterial.GetColor("_BaseColor")
+            : new Color(.06f, .48f, .68f, 1f));
         properties.SetColor("_Color", new Color(.06f, .48f, .68f, 1f));
         Color glow = new Color(.02f, .65f, 1f, 1f);
         properties.SetColor("_EmissionColor", glow);

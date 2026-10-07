@@ -13,6 +13,8 @@ namespace PacificExhibit
         [Tooltip("Additional mono cameras, such as Cyber Canoe's left and right off-axis views.")]
         public Camera[] additionalSourceCameras = new Camera[0];
         public Renderer floorRenderer;
+        [Tooltip("World-space height from the floor pivot to its reflective surface. Use half the slab height for a cube floor.")]
+        public float surfaceOffset;
         [Range(256, 2048)] public int textureWidth = 1024;
         [Range(0f, 1f)] public float reflectionStrength = 0.55f;
 
@@ -53,6 +55,10 @@ namespace PacificExhibit
             }
 
             RemoveUnusedResources();
+#if UNITY_EDITOR
+            if (!Application.isPlaying && UnityEditor.SceneView.lastActiveSceneView)
+                RenderReflectionFor(UnityEditor.SceneView.lastActiveSceneView.camera);
+#endif
             // CC_CAMERAOFFSET updates its custom projection and view in LateUpdate
             // at order 0. Render here, before URP starts rendering the main cameras.
             if (CanRenderAutomatically(sourceCamera)) RenderReflectionFor(sourceCamera);
@@ -86,7 +92,7 @@ namespace PacificExhibit
         public void RenderReflectionFor(Camera source)
         {
             if (!source || !floorRenderer || rendering || !isActiveAndEnabled ||
-                source.cameraType != CameraType.Game || source.stereoEnabled ||
+                (source.cameraType != CameraType.Game && source.cameraType != CameraType.SceneView) || source.stereoEnabled ||
                 !GraphicsSettings.currentRenderPipeline) return;
 
             ReflectionResources resources = EnsureResources(source);
@@ -106,7 +112,7 @@ namespace PacificExhibit
             data.renderPostProcessing = false;
             data.renderShadows = false;
 
-            float height = floorRenderer.transform.position.y;
+            float height = floorRenderer.transform.position.y + surfaceOffset;
             Matrix4x4 mirror = Matrix4x4.identity;
             mirror.m11 = -1f;
             mirror.m13 = height * 2f;
@@ -216,6 +222,10 @@ namespace PacificExhibit
 
         bool IsRegistered(Camera source)
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying && UnityEditor.SceneView.lastActiveSceneView &&
+                source == UnityEditor.SceneView.lastActiveSceneView.camera) return true;
+#endif
             if (source == sourceCamera) return true;
             if (additionalSourceCameras != null)
                 foreach (Camera additional in additionalSourceCameras)

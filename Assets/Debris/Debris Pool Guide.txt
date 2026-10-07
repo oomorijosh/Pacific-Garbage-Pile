@@ -1,0 +1,76 @@
+DEBRIS MODEL POOLS
+
+Open Assets/Scenes/Plastic_Type.unity and select Cube (1), which has the
+GPGP Layered Cube Visualization component. Stop Play mode before rebuilding.
+
+LOAD THE UPDATED CLUTTER AND TURTLE INTO AN OPEN SCENE
+
+Click Apply Updated Debris + Turtle in the component Inspector, or use
+Tools > Pacific Exhibit > Apply Updated Debris + Turtle. This refreshes the
+category pools and clutter, adds the turtle, and balances existing presentation
+lighting. Your other scene objects stay in place. Save the scene afterward.
+The action supports Undo and does not automatically save or reopen a scene.
+
+ADD MORE ITEMS
+
+1. Import your model and textures into the matching Assets/Debris folder:
+   Microplastic, Mesoplastic, Macroplastic, or Megaplastic.
+2. For a textured model, make a Universal Render Pipeline/Lit material,
+   assign its textures, apply it to the model, and save the model as a prefab
+   in that category folder. Keep any multi-part materials in their own slots.
+3. Click Refresh Debris Pools + Rebuild. It finds new models and prefabs,
+   keeps manually added pool entries, and removes duplicate references.
+4. Save the scene. The placed pieces remain editable in the Hierarchy.
+
+MANUALLY EDIT A POOL
+
+Drag models or prefabs into the named Micro Models, Meso Models, Macro Models,
+or Mega Models lists. Click Rebuild From Current Pools to apply exactly those
+lists. Use this button after removing entries you no longer want; folder refresh
+adds available folder models again. Save the scene after rebuilding.
+
+Every assigned model appears once before random repetitions when density is
+above zero. Expanding a pool beyond its usual piece count adds enough pieces
+to show every model. Band heights continue to encode the existing mass shares.
+
+TEXTURES
+
+The supplied texture sets are connected through reusable prefabs in
+Assets/Debris/Prepared and materials in Assets/Debris/Materials. Folder refresh
+updates these prepared assets. Save your own edited prefabs in the category
+folders so they remain separate from the prepared texture library.
+
+Base color belongs in Base Map. Normal textures must import as Normal Map.
+AO, metallic and roughness textures contain linear data; disable sRGB for them.
+URP Lit uses metallic in the red channel and smoothness in alpha, where
+smoothness is 1 minus roughness. The supplied packs are converted automatically.
+The lifebuoy ring and rope use separate materials; the bottle uses its supplied
+transparency. Untextured models without compatible authored materials use the
+exhibit palette. Compatible imported materials retain their colors and textures
+through shared matte copies in the generated Prepared and Materials folders.
+
+The importer preserves compatible URP materials on generated pieces. Water,
+gallery floor, lighting and cameras are preserved when rebuilding debris.
+
+CLUTTER, SIZES AND MOVEMENT
+
+Select Four mass-share debris bands under the baked water cube to adjust the
+random seed, cluster strength/count, and upward mixing fractions. Rebuild From
+Current Pools applies those settings. Larger props stay in their own category;
+Meso props also appear in Macro and Mega, and Macro props also appear in Mega.
+These are added copies, so mixing does not empty the source category.
+
+Micro stays static. The other categories gently drift and tumble inside their
+assigned section. Random rotations and movement origins persist in the scene.
+Debris sizes are exaggerated for visibility in the exhibit; the band height
+shares continue to convey the existing data rather than actual ocean depth.
+
+Prepared debris materials have emission, specular highlights and environment
+reflections disabled to keep them from glowing under the exhibit lighting.
+
+SEA TURTLE
+
+Tools > Pacific Exhibit > Add or Refresh Sea Turtle adds the credited turtle
+asset beside the debris. It has its own Sea Turtle branch and survives debris
+rebuilds. Its source and redistribution credits are in
+Assets/Wildlife/SeaTurtle/ATTRIBUTION.txt.

@@ -1,0 +1,9 @@
+One-click exhibit content workflow; Unity 6000.6.0f1; isolated editor, no Play mode/XR.
+Baseline: counts=810,168,23,8; no turtle; key/fill/top=4800/3200/100; spotlight additional data captured.
+First Apply: counts=810,202,148,215; exactly one turtle; lights=384/256/100; unrelated objects/assets preserved.
+Apply leaves the active scene open and dirty; scene-file SHA256 unchanged (the helper does not save).
+Undo hierarchy fingerprint: unchanged.
+Undo metadata fingerprint: unchanged.
+Single Undo: old hierarchy/pools/poses/metadata and 4800/3200/100 lights restored; spotlight user data preserved; no scene save.
+Second Apply passed; only the audit now saves the clone for scene reload and four-camera capture.
+RESULT PASS: one-click action, controlled lighting, protected edits, no implicit save, and single Undo.

@@ -2,7 +2,9 @@ Shader "PacificExhibit/Floor"
 {
     Properties
     {
-        _BaseColor("Slate Floor Color", Color) = (0.006, 0.013, 0.018, 1)
+        _BaseColor("Floor Color / Texture Tint", Color) = (0.006, 0.013, 0.018, 1)
+        [ToggleUI] _UseBaseMap("Use Tile Texture", Float) = 0
+        [NoScaleOffset] _BaseMap("Tile Texture (2 x 2 Tiles)", 2D) = "white" {}
         [NoScaleOffset] _ReflectionTex("Planar Reflection (Per Camera)", 2D) = "black" {}
         _ReflectionStrength("Reflection Strength", Range(0, 1)) = 0.55
         [HideInInspector] _ReflectionEnabled("Reflection Enabled", Float) = 0
@@ -34,10 +36,13 @@ Shader "PacificExhibit/Floor"
             // TEXTURE2D_X would incorrectly reinterpret that texture as an array.
             TEXTURE2D(_ReflectionTex);
             SAMPLER(sampler_ReflectionTex);
+            TEXTURE2D(_BaseMap);
+            SAMPLER(sampler_BaseMap);
 
             CBUFFER_START(UnityPerMaterial)
                 half4 _BaseColor;
                 half4 _ReflectionTint;
+                float _UseBaseMap;
                 float _ReflectionStrength;
                 float _ReflectionEnabled;
                 float _TileScale;
@@ -98,6 +103,10 @@ Shader "PacificExhibit/Floor"
                 float roughness = 0.88 + grain * 0.12;
                 float tileVariation = 0.88 + Hash21(floor(tile)) * 0.15;
                 half3 color = _BaseColor.rgb * tileVariation * (1.0 - grout * 0.65);
+                // The museum image contains two tiles per axis. World-space UVs
+                // keep each tile the same size across the entire gallery floor.
+                half3 tileColor = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, tile * 0.5).rgb;
+                color = lerp(color, tileColor * _BaseColor.rgb, saturate(_UseBaseMap));
                 // A soft blue pool anchors the luminous box in its dark room.
                 float groundGlow = exp2(-dot(exhibitXZ, exhibitXZ) * 0.15);
                 color += half3(0.002, 0.012, 0.02) * groundGlow;

@@ -1,0 +1,120 @@
+GPGP exhibit UI concept
+
+Deliverable: GPGP-UI-mockup.png
+Stage: visual mockup. The controls shown describe proposed behavior.
+Generated with the built-in imagegen tool, followed by one central-sculpture
+refinement. The original and refinement prompts are included in this folder.
+The scene and UI implementation remain separate from this design artifact.
+
+DESIGN DIRECTION
+
+Use the existing dark museum, blue water, cyan frame and reflective tile floor
+as the visual setting. Keep text warm white and active controls cyan. Text
+needs a solid dark backing and should stay sharp without bloom.
+
+The mockup shows Debris sizes with Mega selected. The full tall sculpture
+stays central. The left panel provides context, the right panel explains one
+selected category, and the bottom row gives visitors four size choices.
+The rendered sculpture in the image is an illustrative design reference.
+The implementation should use the existing Unity sculpture and its authored
+band heights, debris, turtle and materials.
+
+FOUR VIEWS
+
+Overview
+Show the full sculpture and a short introduction:
+"Ocean currents concentrate floating plastic in the North Pacific."
+Key takeaway:
+"Debris is dispersed across the ocean, not a solid island."
+
+Debris sizes
+Use four persistent selectors. Selecting one highlights its band and changes
+the right panel to its name, size range, example object and short explanation.
+Keep the other bands visible. A selected object may have an enlarged detail
+view beside the story. Reset view returns to the full sculpture.
+
+Study categories, ordered from the top of the existing sculpture downward:
+Mega: greater than 50 cm. Example: lost fishing net or large container.
+Macro: 5-50 cm. Example: bottle or bucket.
+Meso: 5-50 mm. Example: cap or fragment.
+Micro: 0.5-5 mm. Example: tiny plastic fragments.
+
+Suggested visitor copy:
+Mega: "Lost fishing gear can trap marine wildlife."
+Macro: "Bottles, containers and broken objects add to floating debris."
+Meso: "Small pieces include plastic fragments and bottle caps."
+Micro: "Tiny floating fragments can be difficult to see."
+
+Wildlife
+Focus attention on the turtle. Show one concise explanation of entanglement,
+with a return to the size view:
+"A sea turtle caught in a lost fishing net may struggle to swim and feed."
+Avoid adding an entanglement pose or animation unless it is later authored.
+
+Take action
+Start with one accessible takeaway:
+"Keep waste out of waterways."
+Offer short examples: dispose of waste carefully, use reusable items where
+practical, and support safe community cleanups. Include a Sources control for
+the scientific context. A functional QR link can be added once its destination
+is chosen; the mockup intentionally has no placeholder QR code.
+
+INTERACTION
+
+Keep Home and Reset view available. Selecting Explore wildlife moves from
+the Mega story to the Wildlife view. Retain the current size selection when
+returning to Debris sizes.
+
+For the first implementation, use explicit keyboard selection and activation
+with a visible focus outline, while keeping the existing scene navigation.
+Touch and Quest-controller interaction can be added after choosing an input
+method. Buttons in this PNG are a design proposal, not connected controls.
+
+WALL AND VR LAYOUT
+
+Design against one 4800 x 1620 eye view of the Keller 102 wall. The mockup PNG
+is a 2172 x 724 concept image, about the same 3:1 aspect ratio. Its proportions
+do not replace the exact 4800 x 1620 implementation reference size.
+
+The stereo feed supplies two views of the same full-wall UI. Keep the menu
+and information panels at the screen plane so the same text remains stable
+and readable in both eyes. Reserve the depth effect for the sculpture.
+
+Start around 56-64 pixels for main body text and 100-132 pixels for titles at
+the per-eye reference size. Use short paragraphs and large selection targets.
+Check readability on the physical wall from the calibrated 4.282 m position.
+Keep important controls within comfortable central viewing angles for VR.
+
+SCIENCE AND VISUALIZATION
+
+The size categories follow Lebreton et al. (2018), including the study's
+sampled microplastic range of 0.5-5 mm. Generic microplastic definitions can
+also include particles smaller than this study sampled.
+
+Layer height represents mass share in this data sculpture. The bands organize
+plastic size categories and do not describe measured ocean depths. Keep the
+existing illustrative debris enlargement, upward category mixing and static
+Micro arrangement; these artistic choices should not be presented as measured
+particle counts, concentrations, or movement patterns.
+
+The existing sculpture rounds visual heights to 8/13/25/54 to fill the cube.
+If numerical mass-share labels are added later, label the study's measured
+Mega share as approximately 53 percent and explain the visual rounding.
+
+SOURCES
+
+NOAA: Garbage Patches
+https://marinedebris.noaa.gov/discover-marine-debris/garbage-patches
+
+NOAA: What is the Great Pacific Garbage Patch?
+https://oceanservice.noaa.gov/facts/garbagepatch.html
+
+NOAA: Wildlife Entanglement and Ghost Fishing
+https://marinedebris.noaa.gov/why-marine-debris-problem/wildlife-entanglement-and-ghost-fishing
+
+NOAA: How to Help
+https://marinedebris.noaa.gov/discover-marine-debris/how-help
+
+Lebreton et al. (2018): Evidence that the Great Pacific Garbage Patch is
+rapidly accumulating plastic. Scientific Reports 8, 4666.
+https://www.nature.com/articles/s41598-018-22939-w

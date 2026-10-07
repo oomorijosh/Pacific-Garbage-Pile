@@ -1,0 +1,76 @@
+GPGP STEREO UI MOCKUP
+
+This scene UI keeps the existing exhibit view in the centre, puts facts on the left, and
+shows a foreground debris example on the right. Bottom selectors run from
+Mega to Macro to Meso to Micro. It is a working exhibit mockup; country and
+regional information provides context, not a claim that a displayed object
+was recovered from a particular country.
+
+ADD IT TO THE CURRENT SCENE
+
+1. Stop Play mode and leave Prefab mode. Open the intended exhibit scene.
+2. Select its baked plastic-type exhibit. Apply Updated Debris + Turtle first
+   if the four category model pools have not been prepared.
+3. Choose Tools > Pacific Exhibit > Add GPGP Stereo UI.
+4. Review the generated GPGP Stereo UI object beneath CC_HUB. Save the scene.
+5. Enter Play mode to use the controls below. The scene begins in Overview
+   with a Mega debris example. The original scene framing is preserved;
+   adding the UI does not fit the entire water cube into the camera view.
+
+The Add menu selects an existing UI instead of making duplicates. To refresh
+an existing preview after changing its settings or wall calibration, select
+GPGP Stereo UI and press Rebuild Preview in the Inspector. Rebuild replaces
+only the UI's own generated hierarchy and can be undone in one step. Keep
+unrelated scene objects outside that hierarchy.
+
+CONTROLS
+
+- D-pad left/right moves focus within the current row.
+- D-pad up/down changes between the three rows: category selectors,
+  information/Another item/automatic-mode controls, and story tabs.
+- Start/Menu activates the focused control.
+- Confirm a category to show a random model from that category. Confirm the
+  same category again, or activate Another item, to see another example.
+  When alternatives are available, the next example avoids an immediate
+  repeat of the same model.
+- In Wildlife, Another item becomes Next wildlife fact and keeps the turtle
+  example visible while the information changes.
+- The automatic Overview cards change about every 25 seconds. D-pad or Start
+  interaction pauses automatic changes. Use the middle row's Pause/Resume
+  control to resume or pause them explicitly while Overview is selected.
+
+Existing flight and waypoint controls remain available: A/South returns the
+camera home, B/East advances a waypoint, and X/West goes to the previous
+waypoint. Sticks, triggers and shoulders retain their camera navigation.
+The Y/North playback mapping and its saved enabled state are preserved.
+This UI reads D-pad and Start separately from the existing EventSystem.
+Touch and Quest-controller interaction are not supplied by this mockup.
+
+WALL AND HOME VR
+
+The UI uses a world-space canvas rendered by both Cyber Canoe content
+cameras. Both side-by-side eye images show the same controls. The headset
+simulator shows those images on its virtual wall, so the same scene UI works
+with the existing home VR preview.
+
+Adding the UI does not enable VR, change the wall calibration, or modify
+camera/navigation/EventSystem settings. Use Assets/HeadsetPreview/README.txt
+for the existing VR on/off workflow. In a wall presentation scene, disable
+the Cyber Canoe Headset Simulator component and keep global Initialize XR on
+Startup off. At home, use the simulator's existing headset setup.
+
+The default foreground depth is 0.4 metres in front of the projection wall.
+Adjust Foreground Depth Meters on GPGP Stereo UI, then Rebuild Preview.
+Overview Interval Seconds controls the automatic card timing.
+
+Category examples come from the exhibit's original model pools, ordered
+Micro, Meso, Macro, Mega internally. The upper water bands contain upward
+mixed smaller debris; the UI's category selection follows the source pool,
+not the object's current floating band. Display examples are enlarged to
+show their shape, while the displayed size range describes the category.
+
+The prepared sea-turtle model is reused when available. Its existing source
+and attribution remain in Assets/Wildlife/SeaTurtle/ATTRIBUTION.txt.
+
+For a Windows presentation build, include the intended exhibit scene in
+File > Build Profiles > Scene List; opening a scene does not update that list.

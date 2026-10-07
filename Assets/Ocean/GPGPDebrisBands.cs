@@ -18,6 +18,16 @@ public sealed class GPGPDebrisBands : MonoBehaviour
     public Material[] materials;
     public Material impostorMaterial;
     public GPGPLayeredCubeVisualization.DebrisModelGroup[] modelGroups;
+    [Header("Clutter and upward mixing")]
+    [Tooltip("Chance of placing a piece in a seeded accumulation cluster instead of the wider cloud.")]
+    [Range(0,1)] public float clusterStrength = .72f;
+    [Range(2,10)] public int clusterCount = 6;
+    [Tooltip("Additional Meso pieces placed in the Macro section, as a fraction of the Meso count.")]
+    [Range(0,1)] public float mesoIntoMacro = .35f;
+    [Tooltip("Additional Meso pieces placed in the Mega section, as a fraction of the Meso count.")]
+    [Range(0,1)] public float mesoIntoMega = .55f;
+    [Tooltip("Additional Macro pieces placed in the Mega section, as a fraction of the Macro count.")]
+    [Range(0,1)] public float macroIntoMega = .65f;
     [Header("Motion")]
     [Range(0,.2f)] public float bobAmplitude = .065f;
     [Range(0,.25f)] public float horizontalDrift = .075f;
@@ -29,24 +39,38 @@ public sealed class GPGPDebrisBands : MonoBehaviour
     };
     // Counts favor legibility on a stereoscopic wall; the four band heights,
     // not object counts, carry the mass-share data.
-    static readonly int[] Counts = { 520, 150, 30, 10 };
+    static readonly int[] Counts = { 520, 180, 100, 70 };
+    static readonly string[] SourceLabels = { "MICRO", "MESO", "MACRO", "MEGA" };
     // Visual height shares from the exhibit brief. They encode estimated mass,
     // not ocean depth or physical debris volume.
     static readonly float[] Shares = { .08f, .13f, .25f, .54f };
-    const float MacroLift = .22f;
     const float MegaLift = .12f;
     Transform generatedRoot;
     System.Random random;
     [SerializeField, HideInInspector] Vector3 volumeSize;
+    // Placement coordinates remain in the dimensions used when this branch
+    // was built. Parent scaling follows later water edits without changing
+    // the bounds/radii used to keep those placements inside their sections.
+    [SerializeField, HideInInspector] Vector3 generatedVolumeSize;
     [SerializeField, HideInInspector] Material waterMaterial;
     [SerializeField, HideInInspector] bool generatedWithSizeMultiplier;
+    [SerializeField, HideInInspector] List<PiecePlacement> placements = new List<PiecePlacement>();
+    public IReadOnlyList<PiecePlacement> Placements => placements;
+    [Serializable]
+    public sealed class PiecePlacement
+    {
+        public Transform transform;
+        public int sourceBand, destinationBand;
+        public Vector3 basePosition;
+        public Quaternion baseRotation;
+        public float radius, phase, spin;
+        public Vector3 tumbleAxis;
+    }
     readonly List<Floater> floaters=new List<Floater>();
     sealed class Floater
     {
         public Transform transform;
-        public float baseHeight;
-        public float draft, yaw, roll, phase, spin;
-        public Vector2 position;
+        public PiecePlacement placement;
     }
 
     void Start()
@@ -54,9 +78,16 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         SyncToWaterVolume();
         // Baked scene objects survive domain reload, while this runtime list
         // does not. Re-register the larger direct children for gentle motion.
+        floaters.RemoveAll(item => !item.transform);
         if (floaters.Count>0) return;
         if (!generatedRoot) generatedRoot=transform.Find("Debris size exhibit");
         if (!generatedRoot) return;
+        if (placements.Count>0)
+        {
+            foreach (PiecePlacement placement in placements)
+                if (placement.transform && placement.sourceBand>0) RegisterFloater(placement);
+            return;
+        }
         random=new System.Random(seed);
         for (int band=1;band<generatedRoot.childCount;band++)
         {
@@ -94,6 +125,12 @@ public sealed class GPGPDebrisBands : MonoBehaviour
 
         Vector3 currentSize = new Vector3(Mathf.Max(.001f, compartment.size.x),
             Mathf.Max(.001f, compartment.size.y), Mathf.Max(.001f, compartment.size.z));
+        if (generatedVolumeSize.x <= .001f || generatedVolumeSize.y <= .001f || generatedVolumeSize.z <= .001f)
+        {
+            // Older baked scenes contain only the last synchronized size.
+            generatedVolumeSize = volumeSize.x > .001f && volumeSize.y > .001f && volumeSize.z > .001f
+                ? volumeSize : currentSize;
+        }
         if (volumeSize.x <= .001f || volumeSize.y <= .001f || volumeSize.z <= .001f)
         {
             volumeSize = currentSize;
@@ -113,17 +150,31 @@ public sealed class GPGPDebrisBands : MonoBehaviour
     public void Build(Vector3 size, Material[] palette, Material atlasMaterial, Material surfaceMaterial,
         GPGPLayeredCubeVisualization.DebrisModelGroup[] modelPalette = null)
     {
+        if (palette==null || palette.Length==0 || Array.Exists(palette,m=>!m))
+        {
+            Debug.LogWarning("Debris bands need a complete material palette.",this);
+            return;
+        }
+
         volumeSize=size;
+        generatedVolumeSize=size;
+        transform.localScale=Vector3.one;
         materials=palette;
         impostorMaterial=atlasMaterial;
         waterMaterial=surfaceMaterial;
         modelGroups=modelPalette;
         debrisSizeMultiplier=Mathf.Clamp(debrisSizeMultiplier,.1f,1f);
         generatedWithSizeMultiplier=true;
-        if (materials==null || materials.Length==0 || Array.Exists(materials,m=>!m))
+        // Rebuild only this component's generated branch. Water, boundary lines
+        // and authored siblings remain untouched, including on repeated builds.
+        floaters.Clear();
+        placements.Clear();
+        for (int i=transform.childCount-1; i>=0; i--)
         {
-            Debug.LogWarning("Debris bands need a complete material palette.",this);
-            return;
+            Transform child=transform.GetChild(i);
+            if (child.name!="Debris size exhibit") continue;
+            child.gameObject.SetActive(false);
+            Release(child.gameObject);
         }
         random=new System.Random(seed);
         generatedRoot=new GameObject("Debris size exhibit").transform;
@@ -135,46 +186,25 @@ public sealed class GPGPDebrisBands : MonoBehaviour
     {
         var root=new GameObject(Labels[band]).transform;
         root.SetParent(generatedRoot,false);
-        float normalizedBottom=0;
-        for (int i=0;i<band;i++) normalizedBottom+=Shares[i];
-        float usableHeight=1f-bandGap*3f;
-        float bandHeight=size.y*Shares[band]*usableHeight;
-        float bottom=-size.y*.5f+size.y*(normalizedBottom*usableHeight+band*bandGap);
-        float categoryMultiplier=band==0?microCountMultiplier:band==1?mesoCountMultiplier:1;
-        int count=Mathf.RoundToInt(Counts[band]*Mathf.Clamp01(fill)*categoryMultiplier);
-        float cellSize=Mathf.Pow(size.x*bandHeight*size.z/Mathf.Max(1,count),1f/3f);
-        int columns=Mathf.Max(1,Mathf.CeilToInt(size.x/cellSize));
-        int verticalCells=Mathf.Max(1,Mathf.CeilToInt(bandHeight/cellSize));
-        int rows=Mathf.Max(1,Mathf.CeilToInt(size.z/cellSize));
-        int capacity=columns*verticalCells*rows;
-        int step=Mathf.Max(1,Mathf.RoundToInt(capacity*.6180339f));
-        while (GreatestCommonDivisor(step,capacity)!=1) step++;
-        for (int i=0;i<count;i++)
+        Bounds destination=GetDestinationBounds(band);
+        float bottom=destination.min.y, bandHeight=destination.size.y;
+        var clusters=new Vector3[Mathf.Clamp(clusterCount,2,10)];
+        for (int i=0; i<clusters.Length; i++)
+            clusters[i]=new Vector3(Range(-size.x*.34f,size.x*.34f),
+                Mathf.Lerp(bottom,bottom+bandHeight,band==0?Range(.1f,.4f):band==3?Range(.6f,.9f):Range(.2f,.85f)),
+                Range(-size.z*.34f,size.z*.34f));
+        int count=CountForBand(band);
+        SpawnCloud(root,band,band,count,clusters);
+        // Smaller sources may accumulate upward. Larger sources are never
+        // selected for a lower destination, and Micro stays on the bottom.
+        if (band==2) SpawnCloud(root,1,band,Mathf.RoundToInt(CountForBand(1)*mesoIntoMacro),clusters);
+        if (band==3)
         {
-            float baseScale=ScaleForBand(band);
-            float horizontalMargin=Mathf.Min(Mathf.Min(size.x,size.z)*.32f,baseScale*1.1f);
-            // Suspend debris throughout its category band. Margin is based on
-            // prop size so larger pieces remain inside the shared cube.
-            float margin=Mathf.Min(bandHeight*.28f,baseScale*1.05f);
-            int cell=(i*step+capacity/2)%capacity;
-            int xCell=cell%columns;
-            int zCell=(cell/columns)%rows;
-            int yCell=cell/(columns*rows);
-            float x=Mathf.Lerp(-size.x*.5f+horizontalMargin,size.x*.5f-horizontalMargin,(xCell+.5f)/columns);
-            float z=Mathf.Lerp(-size.z*.5f+horizontalMargin,size.z*.5f-horizontalMargin,(zCell+.5f)/rows);
-            float lift=band==2?bandHeight*MacroLift:band==3?bandHeight*MegaLift:0;
-            float y=Mathf.Lerp(bottom+margin,bottom+bandHeight-margin,(yCell+.5f)/verticalCells)+lift;
-            float jitterX=size.x/columns*.28f;
-            float jitterY=bandHeight/verticalCells*.28f;
-            float jitterZ=size.z/rows*.28f;
-            x=Mathf.Clamp(x+Range(-jitterX,jitterX),-size.x*.5f+horizontalMargin,size.x*.5f-horizontalMargin);
-            y=Mathf.Clamp(y+Range(-jitterY,jitterY),bottom+margin,bottom+bandHeight-margin);
-            z=Mathf.Clamp(z+Range(-jitterZ,jitterZ),-size.z*.5f+horizontalMargin,size.z*.5f-horizontalMargin);
-            Transform piece=CreatePiece(root,band,i,new Vector3(x,y,z),baseScale);
-            if (band>0) RegisterFloater(piece,baseScale*.08f,y);
+            SpawnCloud(root,1,band,Mathf.RoundToInt(CountForBand(1)*mesoIntoMega),clusters);
+            SpawnCloud(root,2,band,Mathf.RoundToInt(CountForBand(2)*macroIntoMega),clusters);
         }
         CreateImpostors(root,band,size,bottom,bandHeight);
-        if (band==3 && count>0)
+        if (band==3 && count>0 && !HasModelsForBand(band))
         {
             Transform tire=CreateTire(root,new Vector3(size.x*.12f,bottom+bandHeight*.46f+bandHeight*MegaLift,-size.z*.18f),bandHeight*.18f*debrisSizeMultiplier);
             Transform net=CreateNetCluster(root,new Vector3(-size.x*.13f,bottom+bandHeight*.58f+bandHeight*MegaLift,0),bandHeight*.27f*debrisSizeMultiplier);
@@ -183,14 +213,73 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         }
     }
 
+    int CountForBand(int band)
+    {
+        float multiplier=band==0?microCountMultiplier:band==1?mesoCountMultiplier:1;
+        int count=Mathf.RoundToInt(Counts[band]*Mathf.Clamp01(fill)*multiplier);
+        if (fill>0 && HasModelsForBand(band)) count=Mathf.Max(count,modelGroups[band].models.Length);
+        return count;
+    }
+
+    public Bounds GetDestinationBounds(int band)
+    {
+        band=Mathf.Clamp(band,0,3);
+        Vector3 size = generatedVolumeSize.x > .001f && generatedVolumeSize.y > .001f && generatedVolumeSize.z > .001f
+            ? generatedVolumeSize : volumeSize;
+        float cumulative=0;
+        for (int i=0; i<band; i++) cumulative+=Shares[i];
+        float usable=1f-bandGap*3f;
+        float height=size.y*Shares[band]*usable;
+        float bottom=-size.y*.5f+size.y*(cumulative*usable+band*bandGap);
+        return new Bounds(new Vector3(0,bottom+height*.5f,0),new Vector3(size.x,height,size.z));
+    }
+
+    void SpawnCloud(Transform parent, int sourceBand, int destinationBand, int count, Vector3[] clusters)
+    {
+        Bounds destination=GetDestinationBounds(destinationBand);
+        for (int i=0; i<count; i++)
+        {
+            float scale=ScaleForBand(sourceBand);
+            float t=(float)random.NextDouble();
+            if (destinationBand==0) t*=.45f;
+            else if (destinationBand>=2) t=1f-Mathf.Pow(t,destinationBand==3?1.9f:1.35f);
+            Vector3 position=new Vector3(Range(destination.min.x,destination.max.x),
+                Mathf.Lerp(destination.min.y,destination.max.y,t),Range(destination.min.z,destination.max.z));
+            float clustering=destinationBand==0?clusterStrength*.35f:clusterStrength;
+            if (random.NextDouble()<clustering)
+            {
+                Vector3 center=clusters[random.Next(clusters.Length)];
+                position=center+new Vector3(CloudJitter(destination.size.x*.13f),
+                    CloudJitter(destination.size.y*.13f),CloudJitter(destination.size.z*.15f));
+            }
+            position=ClampToDestination(position,destinationBand,scale*.9f);
+            Transform piece=CreatePiece(parent,sourceBand,i,position,scale);
+            piece.name=SourceLabels[sourceBand]+" | "+piece.name;
+            PiecePlacement placement=CreatePlacement(piece,sourceBand,destinationBand);
+            if (sourceBand>0) RegisterFloater(placement);
+        }
+    }
+
+    float CloudJitter(float spread) => (Range(-1,1)+Range(-1,1)+Range(-1,1))*spread;
+
+    Vector3 ClampToDestination(Vector3 position, int band, float radius)
+    {
+        Bounds bounds=GetDestinationBounds(band);
+        Vector3 margin=new Vector3(Mathf.Min(radius+.015f,bounds.extents.x*.98f),
+            Mathf.Min(radius+.015f,bounds.extents.y*.98f),Mathf.Min(radius+.015f,bounds.extents.z*.98f));
+        Vector3 minimum=bounds.min+margin, maximum=bounds.max-margin;
+        return new Vector3(Mathf.Clamp(position.x,minimum.x,maximum.x),
+            Mathf.Clamp(position.y,minimum.y,maximum.y),Mathf.Clamp(position.z,minimum.z,maximum.z));
+    }
+
     float ScaleForBand(int band)
     {
         switch (band)
         {
-            case 0: return Range(.012f,.025f)*debrisSizeMultiplier;
-            case 1: return Range(.028f,.065f)*debrisSizeMultiplier;
-            case 2: return Range(.08f,.2f)*debrisSizeMultiplier;
-            default: return Range(.28f,.46f)*debrisSizeMultiplier;
+            case 0: return Range(.035f,.075f)*debrisSizeMultiplier;
+            case 1: return Range(.12f,.32f)*debrisSizeMultiplier;
+            case 2: return Range(.45f,1.1f)*debrisSizeMultiplier;
+            default: return Range(1.2f,2.2f)*debrisSizeMultiplier;
         }
     }
 
@@ -206,18 +295,22 @@ public sealed class GPGPDebrisBands : MonoBehaviour
             modelGroups[band].models != null && modelGroups[band].models.Length > 0)
         {
             GameObject[] choices = modelGroups[band].models;
-            model = choices[random.Next(choices.Length)];
+            // Show each assigned model before choosing random repetitions.
+            model = choices[index < choices.Length ? index : random.Next(choices.Length)];
         }
         Transform piece;
         Material material = materials[random.Next(materials.Length)];
         if (model)
         {
-            GameObject instance = Instantiate(model, parent);
-            instance.name = PieceName(band, shape) + " " + index.ToString("000");
-            piece = instance.transform;
+            // A centred wrapper gives imported pivots and transforms a stable
+            // origin for category placement, scale and floater motion.
+            piece = new GameObject(model.name + " " + index.ToString("000")).transform;
+            piece.SetParent(parent, false);
             piece.localPosition = position;
             piece.localRotation = RandomRotation();
-            NormalizeModel(instance, scale, material);
+            GameObject instance = Instantiate(model, piece);
+            instance.name = model.name;
+            NormalizeModel(piece, instance, scale, material);
             RemoveColliders(instance);
         }
         else
@@ -233,7 +326,7 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         }
 
         // A short neck turns some capsules into recognizable bottle silhouettes.
-        if (band>=1 && type==PrimitiveType.Capsule && shape%3==0)
+        if (!model && band>=1 && type==PrimitiveType.Capsule && shape%3==0)
         {
             var neck=GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             neck.name="Bottle neck";
@@ -245,24 +338,91 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         return piece;
     }
 
-    void NormalizeModel(GameObject instance, float targetSize, Material material)
+    bool HasModelsForBand(int band)
     {
-        Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
-        if (renderers.Length == 0)
-        {
-            instance.transform.localScale = Vector3.one * targetSize;
-            return;
-        }
+        return modelGroups!=null && band<modelGroups.Length && modelGroups[band]!=null &&
+            modelGroups[band].models!=null && Array.Exists(modelGroups[band].models,model=>model);
+    }
 
-        Bounds bounds = renderers[0].bounds;
-        for (int i = 1; i < renderers.Length; i++) bounds.Encapsulate(renderers[i].bounds);
-        float largest = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
-        instance.transform.localScale = Vector3.one * (largest > .0001f ? targetSize / largest : targetSize);
-        foreach (Renderer renderer in renderers)
+    void NormalizeModel(Transform wrapper, GameObject instance, float targetSize, Material material)
+    {
+        if (TryGetLocalMeshBounds(wrapper, instance, out Bounds bounds))
         {
-            if (renderer.sharedMaterial == null) renderer.sharedMaterial = material;
+            float largest = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
+            float normalization = largest > .0001f ? 1f / largest : 1f;
+            instance.transform.localPosition = (instance.transform.localPosition - bounds.center) * normalization;
+            instance.transform.localScale *= normalization;
+        }
+        // Mesh bounds are now one unit across their largest local dimension.
+        // Parent scaling belongs to the exhibit, not to model normalization.
+        wrapper.localScale = Vector3.one * targetSize;
+        foreach (Renderer renderer in instance.GetComponentsInChildren<Renderer>(true))
+        {
+            // Keep authored URP materials and their textures. Fill only missing
+            // or incompatible slots with the exhibit's existing palette.
+            Material[] slots = renderer.sharedMaterials;
+            bool changed = slots.Length == 0;
+            if (slots.Length == 0) slots = new Material[1];
+            for (int i = 0; i < slots.Length; i++)
+            {
+                if (IsCompatibleUrpMaterial(slots[i])) continue;
+                slots[i] = material;
+                changed = true;
+            }
+            if (changed) renderer.sharedMaterials = slots;
             renderer.shadowCastingMode = ShadowCastingMode.On;
             renderer.receiveShadows = true;
+        }
+    }
+
+    static bool IsCompatibleUrpMaterial(Material material)
+    {
+        if (!material || !material.shader || !material.shader.isSupported) return false;
+        // Missing imported materials resolve to URP's glossy white default.
+        // Use the exhibit palette for those slots, preserving authored textures.
+        RenderPipelineAsset pipelineAsset = GraphicsSettings.currentRenderPipeline;
+        if (pipelineAsset && material == pipelineAsset.defaultMaterial) return false;
+        string pipeline = material.GetTag("RenderPipeline", false, string.Empty);
+        return pipeline == "UniversalPipeline" ||
+            (string.IsNullOrEmpty(pipeline) && material.shader.name.StartsWith(
+                "Universal Render Pipeline/", StringComparison.Ordinal));
+    }
+
+    static bool TryGetLocalMeshBounds(Transform wrapper, GameObject instance, out Bounds bounds)
+    {
+        bounds = new Bounds();
+        bool found = false;
+        Matrix4x4 worldToWrapper = wrapper.worldToLocalMatrix;
+        foreach (MeshFilter filter in instance.GetComponentsInChildren<MeshFilter>(true))
+        {
+            if (!filter.sharedMesh) continue;
+            EncapsulateMeshBounds(filter.sharedMesh.bounds, worldToWrapper * filter.transform.localToWorldMatrix,
+                ref bounds, ref found);
+        }
+        foreach (SkinnedMeshRenderer renderer in instance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            if (!renderer.sharedMesh) continue;
+            EncapsulateMeshBounds(renderer.localBounds, worldToWrapper * renderer.transform.localToWorldMatrix,
+                ref bounds, ref found);
+        }
+        return found;
+    }
+
+    static void EncapsulateMeshBounds(Bounds meshBounds, Matrix4x4 toWrapper, ref Bounds bounds, ref bool found)
+    {
+        for (int corner = 0; corner < 8; corner++)
+        {
+            Vector3 offset = new Vector3(
+                (corner & 1) == 0 ? -meshBounds.extents.x : meshBounds.extents.x,
+                (corner & 2) == 0 ? -meshBounds.extents.y : meshBounds.extents.y,
+                (corner & 4) == 0 ? -meshBounds.extents.z : meshBounds.extents.z);
+            Vector3 point = toWrapper.MultiplyPoint3x4(meshBounds.center + offset);
+            if (found) bounds.Encapsulate(point);
+            else
+            {
+                bounds = new Bounds(point, Vector3.zero);
+                found = true;
+            }
         }
     }
 
@@ -357,13 +517,43 @@ public sealed class GPGPDebrisBands : MonoBehaviour
 
     void RegisterFloater(Transform item, float draft, float baseHeight)
     {
-        float yaw=Range(0,360), roll=Range(-7,7);
-        item.localRotation=Quaternion.Euler(0,yaw,roll);
-        floaters.Add(new Floater {
-            transform=item, baseHeight=baseHeight, draft=draft, yaw=yaw, roll=roll,
-            phase=Range(0,6.283f), spin=Range(-1,1),
-            position=new Vector2(item.localPosition.x,item.localPosition.z)
-        });
+        // Compatibility for older baked hierarchies and optional atlas props.
+        int destination=item.parent.GetSiblingIndex();
+        RegisterFloater(CreatePlacement(item,destination,destination));
+    }
+
+    PiecePlacement CreatePlacement(Transform piece, int sourceBand, int destinationBand)
+    {
+        float radius=Mathf.Max(.004f,piece.localScale.magnitude*.5f);
+        if (TryGetLocalMeshBounds(piece,piece.gameObject,out Bounds modelBounds))
+            radius=Vector3.Scale(modelBounds.center,piece.localScale).magnitude+
+                Vector3.Scale(modelBounds.extents,piece.localScale).magnitude;
+        Bounds destination=GetDestinationBounds(destinationBand);
+        float maximumRadius=Mathf.Max(.001f,Mathf.Min(destination.extents.x,
+            Mathf.Min(destination.extents.y,destination.extents.z))-.015f);
+        if (radius>maximumRadius)
+        {
+            // Extremely small edited water volumes still contain the whole
+            // piece, including while it tumbles at runtime.
+            piece.localScale*=maximumRadius/radius;
+            radius=maximumRadius;
+        }
+        piece.localPosition=ClampToDestination(piece.localPosition,destinationBand,radius);
+        Vector3 axis=new Vector3(Range(-1,1),Range(-1,1),Range(-1,1));
+        if (axis.sqrMagnitude<.0001f) axis=Vector3.up;
+        var placement=new PiecePlacement {
+            transform=piece,sourceBand=sourceBand,destinationBand=destinationBand,
+            basePosition=piece.localPosition,baseRotation=piece.localRotation,
+            radius=radius,phase=Range(0,6.283f),spin=Range(-1,1),tumbleAxis=axis.normalized
+        };
+        placements.Add(placement);
+        return placement;
+    }
+
+    void RegisterFloater(PiecePlacement placement)
+    {
+        if (placement.sourceBand==0) return;
+        floaters.Add(new Floater { transform=placement.transform,placement=placement });
     }
 
     void Update()
@@ -374,25 +564,26 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         foreach (Floater item in floaters)
         {
             if (!item.transform) continue;
+            PiecePlacement placement=item.placement;
             float wave=0, dx=0, dz=0;
             if (waterMaterial)
             {
-                wave=SampleWave(item.position.x,item.position.y);
-                dx=(SampleWave(item.position.x+delta,item.position.y)-SampleWave(item.position.x-delta,item.position.y))/(2*delta);
-                dz=(SampleWave(item.position.x,item.position.y+delta)-SampleWave(item.position.x,item.position.y-delta))/(2*delta);
+                float x=placement.basePosition.x, z=placement.basePosition.z;
+                wave=SampleWave(x,z);
+                dx=(SampleWave(x+delta,z)-SampleWave(x-delta,z))/(2*delta);
+                dz=(SampleWave(x,z+delta)-SampleWave(x,z-delta))/(2*delta);
             }
-            Vector3 position=item.transform.localPosition;
+            Vector3 position=placement.basePosition;
             float scaleY=Mathf.Max(.001f,Mathf.Abs(transform.lossyScale.y));
             float time=Time.time;
-            position.x=item.position.x+Mathf.Sin(time*.31f+item.phase)*horizontalDrift;
-            position.z=item.position.y+Mathf.Cos(time*.23f+item.phase*1.37f)*horizontalDrift*.72f;
-            position.y=item.baseHeight-item.draft+wave/scaleY+
-                Mathf.Sin(time*.72f+item.phase)*bobAmplitude;
-            item.transform.localPosition=position;
+            position.x+=Mathf.Sin(time*.31f+placement.phase)*horizontalDrift;
+            position.z+=Mathf.Cos(time*.23f+placement.phase*1.37f)*horizontalDrift*.72f;
+            position.y+=wave/scaleY+Mathf.Sin(time*.72f+placement.phase)*bobAmplitude;
+            item.transform.localPosition=ClampToDestination(position,placement.destinationBand,placement.radius);
             Vector3 normal=new Vector3(-dx,1,-dz).normalized;
-            float yaw=item.yaw+time*rotationDegreesPerSecond*item.spin;
-            float roll=item.roll+Mathf.Sin(time*.43f+item.phase)*4f;
-            Quaternion target=Quaternion.FromToRotation(Vector3.up,normal)*Quaternion.Euler(0,yaw,roll);
+            Quaternion tumble=Quaternion.AngleAxis(time*rotationDegreesPerSecond*placement.spin,placement.tumbleAxis);
+            Quaternion rock=Quaternion.AngleAxis(Mathf.Sin(time*.43f+placement.phase)*4f,Vector3.forward);
+            Quaternion target=Quaternion.FromToRotation(Vector3.up,normal)*rock*tumble*placement.baseRotation;
             item.transform.localRotation=Quaternion.Slerp(item.transform.localRotation,target,Time.deltaTime*2.5f);
         }
     }
@@ -406,7 +597,8 @@ public sealed class GPGPDebrisBands : MonoBehaviour
         Vector2 d2=new Vector2(direction2.x,direction2.y).normalized;
         float phase=(world.x*d.x+world.z*d.y)*waterMaterial.GetFloat("_WaveFrequency")+Time.time*waterMaterial.GetFloat("_WaveSpeed");
         float phase2=(world.x*d2.x+world.z*d2.y)*waterMaterial.GetFloat("_WaveFrequency2")+Time.time*waterMaterial.GetFloat("_WaveSpeed2");
-        float u=Mathf.Clamp01(localX/volumeSize.x+.5f), v=Mathf.Clamp01(localZ/volumeSize.z+.5f);
+        Vector3 size = generatedVolumeSize.x > .001f && generatedVolumeSize.z > .001f ? generatedVolumeSize : volumeSize;
+        float u=Mathf.Clamp01(localX/size.x+.5f), v=Mathf.Clamp01(localZ/size.z+.5f);
         float envelope=Mathf.Sin(u*Mathf.PI)*Mathf.Sin(v*Mathf.PI);
         return (waterMaterial.GetFloat("_WaveAmplitude")*Mathf.Sin(phase)+
             waterMaterial.GetFloat("_WaveAmplitude2")*Mathf.Sin(phase2))*envelope;

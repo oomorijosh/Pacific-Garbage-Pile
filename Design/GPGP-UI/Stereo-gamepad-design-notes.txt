@@ -1,0 +1,171 @@
+GPGP UI: stereo and gamepad revision
+
+Stage: updated visual mockup, as requested. Existing Unity buttons, bindings,
+scenes and navigation scripts were not edited during this design work.
+Image: GPGP-UI-stereo-gamepad-mockup.png
+Built-in imagegen prompt: GPGP-UI-stereo-gamepad-prompt.txt
+The PNG shows the proposed layout and overlap cues. Actual binocular depth
+will require rendering the interface and featured model through both CC eyes.
+
+LAYOUT
+
+Left: information about the currently featured item and relevant research.
+Center: the existing full-height water sculpture, with the selected size band
+highlighted and the other bands still visible.
+Right: one enlarged debris model floating in front of a restrained panel.
+Bottom: selectable Mega, Macro, Meso and Micro buttons.
+Top: Overview, Debris sizes, Wildlife and Take action views.
+
+The displayed example is a Mega plastic crate. Its label says Origin unknown
+because the existing model has no verified country markings. The country
+chart is separate research context, not attribution of this model.
+
+GAMEPAD FLOW
+
+D-pad left/right: move focus among buttons in the current row.
+Start/Menu: activate the focused control.
+Start on a category: select it and show a random example from that category.
+Start again on the same selected category: show another example, avoiding an
+immediate repeat whenever that category has more than one available model.
+Another item: a second focusable way to request the next random example.
+
+Use a visible white focus border, separate from the cyan selected-category
+fill. Moving focus alone should not discard the current example or change
+its information. The selected category changes on confirmation.
+
+Suggested vertical focus order: category row, Another item, then top view
+tabs. D-pad up/down moves among these rows and remembers the focused entry
+within the category/tab rows. Start activates the selected view or action.
+Opening another view retains the selected category and last displayed item.
+Selecting a bottom category from any view returns to Debris sizes.
+
+Choose random models from their original source category. The exhibit's
+upper floating bands contain mixed smaller items, so a band's current visual
+contents should not determine the random category pool. Clone one display
+example; keep the original sculpture's debris in place.
+
+Existing saved controls, audited in Plastic_Type:
+A/South: camera home.
+B/East: next waypoint.
+X/West: previous waypoint.
+Y/North: existing playback binding retained, currently disabled in the scene.
+Sticks: camera movement and rotation.
+Triggers: camera roll.
+Shoulders: vertical movement.
+Start/Menu: unused by those active navigation scripts.
+
+For later implementation, give the new overlay its own D-pad/Start handling.
+The existing InputSystemUIInputModule defaults also use both sticks for UI
+navigation, A for Submit and B for Cancel. Reusing that generic Submit/Cancel
+map for this overlay would collide with the existing camera/waypoint controls.
+Keep new UI focus separate from the existing button's event handlers and
+EventSystem selection. Audit the actual scene again before implementing;
+the mockup does not change or disable any existing control.
+
+STEREO DEPTH
+
+Place readable information panels and controls near the physical wall plane.
+Place the featured model closer to the viewer than that plane, so the two
+calibrated eye cameras create an apparent position between viewer and wall.
+Drawing the same flat image on top of a panel only supplies overlap cues.
+
+The existing CC_CAMERAOFFSET projection uses the measured screen as its
+zero-parallax plane. With Keller calibration, the wall center is rig-local
+(0, 1.75, 2.282) and the viewer's head center is (0, 1.76, -2) metres.
+A starting design range for the featured object's center is 0.3-0.5 metres
+toward the viewer from the wall, at rig-local z about 1.982-1.782 metres.
+Choose the final depth and display-model bounds after checking the physical
+stereo display. Keep the entire model comfortably inside the outer screen
+edges in both eye views.
+
+The UI and its depth stage should follow the calibrated wall's coordinate
+frame while existing scene navigation continues to work. Preserve the
+calibrated stereo cameras, wall geometry, eye separation and eye order.
+Text and controls should be rendered at the same readable plane in each eye.
+
+OTHER VIEWS
+
+Overview
+Answer: What is the GPGP, where is it, and how does floating debris collect?
+Left: a brief introduction and a North Pacific map showing Hawaii, California
+and the patch's broad location. Explain ocean currents and dispersed debris.
+Center: the full sculpture and its four size groups.
+Right: a simple model/example introducing how large debris breaks into
+smaller pieces. Add a compact explanation of the sculpture's mass-share
+heights. Any numerical estimate must show its study date and scope.
+
+Wildlife
+Answer: How can this debris affect marine life?
+Left: one short story about a sea turtle and lost fishing gear, with sourced
+explanations of entanglement and a separate plastic-ingestion story.
+Right: the existing turtle model presented in the stereo display area, with
+a net example nearby when the entanglement story is selected.
+Keep the sculpture visible and show the relevant category. A trapped-turtle
+pose, net attachment or animation would be a later authored asset change.
+
+Take action
+Answer: What can a visitor do after seeing this exhibit?
+Left: three short actions: use reusable items where practical, dispose of
+waste responsibly, and join or support community cleanups.
+Right: a relevant everyday debris example, such as a bottle, connecting the
+action to a familiar object. Include supporting sources and local resources
+once chosen. Add a QR code only after selecting a real destination.
+Retain the bottom category controls and gamepad navigation in each view.
+
+COUNTRY DATA SCOPE
+
+The visible percentages come from a study published in 2022 using debris
+collected in 2019. Researchers analyzed 6,048 hard-plastic objects larger
+than 5 cm; 232 had identifiable origin clues such as text, brands and logos.
+The chart describes shares by count within those 232 identifiable objects.
+It does not provide national totals for the entire garbage patch, mass shares
+of the whole patch, or proof of who discarded a particular object.
+
+Leading inferred origins in that identifiable sample:
+Japan: 78 objects, 33.6 percent.
+China: 75 objects, 32.3 percent.
+Korea: 23 objects, 9.9 percent.
+USA: 15 objects, 6.5 percent.
+Taiwan: 13 objects, 5.6 percent.
+Canada: 11 objects, 4.7 percent.
+Other identified origins: 17 objects, about 7.3 percent, calculated from the
+232-object total minus the six listed country counts. Percentages are rounded.
+The accompanying CSV preserves the denominator, date and source for each row.
+
+This chart is suitable as context for Macro/Mega examples. For Meso/Micro,
+show size, fragment characteristics and source limitations instead of
+claiming this >5 cm country dataset describes those smaller particles.
+Verified object-specific origin information may be displayed only when an
+example has an explicit supporting source. Otherwise use Origin unknown.
+
+The size ranges remain those of the 2018 study:
+Mega >50 cm; Macro 5-50 cm; Meso 5-50 mm; Micro 0.5-5 mm.
+Keep the existing sculpture's authored mass-share heights and illustrative
+debris scaling. The concept illustration is not a replacement scientific
+plot or a literal ocean-depth cross-section.
+
+SOURCES
+
+Robert Kooima: Generalized Perspective Projection, 2008, revised 2009.
+Pages 6-7 demonstrate objects between the viewer and image plane.
+https://kooima.net/site/pdfs/gen-perspective.pdf
+
+Lebreton et al. (2022): Industrialised fishing nations largely contribute
+to floating plastic pollution in the North Pacific subtropical gyre.
+https://www.nature.com/articles/s41598-022-16529-0
+
+Nature Portfolio research release (2022-09-02): exact leading-origin counts.
+https://www.natureasia.com/ja-jp/earth-env/research/14202
+
+Lebreton et al. (2018): Evidence that the Great Pacific Garbage Patch is
+rapidly accumulating plastic.
+https://www.nature.com/articles/s41598-018-22939-w
+
+NOAA: Garbage Patches
+https://marinedebris.noaa.gov/discover-marine-debris/garbage-patches
+
+NOAA: Wildlife Entanglement and Ghost Fishing
+https://marinedebris.noaa.gov/why-marine-debris-problem/wildlife-entanglement-and-ghost-fishing
+
+NOAA: How to Help
+https://marinedebris.noaa.gov/discover-marine-debris/how-help

@@ -1,0 +1,23 @@
+Debris model validation; Unity 6000.6.0f1
+Editor-only validation; Play mode and XR were not started.
+Initial direct children=810,168,23,10
+Initial regular category pieces=810,168,23,8; legacy MEGA tire/rope extras and atlas cards excluded.
+Protected objects/components/assets snapshotted=411
+Populate pass 1: Microplastic source assets=2; represented=2; pieces=810; persistent meshes=810; target size=0.0060-0.0125
+Populate pass 1: Mesoplastic source assets=3; represented=3; pieces=168; persistent meshes=168; target size=0.0140-0.0325
+Populate pass 1: Macroplastic source assets=4; represented=4; pieces=23; persistent meshes=23; target size=0.0400-0.1000
+Populate pass 1: Megaplastic source assets=7; represented=7; pieces=8; persistent meshes=8; target size=0.1400-0.2300
+Populate pass 1: category counts preserved; protected scene settings unchanged.
+Populate pass 2: Microplastic source assets=2; represented=2; pieces=810; persistent meshes=810; target size=0.0060-0.0125
+Populate pass 2: Mesoplastic source assets=3; represented=3; pieces=168; persistent meshes=168; target size=0.0140-0.0325
+Populate pass 2: Macroplastic source assets=4; represented=4; pieces=23; persistent meshes=23; target size=0.0400-0.1000
+Populate pass 2: Megaplastic source assets=7; represented=7; pieces=8; persistent meshes=8; target size=0.1400-0.2300
+Populate pass 2: category counts preserved; protected scene settings unchanged.
+Scene reload: Microplastic source assets=2; represented=2; pieces=810; persistent meshes=810; target size=0.0060-0.0125
+Scene reload: Mesoplastic source assets=3; represented=3; pieces=168; persistent meshes=168; target size=0.0140-0.0325
+Scene reload: Macroplastic source assets=4; represented=4; pieces=23; persistent meshes=23; target size=0.0400-0.1000
+Scene reload: Megaplastic source assets=7; represented=7; pieces=8; persistent meshes=8; target size=0.1400-0.2300
+Save/reopen: model groups, meshes, palette materials, normalized bounds and category scales preserved.
+Reload motion registration=199; repeated Start did not duplicate motion or rescale meshes.
+RESULT PASS: repeated population, protected scene, imported assets, serialization and motion registration.
+Final merged working scene: reopened successfully; all category source assets and meshes validated. Four camera renders and all per-camera floor reflections passed. Authored scene blocks outside the debris hierarchy were preserved.

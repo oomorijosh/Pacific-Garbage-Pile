@@ -1,0 +1,13 @@
+GPGP UI validation; Unity 6000.6.0f1; isolated editor, no Play mode/XR.
+Original directional light: Directional Light; intensity=1; color=RGBA(1.000, 0.957, 0.839, 1.000); enabled=False; active=True
+Authoring: idempotent Add, one Undo, same scene/no implicit save; existing cameras/navigation/EventSystem/artwork/fonts/material assets preserved.
+Undo recreated 82 owned MonoBehaviour managed wrappers; checking native entity/path/type/JSON identity.
+Explicit rebuild: references, editable depth/interval and disabled/inactive flags preserved; one Undo restores the complete previous owned hierarchy.
+Disabled start: Awake hides saved generated canvas/stage branches; re-enabling and BuildPreview restores an interactive preview.
+Interaction: all four source categories, another-item rerolls without repeats, pinned three-card size facts, wildlife/action wrapping, D-pad/Start activation, 25-second overview cadence and input pause verified.
+Imported previews: all 17 assigned source assets are centered/fitted, retain imported meshes/material slots, and display names/text without overflow.
+Input: temporary virtual Gamepad verifies D-pad press/delayed repeat and Start activation through ProcessGamepad; fixture permits dynamic input updates outside Play, then restores that flag and removes the device.
+Panels/text: world-space wall plane, persistent font, no overflow; country context restricted to Macro/Mega with unknown specimen origin.
+Stereo: panel disparity=0.000000; crossed featured disparity=0.002079; foreground=0.4m; complete model stays within both eye window boundaries.
+RESULT PASS: authoring protection/Undo, category pools, card wrapping, overview cadence/pause, world panels and stereo foreground depth.
+Two actual CC eye PNGs captured at 2400x810 for readability/stereo review; camera state restored; no scene saved.

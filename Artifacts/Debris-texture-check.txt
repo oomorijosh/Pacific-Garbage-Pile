@@ -1,0 +1,42 @@
+Unity 6000.6.0f1; graphics NVIDIA GeForce RTX 3090
+Initial piece counts=810,168,23,8; protected objects/assets=411
+Plastic_Bucket: base=Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Albedo.png; normal=Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Normal.png; PBR=Assets/Debris/Materials/Textures/Plastic_Bucket_MetallicOcclusionSmoothness.png
+Plastic_Water_Bottle: base=Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_BaseColor.png; normal=Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_NormaMap-OpenGL.png; PBR=Assets/Debris/Materials/Textures/Plastic_Water_Bottle_MetallicOcclusionSmoothness.png
+Lifebuoy: base=Assets/Debris/lifebuoy/textures/lifebuoy_Albedo.png; normal=Assets/Debris/lifebuoy/textures/lifebuoy_Normal.png; PBR=Assets/Debris/Materials/Textures/Lifebuoy_MetallicOcclusionSmoothness.png
+Lifebuoy_Rope: base=Assets/Debris/lifebuoy/textures/rope_diffuse.png; normal=Assets/Debris/lifebuoy/textures/rope_normal.png; PBR=Assets/Debris/Materials/Textures/Lifebuoy_Rope_MetallicOcclusionSmoothness.png
+Plastic_Crate: base=Assets/Debris/plastic-crate/textures/Crate_Base_color.png; normal=Assets/Debris/plastic-crate/textures/Crate_Normal.png; PBR=Assets/Debris/Materials/Textures/Plastic_Crate_MetallicOcclusionSmoothness.png
+Plastic_Jerrycan: base=Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Albedo.jpeg; normal=Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Normal.png; PBR=Assets/Debris/Materials/Textures/Plastic_Jerrycan_MetallicOcclusionSmoothness.png
+Plastic_Barrel: base=Assets/Debris/plastic_barrel/diffus.tga; normal=Assets/Debris/plastic_barrel/normal.tga; PBR=Assets/Debris/Materials/Textures/Plastic_Barrel_SpecularSmoothness.png
+Plastic_Crate_01: base=Assets/Debris/plastic-crate-01/textures/base_color.jpg; normal=Assets/Debris/plastic-crate-01/textures/normal.jpg; PBR=Assets/Debris/Materials/Textures/Plastic_Crate_01_MetallicOcclusionSmoothness.png
+Plastic_Bucket GPU packing check: mean R/G/A errors=0.0042/0.0125/0.0141
+Plastic_Water_Bottle GPU packing check: mean R/G/A errors=0.0118/0.0091/0.0300
+Lifebuoy GPU packing check: mean R/G/A errors=0.0037/0.0075/0.0108
+Lifebuoy_Rope GPU packing check: mean R/G/A errors=0.0000/0.0000/0.0040
+Plastic_Crate GPU packing check: mean R/G/A errors=0.0000/0.0000/0.0040
+Plastic_Jerrycan GPU packing check: mean R/G/A errors=0.0000/0.0023/0.0090
+Plastic_Crate_01 GPU packing check: mean R/G/A errors=0.0003/0.0163/0.0219
+Barrel GPU packing check: RGB mean error=0.0000; alpha error=0.0000
+Lifebuoy ring and rope material-slot ordering verified.
+Category 0: pool=3; pieces=810
+Category 1: pool=3; pieces=168
+Category 2: pool=4; pieces=23
+Category 3: pool=8; pieces=8
+Populate pass 1: prepared variants retained, manual entry retained, no duplicates, protected scene unchanged.
+Category 0: pool=3; pieces=810
+Category 1: pool=3; pieces=168
+Category 2: pool=4; pieces=23
+Category 3: pool=8; pieces=8
+Populate pass 2: prepared variants retained, manual entry retained, no duplicates, protected scene unchanged.
+Expanded pool: nine Mega models yielded nine pieces and included the temporary ninth model.
+Category 0: pool=2; pieces=810
+Category 1: pool=3; pieces=168
+Category 2: pool=4; pieces=23
+Category 3: pool=8; pieces=8
+Category 0: pool=2; pieces=810
+Category 1: pool=3; pieces=168
+Category 2: pool=4; pieces=23
+Category 3: pool=8; pieces=8
+Save/reopen passed: persistent meshes/materials, retained texture bindings, normalized centered bounds, category scale and piece counts.
+Lineup preview: seven textured assets, separate authored lifebuoy ring/rope slots, neutral lighting; temporary scene is never saved.
+RESULT PASS: texture import/bindings, GPU PBR packing, manual pool retention, repeated population, expanded pools, scene serialization and textured asset rendering.
+Final merged working scene passed texture and expanded-pool checks. All four camera captures and per-camera floor reflection checks passed. Authored scene blocks outside the debris hierarchy were preserved exactly.

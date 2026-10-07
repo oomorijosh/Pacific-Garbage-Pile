@@ -1,0 +1,35 @@
+SEA TURTLE ASSET ATTRIBUTION
+
+Title: Turtle
+Creator: Poly by Google
+Original model page: https://poly.pizza/m/fklSEvGm1Q8
+Provider: Poly Pizza (archived Google Poly model)
+Original public model ID: fklSEvGm1Q8
+Original provider resource ID: 7c64cc2c-b9aa-4edd-bc32-9e95d66ca5e0
+Original upload date: 2017-10-11
+Download URL: https://static.poly.pizza/7c64cc2c-b9aa-4edd-bc32-9e95d66ca5e0.glb
+
+License: Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+License URL: https://creativecommons.org/licenses/by/3.0/
+
+Required credit when sharing the exhibit:
+"Turtle" by Poly by Google, via Poly Pizza, licensed under CC BY 3.0.
+https://poly.pizza/m/fklSEvGm1Q8
+https://creativecommons.org/licenses/by/3.0/
+
+Changes made for this project:
+Converted the original static GLB to OBJ/MTL for Unity import, preserving mesh
+positions, UVs, normals, triangle topology, material names, and base colors.
+The original has four flat-color materials; it contains no image textures,
+skeleton, or animations. Exhibit materials and placement may be adapted.
+The Unity authoring helper centers and normalizes the model, recreates its
+four source colors as matte URP materials, and places it in the exhibit's
+upper water band. Specular highlights, environment reflections, and emission
+are disabled on the turtle's materials.
+
+Files:
+Source/Turtle_PolyGoogle.glb - unchanged original download
+SeaTurtle.obj and SeaTurtle.mtl - local static conversion
+Source/ConversionReport.json - geometry/material statistics
+Prepared/SeaTurtle.prefab - reusable centered Unity prefab, generated in Unity
+Prepared/Materials - four matte Unity materials, generated in Unity

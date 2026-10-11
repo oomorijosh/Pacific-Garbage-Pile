@@ -1,0 +1,29 @@
+PASS: Validation runs in an isolated project.
+PASS: GLB imported as a Unity model.
+PASS: All three skinned meshes imported.
+PASS: All 25 joints are bound on every mesh.
+Triangles: 7904
+Initial imported clip: legacy=True; loop=False; length=1
+PASS: Swim Cycle uses Mecanim and loops.
+Swim Cycle length: 1
+PASS: Exhibit turtle replaced with skinned Hawksbill.
+PASS: Reusable SeaTurtle prefab saved.
+PASS: Default Animator state plays Swim Cycle without moving the exhibit root.
+PASS: Material supported: hawksbill.body
+PASS: Shader compiles: Shader Graphs/glTF-pbrSpecularGlossiness
+Material: hawksbill.body; shader=Shader Graphs/glTF-pbrSpecularGlossiness; textures=normalTexture,specularGlossinessTexture,diffuseTexture
+PASS: Material supported: outer
+PASS: Shader compiles: Shader Graphs/glTF-pbrSpecularGlossiness
+Material: outer; shader=Shader Graphs/glTF-pbrSpecularGlossiness; textures=
+PASS: Material supported: hawksbill.eyes
+PASS: Shader compiles: Shader Graphs/glTF-pbrSpecularGlossiness
+Material: hawksbill.eyes; shader=Shader Graphs/glTF-pbrSpecularGlossiness; textures=specularGlossinessTexture,diffuseTexture
+PASS: All imported animation curves resolve to the preserved hierarchy.
+Maximum mesh vertex displacement between swim poses: 0.1408246
+PASS: Swim Cycle actually deforms the skinned turtle.
+PASS: Animator enters Swim Cycle.
+PASS: Animator advances the swimming state.
+PASS: Wildlife UI retains the same prefab reference.
+PASS: Wildlife preview keeps turtle animation enabled.
+PASS: Replacement saved to the isolated exhibit scene.
+SUCCESS

@@ -63,6 +63,23 @@ public static class CyberCanoeHeadsetSetup
             return;
         }
 
+        if ((hub.lossyScale - Vector3.one).sqrMagnitude > 0.000001f ||
+            (source.transform.lossyScale - Vector3.one).sqrMagnitude > 0.000001f)
+        {
+            Debug.LogError("Keep CC_HUB and CC_HEAD at scale (1, 1, 1) so headset preview uses metres.");
+            return;
+        }
+        float viewingDistance = Vector3.Dot(screen.position - source.transform.position, screen.forward.normalized);
+        if (viewingDistance < 0.05f)
+        {
+            Debug.LogError("Position CC_HEAD on the front side of the projection screen before adding headset preview.");
+            return;
+        }
+        Vector3 headFromScreen = source.transform.position - screen.position;
+        Vector2 viewerOffset = new Vector2(Vector3.Dot(headFromScreen, screen.right.normalized),
+            Vector3.Dot(headFromScreen, screen.up.normalized));
+        RenderTexture existingTarget = leftCamera.targetTexture ? leftCamera.targetTexture : rightCamera.targetTexture;
+
         Undo.IncrementCurrentGroup();
         int undoGroup = Undo.GetCurrentGroup();
         Undo.SetCurrentGroupName("Add Cyber Canoe headset simulator");
@@ -86,8 +103,7 @@ public static class CyberCanoeHeadsetSetup
             virtualScreen.localRotation = Quaternion.LookRotation(Vector3.Cross(right, up).normalized, up.normalized);
             virtualScreen.localScale = new Vector3(right.magnitude, up.magnitude, 1f);
 
-            Vector3 viewerPosition = room.transform.InverseTransformPoint(
-                CyberCanoeHeadsetSimulator.CalculateCenteredViewer(virtualScreen, CampusViewingDistance));
+            Vector3 viewerPosition = hub.InverseTransformPoint(source.transform.position);
             Quaternion viewerRotation = virtualScreen.localRotation;
             CreateRoom(room.transform, virtualScreen, viewerPosition, roomLayer, roomMaterial, scene);
 
@@ -136,9 +152,11 @@ public static class CyberCanoeHeadsetSetup
             simulator.outputLayout = hub.GetComponentInChildren<CC_CANVAS_SETUP>(true);
             if (simulator.outputLayout)
                 simulator.outputCanvas = simulator.outputLayout.GetComponent<Canvas>();
-            simulator.textureWidth = CampusEyeWidth;
-            simulator.textureHeight = CampusEyeHeight;
-            simulator.viewingDistanceMeters = CampusViewingDistance;
+            simulator.textureWidth = existingTarget ? existingTarget.width : CampusEyeWidth;
+            simulator.textureHeight = existingTarget ? existingTarget.height : CampusEyeHeight;
+            simulator.useHDRContentTextures = leftCamera.allowHDR || rightCamera.allowHDR;
+            simulator.viewingDistanceMeters = viewingDistance;
+            simulator.viewerOffsetMeters = viewerOffset;
             simulator.initializeXR = true;
             root.SetActive(true);
             EditorUtility.SetDirty(simulator);
@@ -147,12 +165,13 @@ public static class CyberCanoeHeadsetSetup
             Undo.CollapseUndoOperations(undoGroup);
 
             if (!HasStandaloneOpenXR())
-                Debug.LogWarning("Cyber Canoe headset room added. To use your Steam Frame, assign OpenXR " +
+                Debug.LogWarning("Cyber Canoe headset room added. Assign OpenXR " +
                                  "under Project Settings > XR Plug-in Management > Windows, Mac, Linux, " +
-                                 "and set SteamVR as the OpenXR runtime. Then start SteamVR and enter Play mode.", root);
+                                 "or run Tools > Cyber Canoe > Set Up Headset Preview for Current Scene. " +
+                                 "Connect through SteamVR or Meta Link before entering Play mode.", root);
             else
-                Debug.Log("Cyber Canoe headset room added. Start SteamVR, wear the headset, and enter Play mode. " +
-                          "The viewer starts centered, 20 feet from the wall, with 2040 x 1152 pixels per eye.", root);
+                Debug.Log("Cyber Canoe headset room added using this scene's screen size, head position, " +
+                          "and eye render textures. Connect through SteamVR or Meta Link, then enter Play mode.", root);
         }
         catch (Exception exception)
         {
@@ -179,6 +198,14 @@ public static class CyberCanoeHeadsetSetup
             return;
         }
         AddSimulator();
+        foreach (var simulator in UnityEngine.Object.FindObjectsByType<CyberCanoeHeadsetSimulator>(
+                     FindObjectsInactive.Include))
+        {
+            if (simulator.gameObject.scene != scene) continue;
+            ApplyCampusCalibration(simulator);
+            Selection.activeGameObject = simulator.gameObject;
+            return;
+        }
     }
 
     [MenuItem(CalibrationMenuPath, true)]
@@ -349,7 +376,7 @@ public sealed class CyberCanoeHeadsetSimulatorEditor : Editor
 {
     public override void OnInspectorGUI()
     {
-        EditorGUILayout.HelpBox("Wear your headset and enter Play mode with SteamVR running. The virtual wall matches " +
+        EditorGUILayout.HelpBox("Connect through SteamVR or Meta Link, then enter Play mode. The virtual wall matches " +
                                 "the configured Cyber Canoe screen. Content uses the calibrated CC_HEAD viewpoint; " +
                                 "headset motion changes where you view the wall from.", MessageType.Info);
         DrawDefaultInspector();
@@ -358,7 +385,7 @@ public sealed class CyberCanoeHeadsetSimulatorEditor : Editor
             PrefabStageUtility.GetCurrentPrefabStage() != null || !simulator.gameObject.scene.IsValid() ||
             !simulator.gameObject.scene.isLoaded || EditorUtility.IsPersistent(simulator)))
             if (GUILayout.Button("Apply LavaLab LED Wall Calibration (Keller 102)", GUILayout.Height(30)))
-                PacificKeller102Preview.ApplyCalibration(simulator);
+                CyberCanoeLEDWallCalibration.ApplyCalibration(simulator);
         using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode))
             if (GUILayout.Button("Apply 4080 x 1152 SBS / 20 ft Center Calibration"))
                 CyberCanoeHeadsetSetup.ApplyCampusCalibration(simulator);
@@ -368,7 +395,7 @@ public sealed class CyberCanoeHeadsetSimulatorEditor : Editor
             EditorGUILayout.LabelField("Status", simulator.Status);
         if (!CyberCanoeHeadsetSetup.HasStandaloneOpenXR())
             EditorGUILayout.HelpBox("Enable OpenXR for Windows, Mac, Linux in XR Plug-in Management, " +
-                                    "then select SteamVR as the OpenXR runtime.", MessageType.Warning);
+                                    "then select SteamVR or Meta Link as the active OpenXR runtime.", MessageType.Warning);
         using (new EditorGUI.DisabledScope(!Application.isPlaying))
             if (GUILayout.Button("Recenter Viewer at Calibrated Position"))
                 ((CyberCanoeHeadsetSimulator)target).RecenterViewer();

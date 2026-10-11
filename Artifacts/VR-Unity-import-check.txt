@@ -1,0 +1,32 @@
+Pacific exhibit Unity package fresh-import validation
+Unity 6000.6.0f1
+No headset session or Play mode was started by this check.
+PASS: PrepareImportedDemo completed.
+INFO: Immediately after setup: Graphics.default = Assets/Settings/PC_RPAsset.asset, Quality[5] = Assets/Settings/PC_RPAsset.asset, Graphics.current = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized Graphics.m_CustomRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized current Quality.customRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: On-disk Graphics pipeline line =   m_CustomRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+INFO: On-disk Quality pipeline lines =     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+INFO: After reopening the saved scene: Graphics.default = Assets/Settings/PC_RPAsset.asset, Quality[5] = Assets/Settings/PC_RPAsset.asset, Graphics.current = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized Graphics.m_CustomRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized current Quality.customRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: On-disk Graphics pipeline line =   m_CustomRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+INFO: On-disk Quality pipeline lines =     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+PASS: All scene scripts resolve
+PASS: Rig references and ownership
+PASS: Dedicated headset layer
+PASS: Tracked headset pose actions
+PASS: Keller screen and stereo calibration
+PASS: URP pipeline and global settings
+PASS: Desktop XR settings registration
+PASS: Source GLB and swimming prefab
+PASS: UI and scene wildlife references
+PASS: Imported dependency files
+INFO: Active Input Handling serialized value = 1 (1=Input System, 2=Both; changing it requires an Editor restart).
+INFO: After three Editor updates: Graphics.default = Assets/Settings/PC_RPAsset.asset, Quality[5] = Assets/Settings/PC_RPAsset.asset, Graphics.current = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized Graphics.m_CustomRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: Serialized current Quality.customRenderPipeline = Assets/Settings/PC_RPAsset.asset
+INFO: On-disk Graphics pipeline line =   m_CustomRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+INFO: On-disk Quality pipeline lines =     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 0} |     customRenderPipeline: {fileID: 11400000, guid: 4b83569d67af61e458304325a23e5dfd, type: 2}
+PASS: Persistent project settings
+RESULT: PASS

@@ -1,5 +1,41 @@
 SEA TURTLE ASSET ATTRIBUTION
 
+CURRENT EXHIBIT MODEL
+
+Title: Model 50A - Hawksbill Sea Turtle
+Creator: DigitalLife3D
+Creator profile: https://sketchfab.com/DigitalLife3D
+Source model page: https://sketchfab.com/3d-models/model-50a-hawksbill-sea-turtle-e69458ef8176402d919df421e444da86
+Source file: Assets/Debris/model_50a_-_hawksbill_sea_turtle.glb
+
+License: Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+License URL: http://creativecommons.org/licenses/by-nc/4.0/
+The title, creator, source, and license above come from the original GLB's
+embedded asset.extras metadata, which identifies its license as CC-BY-NC-4.0.
+
+Credit when sharing the exhibit:
+"Model 50A - Hawksbill Sea Turtle" by DigitalLife3D, licensed under CC BY-NC 4.0.
+https://sketchfab.com/3d-models/model-50a-hawksbill-sea-turtle-e69458ef8176402d919df421e444da86
+http://creativecommons.org/licenses/by-nc/4.0/
+
+Project preparation:
+The source GLB is retained untouched. The official Unity glTFast 6.19.0
+importer preserves the model's existing rig, skin weights, and "Swim Cycle"
+animation. A wrapper centers, normalizes, and orients the imported model for
+the exhibit. Prepared/SeaTurtle.prefab is the reusable prepared prefab, and
+Prepared/SeaTurtle.controller is its looping Generic Animator controller.
+
+Usage:
+Run Tools > Pacific Exhibit > Add or Refresh Sea Turtle to refresh the exhibit
+turtle and its prepared prefab. Enter Play mode to see the swimming animation.
+Open Prepared/SeaTurtle.controller in the Animator window to inspect the
+Swim Cycle clip and adjust the state's Speed.
+
+ARCHIVED ASSET: TURTLE BY POLY BY GOOGLE
+
+The following source and converted files remain in the project as archived
+assets. This credit applies to those files, not the current exhibit model.
+
 Title: Turtle
 Creator: Poly by Google
 Original model page: https://poly.pizza/m/fklSEvGm1Q8
@@ -27,9 +63,8 @@ four source colors as matte URP materials, and places it in the exhibit's
 upper water band. Specular highlights, environment reflections, and emission
 are disabled on the turtle's materials.
 
-Files:
+Archived files:
 Source/Turtle_PolyGoogle.glb - unchanged original download
 SeaTurtle.obj and SeaTurtle.mtl - local static conversion
 Source/ConversionReport.json - geometry/material statistics
-Prepared/SeaTurtle.prefab - reusable centered Unity prefab, generated in Unity
-Prepared/Materials - four matte Unity materials, generated in Unity
+Prepared/Materials - four matte Unity materials from the archived model

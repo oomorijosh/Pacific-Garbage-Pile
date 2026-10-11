@@ -32,6 +32,7 @@ namespace GPGPUI
         public int FocusRow { get; private set; }
         public int FocusIndex { get; private set; }
         public bool AutoCycling { get; private set; } = true;
+        public bool IsUIHidden { get; private set; }
         public GameObject FeaturedSource { get; private set; }
         public GameObject FeaturedObject { get; private set; }
         public Transform CanvasTransform => canvasRect;
@@ -40,6 +41,8 @@ namespace GPGPUI
 
         const float Width = 4800f, Height = 1620f;
         const float BoundsEpsilon = .000001f;
+        const float PanelSlideSeconds = .35f;
+        const float SideSlide = 1400f, HeaderSlide = 160f, BottomSlide = 500f;
         static readonly Color Ink = new Color(.022f, .045f, .068f, 1f);
         static readonly Color Surface = new Color(.035f, .075f, .105f, 1f);
         static readonly Color White = new Color(.93f, .96f, .95f);
@@ -50,6 +53,7 @@ namespace GPGPUI
         readonly List<Control> controls = new List<Control>();
         readonly GameObject[] lastSource = new GameObject[4];
         RectTransform canvasRect;
+        RectTransform leftPanelGroup, rightPanelGroup, headerGroup, bottomPanelGroup;
         Transform stage, modelPivot;
         TMP_Text title, badge, body, source, page, featureTitle, featureCaption, cycleHint;
         RectTransform chart;
@@ -58,6 +62,7 @@ namespace GPGPUI
         float elapsed, fadeElapsed = 1f, repeatElapsed;
         Vector2Int previousDirection;
         float modelDiameter;
+        float hiddenProgress;
         bool initialized;
 
         sealed class Control
@@ -85,7 +90,7 @@ namespace GPGPUI
         {
             if (!initialized) return;
             if (canvasRect) canvasRect.gameObject.SetActive(true);
-            if (stage) stage.gameObject.SetActive(true);
+            ApplyUIVisibility();
         }
 
         void OnDisable()
@@ -98,7 +103,8 @@ namespace GPGPUI
         void Update()
         {
             if (!initialized) return;
-            ProcessGamepad(Time.unscaledDeltaTime);
+            if (!ProcessVisibilityInput()) ProcessGamepad(Time.unscaledDeltaTime);
+            AdvanceUIVisibility(Time.unscaledDeltaTime);
             AdvanceOverview(Time.unscaledDeltaTime);
             fadeElapsed += Time.unscaledDeltaTime;
             if (cardFade) cardFade.alpha = Mathf.Clamp01(fadeElapsed / .25f);
@@ -126,6 +132,8 @@ namespace GPGPUI
             SelectedCategory = 3;
             CurrentView = CurrentCard = FocusRow = FocusIndex = 0;
             AutoCycling = true;
+            IsUIHidden = false;
+            hiddenProgress = 0f;
             elapsed = 0f;
             previousDirection = Vector2Int.zero;
             repeatElapsed = 0f;
@@ -140,6 +148,7 @@ namespace GPGPUI
             lastSource[3] = initial;
             ShowModel(initial);
             initialized = true;
+            ApplyUIVisibility();
             SyncToScreen();
             Refresh();
         }
@@ -162,45 +171,51 @@ namespace GPGPUI
             canvas.renderMode = RenderMode.WorldSpace;
             // Do not add a GraphicRaycaster or Selectable: existing UI/gamepad
             // actions retain their own EventSystem and A/B/X button bindings.
-            Panel(canvasRect, "Header", 0, 0, Width, 135, Ink);
-            Text(canvasRect, "Exhibit title", "GREAT PACIFIC GARBAGE PATCH", 80, 20, 1770, 90, 63, White);
+            headerGroup = Rect(canvasRect, "Header group", 0, 0, Width, Height);
+            leftPanelGroup = Rect(canvasRect, "Left panel group", 0, 0, Width, Height);
+            rightPanelGroup = Rect(canvasRect, "Right panel group", 0, 0, Width, Height);
+            bottomPanelGroup = Rect(canvasRect, "Bottom panel group", 0, 0, Width, Height);
+            Panel(headerGroup, "Header", 0, 0, Width, 135, Ink);
+            Text(headerGroup, "Exhibit title", "GREAT PACIFIC GARBAGE PATCH", 80, 20, 1350, 90, 52, White);
             for (int i = 0; i < 4; i++)
-                AddControl(2, i, Views[i], 1880 + i * 710, 23, 675, 86, 51);
-            Panel(canvasRect, "Information panel", 70, 165, 1260, 1160, Ink);
-            Panel(canvasRect, "Object panel", 3470, 165, 1260, 1160, Ink);
-            Text(canvasRect, "Info eyebrow", "EXPLORE THE PATCH", 125, 194, 1120, 58, 40, Cyan);
-            title = Text(canvasRect, "Information heading", "", 125, 267, 1140, 158, 93, White);
-            badge = Text(canvasRect, "Category and origin", "", 125, 430, 1140, 102, 43, Cyan);
-            var cardRoot = Rect(canvasRect, "Card content", 125, 547, 1140, 650);
+                AddControl(2, i, Views[i], 1480 + i * 620, 23, 590, 86, 43);
+            Panel(leftPanelGroup, "Information panel", 70, 165, 1260, 1160, Ink);
+            Panel(rightPanelGroup, "Object panel", 3470, 165, 1260, 1160, Ink);
+            Text(leftPanelGroup, "Info eyebrow", "EXPLORE THE PATCH", 125, 194, 1120, 58, 40, Cyan);
+            title = Text(leftPanelGroup, "Information heading", "", 125, 267, 1140, 158, 93, White);
+            badge = Text(leftPanelGroup, "Category and origin", "", 125, 430, 1140, 102, 43, Cyan);
+            var cardRoot = Rect(leftPanelGroup, "Card content", 125, 547, 1140, 650);
             cardFade = cardRoot.gameObject.AddComponent<CanvasGroup>();
             cardFade.blocksRaycasts = false;
             body = LocalText(cardRoot, "Facts", "", 0, 0, 1140, 395, 63, White);
             chart = Rect(cardRoot, "Country sample chart", 0, 183, 1140, 351);
             BuildCountryChart(chart);
             source = LocalText(cardRoot, "Source and context", "", 0, 525, 1140, 96, 28, Muted);
-            page = Text(canvasRect, "Page indicator", "", 125, 1179, 650, 50, 35, Muted);
+            page = Text(leftPanelGroup, "Page indicator", "", 125, 1179, 650, 50, 35, Muted);
             AddControl(1, 0, "< Previous", 125, 1240, 347, 65, 38);
             AddControl(1, 1, "Next >", 495, 1240, 300, 65, 38);
             AddControl(1, 2, "Pause", 818, 1240, 452, 65, 38);
-            Text(canvasRect, "Preview eyebrow", "IN FRONT OF THE DISPLAY", 3530, 194, 1140, 58, 39, Cyan);
-            featureTitle = Text(canvasRect, "Featured object name", "", 3530, 274, 1130, 100, 78, White);
-            var frame = Panel(canvasRect, "Object frame", 3530, 401, 1130, 650, new Color(.022f, .055f, .075f));
+            Text(rightPanelGroup, "Preview eyebrow", "IN FRONT OF THE DISPLAY", 3530, 194, 1140, 58, 39, Cyan);
+            featureTitle = Text(rightPanelGroup, "Featured object name", "", 3530, 274, 1130, 100, 78, White);
+            var frame = Panel(rightPanelGroup, "Object frame", 3530, 401, 1130, 650, new Color(.022f, .055f, .075f));
             var edge = frame.gameObject.AddComponent<Outline>();
             edge.effectColor = new Color(.15f, .39f, .44f);
             edge.effectDistance = new Vector2(3, -3);
-            featureCaption = Text(canvasRect, "Model caption", "", 3530, 1080, 1130, 132, 39, Muted);
+            featureCaption = Text(rightPanelGroup, "Model caption", "", 3530, 1080, 1130, 132, 39, Muted);
             AddControl(1, 3, "Another item", 3530, 1240, 1130, 65, 42);
-            Text(canvasRect, "Exhibit context", "Layer heights show mass share.\nModels are enlarged for visibility.",
+            Text(bottomPanelGroup, "Exhibit context", "Layer heights show mass share.\nModels are enlarged for visibility.",
                 1420, 1195, 1920, 100, 37, Muted, TextAlignmentOptions.Center);
-            Panel(canvasRect, "Bottom navigation", 0, 1350, Width, 270, Ink);
+            Panel(bottomPanelGroup, "Bottom navigation", 0, 1350, Width, 270, Ink);
             for (int i = 0; i < 4; i++)
             {
                 int category = 3 - i;
                 AddControl(0, i, ShortSizes[i] + "   " + GPGPUIContent.CategoryRange(category),
                     80 + i * 1170, 1375, 1130, 118, 64);
             }
-            Text(canvasRect, "Gamepad instructions", "D-PAD  Browse     START  Select / another item", 80, 1530, 2950, 65, 43, White);
-            cycleHint = Text(canvasRect, "Cycling status", "", 3020, 1524, 1670, 68, 38, Muted, TextAlignmentOptions.Right);
+            Text(bottomPanelGroup, "Gamepad instructions", "D-PAD  Browse    START  Select    SELECT / TAB  Hide UI", 80, 1530, 2950, 65, 43, White);
+            cycleHint = Text(bottomPanelGroup, "Cycling status", "", 3020, 1524, 1670, 68, 38, Muted, TextAlignmentOptions.Right);
+            Control visibility = AddControl(2, 4, "SELECT  Hide UI", 4060, 23, 660, 86, 43);
+            visibility.Background.name = "UI visibility control";
         }
 
         void BuildCountryChart(RectTransform parent)
@@ -220,13 +235,17 @@ namespace GPGPUI
             LocalText(parent, "Other origins", "Other inferred origins: 17 objects (7.3%)", 0, 292, 1140, 36, 29, Muted);
         }
 
-        void AddControl(int row, int index, string label, float x, float y, float w, float h, float size)
+        Control AddControl(int row, int index, string label, float x, float y, float w, float h, float size)
         {
-            RectTransform background = Panel(canvasRect, "Control " + row + ":" + index, x, y, w, h, Surface);
+            Transform parent = row == 0 ? bottomPanelGroup : row == 2 ? headerGroup : index == 3 ? rightPanelGroup : leftPanelGroup;
+            if (row == 2 && index == 4) parent = canvasRect;
+            RectTransform background = Panel(parent, "Control " + row + ":" + index, x, y, w, h, Surface);
             var outline = background.gameObject.AddComponent<Outline>();
             outline.effectDistance = new Vector2(4, -4);
             var text = LocalText(background, "Label", label, 15, 0, w - 30, h, size, White, TextAlignmentOptions.Center);
-            controls.Add(new Control { Row = row, Index = index, Background = background.GetComponent<Image>(), Outline = outline, Label = text });
+            var control = new Control { Row = row, Index = index, Background = background.GetComponent<Image>(), Outline = outline, Label = text };
+            controls.Add(control);
+            return control;
         }
 
         RectTransform Rect(Transform parent, string name, float x, float y, float w, float h)
@@ -272,21 +291,31 @@ namespace GPGPUI
             return text;
         }
 
-        /// <summary>Three focus rows, each with four controls. No existing selection is touched.</summary>
+        /// <summary>Three focus rows; the header also includes the visibility control.</summary>
         public void Navigate(Vector2 direction)
         {
-            if (direction.sqrMagnitude < .01f) return;
+            if (direction.sqrMagnitude < .01f || IsUIHidden || hiddenProgress > 0f) return;
             AutoCycling = false;
             elapsed = 0f;
             if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-                FocusIndex = (FocusIndex + (direction.x > 0 ? 1 : 3)) % 4;
-            else FocusRow = Mathf.Clamp(FocusRow + (direction.y > 0 ? 1 : -1), 0, 2);
+            {
+                int count = FocusRow == 2 ? 5 : 4;
+                FocusIndex = (FocusIndex + (direction.x > 0 ? 1 : count - 1)) % count;
+            }
+            else
+            {
+                FocusRow = Mathf.Clamp(FocusRow + (direction.y > 0 ? 1 : -1), 0, 2);
+                FocusIndex = Mathf.Min(FocusIndex, FocusRow == 2 ? 4 : 3);
+            }
             Refresh();
         }
 
         public void ActivateFocused()
         {
+            if (IsUIHidden) { SetUIHidden(false); return; }
+            if (hiddenProgress > 0f) return;
             if (FocusRow == 0) SelectCategory(3 - FocusIndex);
+            else if (FocusRow == 2 && FocusIndex == 4) ToggleUIVisibility();
             else if (FocusRow == 2) SelectView(FocusIndex);
             else if (FocusIndex == 0) NextCard(-1);
             else if (FocusIndex == 1) NextCard(1);
@@ -341,7 +370,7 @@ namespace GPGPUI
 
         public void AdvanceOverview(float delta)
         {
-            if (!AutoCycling || CurrentView != 0 || delta <= 0f) return;
+            if (IsUIHidden || hiddenProgress > 0f || !AutoCycling || CurrentView != 0 || delta <= 0f) return;
             elapsed += delta;
             float interval = Mathf.Max(5f, overviewIntervalSeconds);
             if (elapsed < interval) return;
@@ -404,9 +433,10 @@ namespace GPGPUI
                 "Item facts stay until you change them";
             foreach (var control in controls)
             {
-                bool focused = control.Row == FocusRow && control.Index == FocusIndex;
+                bool visibility = control.Row == 2 && control.Index == 4;
+                bool focused = visibility && IsUIHidden || control.Row == FocusRow && control.Index == FocusIndex;
                 bool selected = control.Row == 2 && control.Index == CurrentView ||
-                    control.Row == 0 && control.Index == 3 - SelectedCategory;
+                    control.Row == 0 && control.Index == 3 - SelectedCategory || visibility && IsUIHidden;
                 control.Background.color = selected ? new Color(.04f, .22f, .26f) : Surface;
                 control.Label.color = selected ? Cyan : White;
                 control.Outline.effectColor = focused ? White : new Color(.1f, .27f, .3f, selected ? 1 : .35f);
@@ -417,6 +447,7 @@ namespace GPGPUI
                 }
                 if (control.Row == 1 && control.Index == 3)
                     control.Label.text = CurrentView == 2 ? "Next wildlife fact" : "Another item";
+                if (visibility) control.Label.text = IsUIHidden ? "SELECT  Show UI" : "SELECT  Hide UI";
             }
             if (fade && Application.isPlaying)
             {
@@ -426,10 +457,63 @@ namespace GPGPUI
             Canvas.ForceUpdateCanvases();
         }
 
+        public void ToggleUIVisibility() => SetUIHidden(!IsUIHidden);
+
+        /// <summary>Temporarily clears the display while preserving the current UI selection.</summary>
+        public void SetUIHidden(bool hidden, bool immediate = false)
+        {
+            IsUIHidden = hidden;
+            previousDirection = Vector2Int.zero;
+            repeatElapsed = 0f;
+            if (immediate) hiddenProgress = hidden ? 1f : 0f;
+            ApplyUIVisibility();
+            Refresh();
+        }
+
+        bool ProcessVisibilityInput()
+        {
+            var pad = Gamepad.current;
+            var keyboard = Keyboard.current;
+            if ((pad != null && pad.selectButton.wasPressedThisFrame) ||
+                (keyboard != null && keyboard.tabKey.wasPressedThisFrame))
+            {
+                ToggleUIVisibility();
+                return true;
+            }
+            return false;
+        }
+
+        void AdvanceUIVisibility(float delta)
+        {
+            hiddenProgress = Mathf.MoveTowards(hiddenProgress, IsUIHidden ? 1f : 0f,
+                Mathf.Max(0f, delta) / PanelSlideSeconds);
+            ApplyUIVisibility();
+        }
+
+        void ApplyUIVisibility()
+        {
+            if (!leftPanelGroup || !rightPanelGroup || !headerGroup || !bottomPanelGroup) return;
+            float eased = Mathf.SmoothStep(0f, 1f, hiddenProgress);
+            leftPanelGroup.anchoredPosition = new Vector2(-SideSlide * eased, 0f);
+            rightPanelGroup.anchoredPosition = new Vector2(SideSlide * eased, 0f);
+            headerGroup.anchoredPosition = new Vector2(0f, HeaderSlide * eased);
+            bottomPanelGroup.anchoredPosition = new Vector2(0f, -BottomSlide * eased);
+            if (stage) stage.gameObject.SetActive(hiddenProgress < 1f);
+            SyncToScreen();
+        }
+
         void ProcessGamepad(float delta)
         {
             var pad = Gamepad.current;
             if (pad == null) { previousDirection = Vector2Int.zero; return; }
+            if (IsUIHidden)
+            {
+                previousDirection = Vector2Int.zero;
+                repeatElapsed = 0f;
+                if (pad.startButton.wasPressedThisFrame) SetUIHidden(false);
+                return;
+            }
+            if (hiddenProgress > 0f) return;
             Vector2 value = pad.dpad.ReadValue();
             Vector2Int direction = value.sqrMagnitude < .1f ? Vector2Int.zero :
                 Mathf.Abs(value.x) > Mathf.Abs(value.y) ? new Vector2Int(value.x > 0 ? 1 : -1, 0) : new Vector2Int(0, value.y > 0 ? 1 : -1);
@@ -461,12 +545,14 @@ namespace GPGPUI
             modelPivot.SetParent(stage, false);
             modelPivot.gameObject.SetActive(false);
             if (!prefab) { modelPivot.gameObject.SetActive(true); return; }
-            // Normalize while inactive, then disable copied behaviours and physics.
+            // Normalize while inactive; the wildlife model keeps its authored animation.
             FeaturedObject = Instantiate(prefab, modelPivot, false);
             FeaturedObject.name = "Featured - " + GPGPUIContent.FriendlyModelName(prefab.name);
             FeaturedObject.SetActive(true);
             foreach (var child in FeaturedObject.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = 0;
-            foreach (var behaviour in FeaturedObject.GetComponentsInChildren<Behaviour>(true)) behaviour.enabled = false;
+            bool animateWildlife = prefab == turtleModel;
+            foreach (var behaviour in FeaturedObject.GetComponentsInChildren<Behaviour>(true))
+                if (!animateWildlife || !(behaviour is Animation || behaviour is Animator)) behaviour.enabled = false;
             foreach (var collider in FeaturedObject.GetComponentsInChildren<Collider>(true)) collider.enabled = false;
             foreach (var rigidbody in FeaturedObject.GetComponentsInChildren<Rigidbody>(true))
             {
@@ -548,6 +634,7 @@ namespace GPGPUI
             canvasRect.localScale = new Vector3(width / Width, height / Height, width / Width);
             float depth = Mathf.Clamp(foregroundDepthMeters, .01f, Mathf.Max(.01f, distance * .25f));
             Vector3 onScreen = sourceScreen.position + across * .353f + up * .052f;
+            if (rightPanelGroup) onScreen += across * (rightPanelGroup.anchoredPosition.x / Width);
             float fraction = Mathf.Max(.1f, (distance - depth) / Mathf.Max(.01f, distance));
             stage.position = eye + (onScreen - eye) * fraction;
             stage.rotation = canvasRect.rotation;

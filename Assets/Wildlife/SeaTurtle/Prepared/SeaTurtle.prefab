@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &367579244022166737
+--- !u!1 &15147328068384972
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,195 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6223601489694257582}
-  - component: {fileID: 8842918976093725070}
-  - component: {fileID: 6393291104340332250}
+  - component: {fileID: 583943596123855835}
   m_Layer: 0
-  m_Name: Brown
+  m_Name: Flipper_L.005_Hawksbill.armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6223601489694257582
+--- !u!4 &583943596123855835
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367579244022166737}
+  m_GameObject: {fileID: 15147328068384972}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.28931347, y: -0.8473148, z: -0.4416493, w: -0.057457168}
+  m_LocalPosition: {x: -0.0009, y: 0.01759, z: 0.00157}
+  m_LocalScale: {x: 0.99999666, y: 1.0000024, z: 1.0000058}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8645609869159188954}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &656004190229156259
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8179815566793492951}
+  m_Layer: 0
+  m_Name: Flipper_L.001_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8179815566793492951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656004190229156259}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.2047701, y: 0.011877131, z: -0.2718989, w: 0.9402123}
+  m_LocalPosition: {x: 0.02156, y: 0.0653, z: -0.01692}
+  m_LocalScale: {x: 1.0000005, y: 0.99999666, z: 1.0000062}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 380751292914824007}
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &826595911522644728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6542309675061683376}
+  m_Layer: 0
+  m_Name: Jaw_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6542309675061683376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 826595911522644728}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.11180873, y: -0.0029740368, z: -0.016045373, w: 0.99359584}
+  m_LocalPosition: {x: 0.00083, y: 0.00833, z: -0.01081}
+  m_LocalScale: {x: 1.0000037, y: 0.99999714, z: 0.99999905}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 87967468089879502}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &933359989575961442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1416300284633769510}
+  m_Layer: 0
+  m_Name: Flipper_R.003_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1416300284633769510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 933359989575961442}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.068302736, y: -0.104780644, z: 0.26015657, w: 0.9574311}
+  m_LocalPosition: {x: -0, y: 0.01301, z: 0}
+  m_LocalScale: {x: 1.0000006, y: 1.0000048, z: 0.99999785}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1812876227637355527}
+  - {fileID: 5421343130795507001}
+  m_Father: {fileID: 6371794058311111740}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &950483268016739565
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7568869715025103648}
+  m_Layer: 0
+  m_Name: Hind_L.003_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7568869715025103648
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 950483268016739565}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.027797846, y: -0.07590802, z: 0.047756154, w: 0.99558264}
+  m_LocalPosition: {x: -0, y: 0.01671, z: 0}
+  m_LocalScale: {x: 0.9999953, y: 0.9999967, z: 0.99999946}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2493603995215818918}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1059185320113228897
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6666207968888196933}
+  - component: {fileID: 4108797607874718114}
+  m_Layer: 0
+  m_Name: Hawksbill.mesh_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6666207968888196933
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1059185320113228897}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4800214984831260383}
+  m_Father: {fileID: 6060348222409190940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8842918976093725070
-MeshFilter:
+--- !u!137 &4108797607874718114
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367579244022166737}
-  m_Mesh: {fileID: 4602183977096562353, guid: 1194ee8b469aab349a444ce3dc53294b, type: 3}
---- !u!23 &6393291104340332250
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 367579244022166737}
+  m_GameObject: {fileID: 1059185320113228897}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -56,7 +205,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
@@ -66,7 +215,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9d840da05254e9b4293c9a3b805b8b12, type: 2}
+  - {fileID: 4481625709463858568, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -89,7 +238,387 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 1
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4797010484539445209, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
+  m_Bones:
+  - {fileID: 5935522661792210032}
+  - {fileID: 516975145971249902}
+  - {fileID: 7248431355749225108}
+  - {fileID: 4164901862145587570}
+  - {fileID: 87967468089879502}
+  - {fileID: 6542309675061683376}
+  - {fileID: 4276893975408911638}
+  - {fileID: 2947034051281915588}
+  - {fileID: 2493603995215818918}
+  - {fileID: 7568869715025103648}
+  - {fileID: 7077132137783722179}
+  - {fileID: 8268483772915193634}
+  - {fileID: 646084621973607601}
+  - {fileID: 2191673758511172875}
+  - {fileID: 6371794058311111740}
+  - {fileID: 1416300284633769510}
+  - {fileID: 1812876227637355527}
+  - {fileID: 8611258087201404016}
+  - {fileID: 5421343130795507001}
+  - {fileID: 8179815566793492951}
+  - {fileID: 380751292914824007}
+  - {fileID: 1343304544112170501}
+  - {fileID: 8645609869159188954}
+  - {fileID: 583943596123855835}
+  - {fileID: 9147873124785948517}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 5935522661792210032}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
+--- !u!1 &1235592163303841716
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2191673758511172875}
+  m_Layer: 0
+  m_Name: Flipper_R.001_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2191673758511172875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235592163303841716}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.1524437, y: -0.004398958, z: 0.20286117, w: 0.96725845}
+  m_LocalPosition: {x: -0.01959, y: 0.06368, z: -0.02296}
+  m_LocalScale: {x: 1.0000029, y: 1.0000054, z: 0.9999969}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6371794058311111740}
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1253298083536262244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1943663614949782871}
+  - component: {fileID: 3918270206068680482}
+  m_Layer: 0
+  m_Name: Hawksbill.mesh_0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1943663614949782871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253298083536262244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6060348222409190940}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!137 &3918270206068680482
+SkinnedMeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253298083536262244}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 3
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 6773026954686124943, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 1
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 6348327222212871528, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
+  m_Bones:
+  - {fileID: 5935522661792210032}
+  - {fileID: 516975145971249902}
+  - {fileID: 7248431355749225108}
+  - {fileID: 4164901862145587570}
+  - {fileID: 87967468089879502}
+  - {fileID: 6542309675061683376}
+  - {fileID: 4276893975408911638}
+  - {fileID: 2947034051281915588}
+  - {fileID: 2493603995215818918}
+  - {fileID: 7568869715025103648}
+  - {fileID: 7077132137783722179}
+  - {fileID: 8268483772915193634}
+  - {fileID: 646084621973607601}
+  - {fileID: 2191673758511172875}
+  - {fileID: 6371794058311111740}
+  - {fileID: 1416300284633769510}
+  - {fileID: 1812876227637355527}
+  - {fileID: 8611258087201404016}
+  - {fileID: 5421343130795507001}
+  - {fileID: 8179815566793492951}
+  - {fileID: 380751292914824007}
+  - {fileID: 1343304544112170501}
+  - {fileID: 8645609869159188954}
+  - {fileID: 583943596123855835}
+  - {fileID: 9147873124785948517}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 5935522661792210032}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
+--- !u!1 &1688552352308649987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3886089095788106095}
+  m_Layer: 0
+  m_Name: Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3886089095788106095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1688552352308649987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6060348222409190940}
+  m_Father: {fileID: 1406771152671879769}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1692600646890137670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6060348222409190940}
+  m_Layer: 0
+  m_Name: Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6060348222409190940
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1692600646890137670}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5935522661792210032}
+  - {fileID: 1943663614949782871}
+  - {fileID: 551093506466190910}
+  - {fileID: 6666207968888196933}
+  - {fileID: 8358981698322232138}
+  m_Father: {fileID: 3886089095788106095}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2217045309088871664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5935522661792210032}
+  m_Layer: 0
+  m_Name: Hawksbill.armature_rootJoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5935522661792210032
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2217045309088871664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 516975145971249902}
+  m_Father: {fileID: 6060348222409190940}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2609017025624549671
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4164901862145587570}
+  m_Layer: 0
+  m_Name: Head.002_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4164901862145587570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2609017025624549671}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.45000577, y: -0.010462671, z: 0.023213627, w: 0.8926626}
+  m_LocalPosition: {x: -0, y: 0.01466, z: 0}
+  m_LocalScale: {x: 0.99999374, y: 0.9999982, z: 1.0000006}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 87967468089879502}
+  m_Father: {fileID: 7248431355749225108}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2803335673663997526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8645609869159188954}
+  m_Layer: 0
+  m_Name: Flipper_L.004_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8645609869159188954
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2803335673663997526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.11628588, y: 0.13005762, z: -0.16878068, w: 0.97009057}
+  m_LocalPosition: {x: -0, y: 0.02316, z: 0}
+  m_LocalScale: {x: 1.0000049, y: 0.9999993, z: 0.9999928}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 583943596123855835}
+  m_Father: {fileID: 1343304544112170501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3546724799901821596
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 646084621973607601}
+  m_Layer: 0
+  m_Name: Hind_R.003_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &646084621973607601
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3546724799901821596}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.02062583, y: 0.05743882, z: -0.03454505, w: 0.997538}
+  m_LocalPosition: {x: -0, y: 0.01459, z: 0}
+  m_LocalScale: {x: 1.0000052, y: 0.99999666, z: 1.0000002}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8268483772915193634}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4185227180009775735
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,6 +628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4800214984831260383}
+  - component: {fileID: 8994050925805935000}
   m_Layer: 0
   m_Name: Turtle model
   m_TagString: Untagged
@@ -114,18 +644,37 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4185227180009775735}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.037852127, z: -0.05051167}
-  m_LocalScale: {x: 0.0013934642, y: 0.0013934642, z: 0.0013934642}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: -0.00000004371139}
+  m_LocalPosition: {x: 0.06609531, y: -0.022926597, z: -0.11873769}
+  m_LocalScale: {x: 2.3568144, y: 2.3568144, z: 2.3568144}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6223601489694257582}
-  - {fileID: 3548078672885906978}
-  - {fileID: 3916447811994365485}
-  - {fileID: 4686026527798416903}
+  - {fileID: 1406771152671879769}
   m_Father: {fileID: 4592159682385730568}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &6593637839312988289
+--- !u!95 &8994050925805935000
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185227180009775735}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 68010a93b7c979e498005a3f9ca5a3c5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage:
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &4569515279944427624
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -133,46 +682,69 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3548078672885906978}
-  - component: {fileID: 8477234797415930167}
-  - component: {fileID: 1305654122334916622}
+  - component: {fileID: 380751292914824007}
   m_Layer: 0
-  m_Name: GreenSkin
+  m_Name: Flipper_L.002_Hawksbill.armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3548078672885906978
+--- !u!4 &380751292914824007
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6593637839312988289}
+  m_GameObject: {fileID: 4569515279944427624}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.116575204, y: 0.075142644, z: -0.40786457, w: 0.90244687}
+  m_LocalPosition: {x: -0, y: 0.01111, z: 0}
+  m_LocalScale: {x: 0.9999985, y: 0.9999952, z: 1.000003}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1343304544112170501}
+  m_Father: {fileID: 8179815566793492951}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5057530702222849215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 551093506466190910}
+  - component: {fileID: 7731693154297665071}
+  m_Layer: 0
+  m_Name: Hawksbill.mesh_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &551093506466190910
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5057530702222849215}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4800214984831260383}
+  m_Father: {fileID: 6060348222409190940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8477234797415930167
-MeshFilter:
+--- !u!137 &7731693154297665071
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6593637839312988289}
-  m_Mesh: {fileID: 611215730147171048, guid: 1194ee8b469aab349a444ce3dc53294b, type: 3}
---- !u!23 &1305654122334916622
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6593637839312988289}
+  m_GameObject: {fileID: 5057530702222849215}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -181,7 +753,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
@@ -191,7 +763,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 10fd5627d2b4f29479949843851504d4, type: 2}
+  - {fileID: -5700234274953757184, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -214,8 +786,44 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7379297141182856322
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 1
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 4443338585094792114, guid: 9e631122f18ddcd4c8c5fd78aa519015, type: 3}
+  m_Bones:
+  - {fileID: 5935522661792210032}
+  - {fileID: 516975145971249902}
+  - {fileID: 7248431355749225108}
+  - {fileID: 4164901862145587570}
+  - {fileID: 87967468089879502}
+  - {fileID: 6542309675061683376}
+  - {fileID: 4276893975408911638}
+  - {fileID: 2947034051281915588}
+  - {fileID: 2493603995215818918}
+  - {fileID: 7568869715025103648}
+  - {fileID: 7077132137783722179}
+  - {fileID: 8268483772915193634}
+  - {fileID: 646084621973607601}
+  - {fileID: 2191673758511172875}
+  - {fileID: 6371794058311111740}
+  - {fileID: 1416300284633769510}
+  - {fileID: 1812876227637355527}
+  - {fileID: 8611258087201404016}
+  - {fileID: 5421343130795507001}
+  - {fileID: 8179815566793492951}
+  - {fileID: 380751292914824007}
+  - {fileID: 1343304544112170501}
+  - {fileID: 8645609869159188954}
+  - {fileID: 583943596123855835}
+  - {fileID: 9147873124785948517}
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 5935522661792210032}
+  m_AABB:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
+  m_DirtyAABB: 1
+--- !u!1 &6234751322322588646
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,89 +831,31 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4686026527798416903}
-  - component: {fileID: 507966334213124799}
-  - component: {fileID: 957847371159323099}
+  - component: {fileID: 1406771152671879769}
   m_Layer: 0
-  m_Name: WhiteShell
+  m_Name: Sketchfab_model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4686026527798416903
+--- !u!4 &1406771152671879769
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7379297141182856322}
+  m_GameObject: {fileID: 6234751322322588646}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.182954, y: 2.182954, z: 2.182954}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3886089095788106095}
   m_Father: {fileID: 4800214984831260383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &507966334213124799
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7379297141182856322}
-  m_Mesh: {fileID: -6626421669464611817, guid: 1194ee8b469aab349a444ce3dc53294b, type: 3}
---- !u!23 &957847371159323099
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7379297141182856322}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: f94b68f0de01e984199031f81c9444f9, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7904945605234813317
+--- !u!1 &6740798157988900786
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -313,88 +863,314 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3916447811994365485}
-  - component: {fileID: 3039716211451427659}
-  - component: {fileID: 8004797276519804351}
+  - component: {fileID: 87967468089879502}
   m_Layer: 0
-  m_Name: Mat
+  m_Name: Head.001_Hawksbill.armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3916447811994365485
+--- !u!4 &87967468089879502
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7904945605234813317}
+  m_GameObject: {fileID: 6740798157988900786}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.06910217, y: -0.00018299534, z: 0.02520581, w: 0.9972911}
+  m_LocalPosition: {x: -0, y: 0.0201, z: 0}
+  m_LocalScale: {x: 1.000002, y: 1.0000011, z: 0.99999875}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6542309675061683376}
+  m_Father: {fileID: 4164901862145587570}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7144842038303225557
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6371794058311111740}
+  m_Layer: 0
+  m_Name: Flipper_R.002_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6371794058311111740
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144842038303225557}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.11339543, y: 0.00334324, z: 0.3284948, w: 0.9376681}
+  m_LocalPosition: {x: -0, y: 0.01212, z: 0}
+  m_LocalScale: {x: 1.0000004, y: 1.0000063, z: 0.9999988}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1416300284633769510}
+  m_Father: {fileID: 2191673758511172875}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7448487686143007745
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5421343130795507001}
+  m_Layer: 0
+  m_Name: Flipper_R.005_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5421343130795507001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7448487686143007745}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.53110284, y: -0.69609284, z: -0.33393827, w: 0.34909865}
+  m_LocalPosition: {x: 0.00002, y: 0.01637, z: 0.00196}
+  m_LocalScale: {x: 1.0000023, y: 1.0000013, z: 0.9999985}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1416300284633769510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7454462733261724288
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2947034051281915588}
+  m_Layer: 0
+  m_Name: Hind_L.001_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2947034051281915588
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454462733261724288}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.052984025, y: -0.028978303, z: -0.6408093, w: 0.76532114}
+  m_LocalPosition: {x: 0.00238, y: -0.01184, z: -0.01105}
+  m_LocalScale: {x: 1.0000026, y: 0.9999976, z: 1.0000044}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2493603995215818918}
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7681163069142813868
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8358981698322232138}
+  m_Layer: 0
+  m_Name: Hawksbill.mesh
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8358981698322232138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7681163069142813868}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.01112, y: 0.04648, z: 0.00058}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4800214984831260383}
+  m_Father: {fileID: 6060348222409190940}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3039716211451427659
-MeshFilter:
+--- !u!1 &7775226788235701098
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7904945605234813317}
-  m_Mesh: {fileID: 637485502157973901, guid: 1194ee8b469aab349a444ce3dc53294b, type: 3}
---- !u!23 &8004797276519804351
-MeshRenderer:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8268483772915193634}
+  m_Layer: 0
+  m_Name: Hind_R.002_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8268483772915193634
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7904945605234813317}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 43ac9b0a164039f47aa9d931278b634a, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  m_GameObject: {fileID: 7775226788235701098}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.056825247, y: 0.0007480848, z: 0.45413125, w: 0.88912046}
+  m_LocalPosition: {x: -0, y: 0.01438, z: 0}
+  m_LocalScale: {x: 1.0000032, y: 0.999999, z: 0.99999756}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 646084621973607601}
+  m_Father: {fileID: 7077132137783722179}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7986417359122519126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4276893975408911638}
+  m_Layer: 0
+  m_Name: Tail_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4276893975408911638
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7986417359122519126}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.9594454, y: -0.013437351, z: -0.06034255, w: 0.27503225}
+  m_LocalPosition: {x: -0.00039, y: -0.01748, z: -0.01075}
+  m_LocalScale: {x: 1.0000045, y: 1, z: 0.99999243}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8117980243906727553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7077132137783722179}
+  m_Layer: 0
+  m_Name: Hind_R.001_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7077132137783722179
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8117980243906727553}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.113162205, y: 0.029939683, z: 0.6215817, w: 0.7745542}
+  m_LocalPosition: {x: -0.00522, y: -0.01173, z: -0.01213}
+  m_LocalScale: {x: 0.99999875, y: 0.9999963, z: 1.0000043}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8268483772915193634}
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8241908024034149255
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8611258087201404016}
+  m_Layer: 0
+  m_Name: Flipper_R.006_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8611258087201404016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8241908024034149255}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.22191517, y: -0.717879, z: -0.37441885, w: 0.54333603}
+  m_LocalPosition: {x: -0.00003, y: 0.01621, z: 0.00103}
+  m_LocalScale: {x: 1.0000021, y: 0.9999945, z: 1.0000066}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1812876227637355527}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8299689363869915484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1812876227637355527}
+  m_Layer: 0
+  m_Name: Flipper_R.004_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1812876227637355527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8299689363869915484}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.21139859, y: -0.19117169, z: 0.09524728, w: 0.95377773}
+  m_LocalPosition: {x: -0, y: 0.02487, z: 0}
+  m_LocalScale: {x: 0.99999577, y: 1.0000056, z: 1.0000007}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8611258087201404016}
+  m_Father: {fileID: 1416300284633769510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8316640092748310679
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,4 +1202,169 @@ Transform:
   m_Children:
   - {fileID: 4800214984831260383}
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8321433410225075854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7248431355749225108}
+  m_Layer: 0
+  m_Name: Head.003_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7248431355749225108
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321433410225075854}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.54385394, y: 0.0053207567, z: -0.015527406, w: 0.83901936}
+  m_LocalPosition: {x: -0, y: 0.07416, z: 0}
+  m_LocalScale: {x: 1.0000007, y: 0.9999931, z: 0.99999845}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4164901862145587570}
+  m_Father: {fileID: 516975145971249902}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8619380352298142640
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1343304544112170501}
+  m_Layer: 0
+  m_Name: Flipper_L.003_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1343304544112170501
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8619380352298142640}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.030494168, y: 0.03667289, z: -0.17140958, w: 0.9840447}
+  m_LocalPosition: {x: -0, y: 0.01387, z: 0}
+  m_LocalScale: {x: 0.99999994, y: 1.0000068, z: 0.9999975}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8645609869159188954}
+  - {fileID: 9147873124785948517}
+  m_Father: {fileID: 380751292914824007}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8776292791909689766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9147873124785948517}
+  m_Layer: 0
+  m_Name: Flipper_L.006_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9147873124785948517
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8776292791909689766}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.5066619, y: -0.70391774, z: -0.49132878, w: -0.07993513}
+  m_LocalPosition: {x: 0.00161, y: 0.01536, z: 0.00022}
+  m_LocalScale: {x: 1.000005, y: 1.0000021, z: 0.999997}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1343304544112170501}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8987246546714591187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2493603995215818918}
+  m_Layer: 0
+  m_Name: Hind_L.002_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2493603995215818918
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987246546714591187}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.064006224, y: 0.06455763, z: -0.54579175, w: 0.83297473}
+  m_LocalPosition: {x: -0, y: 0.01336, z: 0}
+  m_LocalScale: {x: 1.0000029, y: 1.0000057, z: 0.9999982}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7568869715025103648}
+  m_Father: {fileID: 2947034051281915588}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &9092206057809980861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 516975145971249902}
+  m_Layer: 0
+  m_Name: Root_Hawksbill.armature
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &516975145971249902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9092206057809980861}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.046091724, y: -0, z: 0.011092409, w: 0.9988757}
+  m_LocalPosition: {x: 0.01348, y: -0.02298, z: 0.01097}
+  m_LocalScale: {x: 0.9999946, y: 1.000005, z: 1.0000004}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7248431355749225108}
+  - {fileID: 4276893975408911638}
+  - {fileID: 2947034051281915588}
+  - {fileID: 7077132137783722179}
+  - {fileID: 2191673758511172875}
+  - {fileID: 8179815566793492951}
+  m_Father: {fileID: 5935522661792210032}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

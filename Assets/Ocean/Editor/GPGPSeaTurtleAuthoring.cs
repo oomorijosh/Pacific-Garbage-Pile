@@ -1,21 +1,23 @@
 #if UNITY_EDITOR
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Animations;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
-/// <summary>Prepares the licensed sea turtle and places it independently of the debris bands.</summary>
+/// <summary>Prepares the swimming hawksbill turtle and places it independently of the debris bands.</summary>
 public static class GPGPSeaTurtleAuthoring
 {
     const string AssetRoot = "Assets/Wildlife/SeaTurtle";
+    const string SourceModelPath = "Assets/Debris/model_50a_-_hawksbill_sea_turtle.glb";
     const string PreparedRoot = AssetRoot + "/Prepared";
     const string GeneratedRootName = "WaterCube - one continuous volume";
     public const string TurtleObjectName = "Sea Turtle";
     public const string PreparedPrefabPath = PreparedRoot + "/SeaTurtle.prefab";
+    const string SwimControllerPath = PreparedRoot + "/SeaTurtle.controller";
 
     [MenuItem("Tools/Pacific Exhibit/Add or Refresh Sea Turtle")]
     public static void AddOrRefreshCurrentExhibit()
@@ -76,52 +78,66 @@ public static class GPGPSeaTurtleAuthoring
         Undo.RegisterCreatedObjectUndo(turtle, "Create sea turtle");
         Undo.CollapseUndoOperations(undoGroup);
         EditorSceneManager.MarkSceneDirty(exhibit.gameObject.scene);
-        Debug.Log("GPGP_SEA_TURTLE: Added a matte sea turtle in the upper water band; attribution is in " +
+        Debug.Log("GPGP_SEA_TURTLE: Added a swimming hawksbill turtle in the upper water band; asset notes are in " +
             AssetRoot + "/ATTRIBUTION.txt.", turtle);
         return turtle;
     }
 
     static GameObject PreparePrefab()
     {
-        var source = AssetDatabase.LoadAssetAtPath<GameObject>(AssetRoot + "/SeaTurtle.obj");
-        if (!source) throw new InvalidOperationException("The licensed sea turtle OBJ is missing.");
-        Shader shader = Shader.Find("Universal Render Pipeline/Lit");
-        if (!shader) throw new InvalidOperationException("The URP Lit shader is unavailable.");
-        EnsureFolder(PreparedRoot);
-        EnsureFolder(PreparedRoot + "/Materials");
-        // glTF baseColorFactor values are linear. Unity material colors are
-        // authored in sRGB, so preserve the source colors with a gamma conversion.
-        var materials = new Dictionary<string, Material>(StringComparer.Ordinal)
+        AssetImporter importer = AssetImporter.GetAtPath(SourceModelPath);
+        if (!importer) throw new InvalidOperationException("The hawksbill turtle GLB is missing: " + SourceModelPath);
+        bool reimport;
+        using (var settings = new SerializedObject(importer))
         {
-            { "Mat", MatteMaterial("Eyes", new Color(.06979f, .14f, .0686f).gamma, shader) },
-            { "Brown", MatteMaterial("Shell", new Color(.58f, .386667f, 0f).gamma, shader) },
-            { "WhiteShell", MatteMaterial("Pale", new Color(.73458f, .77f, .5929f).gamma, shader) },
-            { "GreenSkin", MatteMaterial("Skin", new Color(.43741f, .62f, .0434f).gamma, shader) }
-        };
+            SerializedProperty animationMethod = settings.FindProperty("importSettings.animationMethod");
+            if (animationMethod == null)
+                throw new InvalidOperationException("The hawksbill turtle GLB requires the Unity glTFast importer with Mecanim animation support.");
+            reimport = animationMethod.intValue != (int)GLTFast.AnimationMethod.Mecanim;
+            if (reimport)
+            {
+                animationMethod.intValue = (int)GLTFast.AnimationMethod.Mecanim;
+                settings.ApplyModifiedPropertiesWithoutUndo();
+            }
+        }
+        if (reimport) importer.SaveAndReimport();
+        var source = AssetDatabase.LoadAssetAtPath<GameObject>(SourceModelPath);
+        if (!source) throw new InvalidOperationException("Import the hawksbill turtle GLB before preparing the sea turtle: " + SourceModelPath);
+        EnsureFolder(PreparedRoot);
+        AnimationClip swimClip = AssetDatabase.LoadAllAssetsAtPath(SourceModelPath).OfType<AnimationClip>()
+            .FirstOrDefault(clip => clip.name == "Swim Cycle");
+        if (!swimClip) throw new InvalidOperationException("The imported hawksbill turtle has no Swim Cycle animation clip.");
+        if (swimClip.legacy || !swimClip.isLooping)
+            throw new InvalidOperationException("The hawksbill turtle Swim Cycle must import as a looping Mecanim clip. Reimport the GLB with Animation Method set to Mecanim.");
+        AnimatorController controller = PrepareSwimController(swimClip);
 
         var prepared = new GameObject(TurtleObjectName);
         try
         {
             GameObject model = UnityEngine.Object.Instantiate(source, prepared.transform, false);
             model.name = "Turtle model";
+            // The source faces -Z after its Z-up conversion. Use Unity's +Z forward
+            // on the wrapper, leaving the imported joints and animation paths intact.
+            model.transform.localRotation = Quaternion.Euler(0f, 180f, 0f) * model.transform.localRotation;
             foreach (Renderer renderer in model.GetComponentsInChildren<Renderer>(true))
             {
-                Material[] slots = renderer.sharedMaterials;
-                for (int slot = 0; slot < slots.Length; slot++)
-                {
-                    string sourceName = slots[slot] ? slots[slot].name : string.Empty;
-                    if (!materials.TryGetValue(sourceName, out Material replacement))
-                        throw new InvalidOperationException("Unexpected turtle material slot: " + sourceName + ".");
-                    slots[slot] = replacement;
-                }
-                renderer.sharedMaterials = slots;
+                // Keep the imported textured materials and bone bindings intact.
                 renderer.shadowCastingMode = ShadowCastingMode.On;
                 renderer.receiveShadows = true;
+            }
+            Animator[] animators = model.GetComponentsInChildren<Animator>(true);
+            if (animators.Length == 0) throw new InvalidOperationException("The imported hawksbill turtle has no Animator.");
+            foreach (Animator animator in animators)
+            {
+                // glTFast binds curves relative to this imported Animator's object.
+                animator.runtimeAnimatorController = controller;
+                animator.applyRootMotion = false;
+                animator.enabled = true;
             }
             foreach (Collider collider in model.GetComponentsInChildren<Collider>(true))
                 UnityEngine.Object.DestroyImmediate(collider);
             if (!TryGetBounds(prepared.transform, out Bounds bounds))
-                throw new InvalidOperationException("The sea turtle OBJ has no mesh geometry.");
+                throw new InvalidOperationException("The hawksbill turtle GLB has no mesh geometry.");
             float largest = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
             if (largest <= .0001f) throw new InvalidOperationException("The sea turtle mesh has invalid dimensions.");
             model.transform.localPosition = (model.transform.localPosition - bounds.center) / largest;
@@ -136,29 +152,21 @@ public static class GPGPSeaTurtleAuthoring
         }
     }
 
-    static Material MatteMaterial(string label, Color color, Shader shader)
+    static AnimatorController PrepareSwimController(AnimationClip swimClip)
     {
-        string path = PreparedRoot + "/Materials/SeaTurtle_" + label + ".mat";
-        Material material = AssetDatabase.LoadAssetAtPath<Material>(path);
-        if (!material)
-        {
-            material = new Material(shader) { name = "SeaTurtle_" + label };
-            AssetDatabase.CreateAsset(material, path);
-        }
-        material.shader = shader;
-        material.SetColor("_BaseColor", color);
-        material.SetFloat("_Metallic", 0f);
-        material.SetFloat("_Smoothness", .12f);
-        material.SetFloat("_SpecularHighlights", 0f);
-        material.SetFloat("_EnvironmentReflections", 0f);
-        material.SetColor("_EmissionColor", Color.black);
-        material.EnableKeyword("_SPECULARHIGHLIGHTS_OFF");
-        material.EnableKeyword("_ENVIRONMENTREFLECTIONS_OFF");
-        material.DisableKeyword("_EMISSION");
-        material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
-        EditorUtility.SetDirty(material);
-        AssetDatabase.SaveAssetIfDirty(material);
-        return material;
+        AnimatorController controller = AssetDatabase.LoadAssetAtPath<AnimatorController>(SwimControllerPath);
+        if (!controller) controller = AnimatorController.CreateAnimatorControllerAtPath(SwimControllerPath);
+        if (controller.layers.Length == 0) controller.AddLayer("Base Layer");
+        AnimatorStateMachine machine = controller.layers[0].stateMachine;
+        AnimatorState swim = machine.states.Select(child => child.state).FirstOrDefault(state => state.name == "Swim Cycle");
+        if (!swim) swim = machine.AddState("Swim Cycle");
+        swim.motion = swimClip;
+        machine.defaultState = swim;
+        EditorUtility.SetDirty(swim);
+        EditorUtility.SetDirty(machine);
+        EditorUtility.SetDirty(controller);
+        AssetDatabase.SaveAssetIfDirty(controller);
+        return controller;
     }
 
     static bool TryGetBounds(Transform root, out Bounds bounds)
@@ -168,20 +176,29 @@ public static class GPGPSeaTurtleAuthoring
         foreach (MeshFilter filter in root.GetComponentsInChildren<MeshFilter>(true))
         {
             if (!filter.sharedMesh) continue;
-            Bounds local = filter.sharedMesh.bounds;
-            Matrix4x4 toRoot = root.worldToLocalMatrix * filter.transform.localToWorldMatrix;
-            for (int corner = 0; corner < 8; corner++)
-            {
-                Vector3 offset = new Vector3(
-                    (corner & 1) == 0 ? -local.extents.x : local.extents.x,
-                    (corner & 2) == 0 ? -local.extents.y : local.extents.y,
-                    (corner & 4) == 0 ? -local.extents.z : local.extents.z);
-                Vector3 point = toRoot.MultiplyPoint3x4(local.center + offset);
-                if (found) bounds.Encapsulate(point);
-                else { bounds = new Bounds(point, Vector3.zero); found = true; }
-            }
+            EncapsulateBounds(filter.sharedMesh.bounds, filter.transform, root, ref bounds, ref found);
+        }
+        foreach (SkinnedMeshRenderer renderer in root.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+        {
+            if (!renderer.sharedMesh) continue;
+            EncapsulateBounds(renderer.localBounds, renderer.transform, root, ref bounds, ref found);
         }
         return found;
+    }
+
+    static void EncapsulateBounds(Bounds local, Transform source, Transform root, ref Bounds bounds, ref bool found)
+    {
+        Matrix4x4 toRoot = root.worldToLocalMatrix * source.localToWorldMatrix;
+        for (int corner = 0; corner < 8; corner++)
+        {
+            Vector3 offset = new Vector3(
+                (corner & 1) == 0 ? -local.extents.x : local.extents.x,
+                (corner & 2) == 0 ? -local.extents.y : local.extents.y,
+                (corner & 4) == 0 ? -local.extents.z : local.extents.z);
+            Vector3 point = toRoot.MultiplyPoint3x4(local.center + offset);
+            if (found) bounds.Encapsulate(point);
+            else { bounds = new Bounds(point, Vector3.zero); found = true; }
+        }
     }
 
     static Vector3 RotatedExtent(Vector3 extent, Quaternion rotation)

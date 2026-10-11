@@ -1,0 +1,20 @@
+GPGP slide-away validation; Unity 6000.6.0f1; isolated editor, no Play mode/XR.
+Material warmup: standard URP/Lit validation plus both actual CC-eye draws with the imported turtle; 39 shared scene/source materials now have exact serialized protection baselines; turtle shading inputs are unchanged. Other shaders may initialize built-in texture defaults during the first draw.
+Layout: four independent full-canvas slide groups; permanent top-right restore control; header has five focus controls and other rows four.
+Motion: 0.35-second eased panel offsets, halfway geometry, featured model tracking/deactivation, persistent restore control, hidden navigation guard, and continuous rapid reversal verified.
+Focus: five-control header wraps and activates Hide UI; vertical movement clamps correctly into four-control fact/category rows.
+Timing: hiding freezes the overview's remaining time and preserves both running and paused modes; restoring resumes without an immediate skipped card.
+Wildlife: hide/restore retains the same featured turtle, pinned fact, skinned mesh/bone references, and enabled swimming Animator.
+Input: virtual controller Select and keyboard Tab toggle globally; hidden D-pad/held repeat is ignored; hidden Start restores without activating or losing focus/state. Temporary devices and editor input flags restored.
+Scene: existing non-UI objects/assets protected; rebuilt only owned canvas/stage; saved isolated scene with the UI fully visible.
+CC_LEFT_CAMERA hidden Information panel bounds: NDC x=-1.5563..-1.0306; y=-0.6367..0.7974; completely outside wall.
+CC_LEFT_CAMERA hidden Object panel bounds: NDC x=1.0306..1.5564; y=-0.6367..0.7974; completely outside wall.
+CC_LEFT_CAMERA hidden Header bounds: NDC x=-1.0014..1.0014; y=1.0323..1.1992; completely outside wall.
+CC_LEFT_CAMERA hidden Bottom navigation bounds: NDC x=-1.0014..1.0014; y=-1.6196..-1.2858; completely outside wall.
+CC_RIGHT_CAMERA hidden Information panel bounds: NDC x=-1.5564..-1.0306; y=-0.6367..0.7974; completely outside wall.
+CC_RIGHT_CAMERA hidden Object panel bounds: NDC x=1.0306..1.5563; y=-0.6367..0.7974; completely outside wall.
+CC_RIGHT_CAMERA hidden Header bounds: NDC x=-1.0014..1.0014; y=1.0323..1.1992; completely outside wall.
+CC_RIGHT_CAMERA hidden Bottom navigation bounds: NDC x=-1.0014..1.0014; y=-1.6196..-1.2858; completely outside wall.
+Captures: actual CC content-eye shown/half-slide/hidden/restored PNGs at 2400x810; restored right-eye proof; no Play mode or XR; camera states restored.
+RESULT PASS: slide motion/reversal, persistent recovery control, focus/input/state/timer protection, turtle rig, and original scene protection.
+Scene comparison passed: 8859 non-UI YAML objects unchanged; UI hierarchy 314 -> 329 objects.

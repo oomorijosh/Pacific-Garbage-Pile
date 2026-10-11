@@ -1,0 +1,27 @@
+<!-- This configuration is for the Planar Direct Light Pro LED display in Keller 102 -->
+<config>
+  <!-- Which platform you are on. Wall -->
+  <platform>Wall</platform>
+  <!-- Set this to 0. -->
+  <fullscreen>0</fullscreen>
+  <!-- Total horizontal resolution of wall in pixels -->
+  <screenwidth>9600</screenwidth>
+  <!-- Total vertical resolution of wall in pixels -->
+  <screenheight>1620</screenheight>
+  <!-- Interaxial (eye separation) 61mm -->
+  <interaxial>0.061</interaxial>
+  <!-- 0 is interlace, 1 is side-by-side, 2 is top-bottom -->
+  <stereomode>1</stereomode>
+  <invertstereo>0</invertstereo>
+  <!-- Physical display wall dimensions in meters -->
+  <wallwidth>6.047</wallwidth>
+  <wallheight>2.042</wallheight>
+  <!-- Center of the physical display wall relative to the physical-space origin, in meters -->
+  <wallxposition>0</wallxposition>
+  <wallyposition>1.75</wallyposition>
+  <wallzposition>2.282</wallzposition>
+  <!-- Center of the viewer's eyes relative to the physical-space origin, in meters -->
+  <headxposition>0</headxposition>
+  <headyposition>1.76</headyposition>
+  <headzposition>-2</headzposition>
+</config>

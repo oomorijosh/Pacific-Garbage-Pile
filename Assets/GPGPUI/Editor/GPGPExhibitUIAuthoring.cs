@@ -114,7 +114,7 @@ namespace GPGPUI
                 EditorSceneManager.MarkSceneDirty(exhibit.gameObject.scene);
                 Undo.CollapseUndoOperations(group);
                 Selection.activeGameObject = root;
-                Debug.Log("GPGP_UI: Preview added to both Cyber Canoe eyes. Save the scene to keep it; enter Play mode for D-pad and Start controls.", ui);
+                Debug.Log("GPGP_UI: Preview added to both Cyber Canoe eyes. Save the scene to keep it; enter Play mode for D-pad/Start controls and Select/Tab to hide or restore the UI.", ui);
                 return ui;
             }
             catch
@@ -225,7 +225,7 @@ namespace GPGPUI
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
-            EditorGUILayout.HelpBox("D-pad moves UI focus; Start activates it. Rebuild Preview replaces this UI's generated content. Save the scene afterward.", MessageType.Info);
+            EditorGUILayout.HelpBox("D-pad moves focus; Start activates it. Select/Back/View or Tab slides the panels away or restores them. Hide UI is also in the header; Start restores the hidden UI. Your selection is kept, and the debris box and cameras stay in place. Rebuild Preview replaces this UI's generated content. Save the scene afterward.", MessageType.Info);
             using (new EditorGUI.DisabledScope(EditorApplication.isPlayingOrWillChangePlaymode ||
                 PrefabStageUtility.GetCurrentPrefabStage() != null || EditorUtility.IsPersistent(target)))
                 if (GUILayout.Button("Rebuild Preview", GUILayout.Height(30)))

@@ -1,0 +1,441 @@
+Assets/CC_ALL
+Assets/CC_ALL/CC
+Assets/CC_ALL/CC/CC_CAMERAOFFSET.cs
+Assets/CC_ALL/CC/CC_CAMERA_SETUP.cs
+Assets/CC_ALL/CC/CC_CANVAS_SETUP.cs
+Assets/CC_ALL/CC/CC_CONFIG.cs
+Assets/CC_ALL/CC/CC_CONFIG_WALLS.cs
+Assets/CC_ALL/CC/CC_Exit.cs
+Assets/CC_ALL/CC/CC_HIDE_CAMERA_ON_APP_RUN.cs
+Assets/CC_ALL/CC/CC_HIDE_RENDER_ON_APP_RUN.cs
+Assets/CC_ALL/CC/CC_INTERLEAVE_MASK.cs
+Assets/CC_ALL/CC/CC_LEFT_RT.renderTexture
+Assets/CC_ALL/CC/CC_RIGHT_RT.renderTexture
+Assets/CC_ALL/CC/CC_SCREEN_TEXTURE.mat
+Assets/CC_ALL/CC/CC_SETTINGS.asset
+Assets/CC_ALL/CC/CC_SETTINGS.cs
+Assets/CC_ALL/CC/CC_SETUP_RENDER_TEXTURES.cs
+Assets/CC_ALL/CC_HUB.prefab
+Assets/CC_ALL/CC_Navigation
+Assets/CC_ALL/CC_Navigation/CCaux_Waypointer.cs
+Assets/CC_ALL/CC_Navigation/DPadFlyer.cs
+Assets/CC_ALL/CC_Navigation/Low Poly Bird
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Bird.prefab
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/Bird.fbx
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/CharacterController.controller
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/Materials
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/Materials/Bird_Mat.mat
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/Materials/Red.png
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/Player.cs
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Character/ThirdPersonCamera.cs
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Demo
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Demo/Materials
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Demo/Materials/Checker_Mat.mat
+Assets/CC_ALL/CC_Navigation/Low Poly Bird/Demo/Materials/Checker_Tex.png
+Assets/CC_ALL/CC_Navigation/ModelSwitcher.cs
+Assets/CC_ALL/CC_Navigation/SpaceMouseFlyAround.cs
+Assets/CC_ALL/Cube.prefab
+Assets/CC_ALL/Front.mat
+Assets/CC_ALL/InputSystem.inputsettings.asset
+Assets/CC_ALL/README.txt
+Assets/CC_ALL/Rotater.cs
+Assets/CC_ALL/Simple.mat
+Assets/CC_ALL/SpaceNavigator
+Assets/CC_ALL/SpaceNavigator/Changelog.txt
+Assets/CC_ALL/SpaceNavigator/Editor
+Assets/CC_ALL/SpaceNavigator/Editor/SpaceNavigatorWindow.cs
+Assets/CC_ALL/SpaceNavigator/Editor/ViewportController.cs
+Assets/CC_ALL/SpaceNavigator/License.txt
+Assets/CC_ALL/SpaceNavigator/Plugins
+Assets/CC_ALL/SpaceNavigator/Plugins/3DConnexionWrapperU5.bundle
+Assets/CC_ALL/SpaceNavigator/Plugins/QuaternionExtensions.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/Settings
+Assets/CC_ALL/SpaceNavigator/Plugins/Settings/Locks.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/Settings/Settings.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/SpaceNavigator.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/SpaceNavigatorMac.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/SpaceNavigatorWindows.cs
+Assets/CC_ALL/SpaceNavigator/Plugins/TDx.TDxInput.dll
+Assets/CC_ALL/SpaceNavigator/README.txt
+Assets/CC_ALL/SpaceNavigator/Runtime samples
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Fly around
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Fly around/Scripts
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Fly around/Scripts/FlyAround.cs
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Fly around/Scripts/SmoothFollow2.cs
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Audio
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Audio/Electric hum.wav
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Audio/Electric zap.wav
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Models
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Models/Curve.FBX
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Models/Materials
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Models/Materials/No Name.mat
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Models/Torus.FBX
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Scripts
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Scripts/Torus.cs
+Assets/CC_ALL/SpaceNavigator/Runtime samples/- Follow curve/Scripts/TorusController.cs
+Assets/CC_ALL/SpaceNavigator/Runtime samples/Materials
+Assets/CC_ALL/SpaceNavigator/Runtime samples/Materials/grid.mat
+Assets/CC_ALL/SpaceNavigator/Runtime samples/Textures
+Assets/CC_ALL/SpaceNavigator/Runtime samples/Textures/grid.psd
+Assets/Debris
+Assets/Debris/Debris Checklist.txt
+Assets/Debris/Debris Pool Guide.txt
+Assets/Debris/Great Pacific Garbage Patch Data.txt
+Assets/Debris/Macroplastic
+Assets/Debris/Macroplastic/Plastic_Bucket.fbx
+Assets/Debris/Macroplastic/bucket.fbx
+Assets/Debris/Macroplastic/plastic-water-bottle.fbx
+Assets/Debris/Macroplastic/plastic_bottle.fbx
+Assets/Debris/Materials
+Assets/Debris/Materials/Lifebuoy.mat
+Assets/Debris/Materials/Lifebuoy_Rope.mat
+Assets/Debris/Materials/Matte
+Assets/Debris/Materials/Matte/4b532e91d044c2d4f80650f4238cff76_-3846018093981099296.mat
+Assets/Debris/Materials/Matte/4b532e91d044c2d4f80650f4238cff76_-6478536213147159724.mat
+Assets/Debris/Materials/Matte/70db603e500245045b2abb66abcf96db_-3846018093981099296.mat
+Assets/Debris/Materials/Matte/b63f9271ecd66114d9923ec9f97dba68_-6478536213147159724.mat
+Assets/Debris/Materials/Plastic_Barrel.mat
+Assets/Debris/Materials/Plastic_Bucket.mat
+Assets/Debris/Materials/Plastic_Crate.mat
+Assets/Debris/Materials/Plastic_Crate_01.mat
+Assets/Debris/Materials/Plastic_Jerrycan.mat
+Assets/Debris/Materials/Plastic_Water_Bottle.mat
+Assets/Debris/Materials/Textures
+Assets/Debris/Materials/Textures/Lifebuoy_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Lifebuoy_Rope_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Barrel_SpecularSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Bucket_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Crate_01_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Crate_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Jerrycan_MetallicOcclusionSmoothness.png
+Assets/Debris/Materials/Textures/Plastic_Water_Bottle_MetallicOcclusionSmoothness.png
+Assets/Debris/Megaplastic
+Assets/Debris/Megaplastic/PlasticCrate.fbx
+Assets/Debris/Megaplastic/PlasticJerrycan.FBX
+Assets/Debris/Megaplastic/lifebuoy.fbx
+Assets/Debris/Megaplastic/net_v2.fbx
+Assets/Debris/Megaplastic/net_v2_clumped.fbx
+Assets/Debris/Megaplastic/net_v2_more_twisted.fbx
+Assets/Debris/Megaplastic/plastic_barrel.FBX
+Assets/Debris/Mesoplastic
+Assets/Debris/Mesoplastic/bottle_cap.fbx
+Assets/Debris/Mesoplastic/mesoplastic_shard_1.fbx
+Assets/Debris/Mesoplastic/mesoplastic_shard_2.fbx
+Assets/Debris/Microplastic
+Assets/Debris/Microplastic/microplastic_shard_1.fbx
+Assets/Debris/Microplastic/microplastic_shard_2.fbx
+Assets/Debris/Prepared
+Assets/Debris/Prepared/Macroplastic
+Assets/Debris/Prepared/Macroplastic/Matte
+Assets/Debris/Prepared/Macroplastic/Matte/bucket_70db603e500245045b2abb66abcf96db.prefab
+Assets/Debris/Prepared/Macroplastic/Matte/plastic_bottle_4b532e91d044c2d4f80650f4238cff76.prefab
+Assets/Debris/Prepared/Macroplastic/Plastic_Bucket.prefab
+Assets/Debris/Prepared/Macroplastic/Plastic_Water_Bottle.prefab
+Assets/Debris/Prepared/Megaplastic
+Assets/Debris/Prepared/Megaplastic/Lifebuoy.prefab
+Assets/Debris/Prepared/Megaplastic/Plastic_Barrel.prefab
+Assets/Debris/Prepared/Megaplastic/Plastic_Crate.prefab
+Assets/Debris/Prepared/Megaplastic/Plastic_Crate_01.prefab
+Assets/Debris/Prepared/Megaplastic/Plastic_Jerrycan.prefab
+Assets/Debris/Prepared/Mesoplastic
+Assets/Debris/Prepared/Mesoplastic/Matte
+Assets/Debris/Prepared/Mesoplastic/Matte/bottle_cap_b63f9271ecd66114d9923ec9f97dba68.prefab
+Assets/Debris/lifebuoy
+Assets/Debris/lifebuoy/source
+Assets/Debris/lifebuoy/source/lifebuoy
+Assets/Debris/lifebuoy/source/lifebuoy.rar
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/lifebuoy.fbx
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/lifebuoy_AO.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/lifebuoy_Albedo.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/lifebuoy_Metalness.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/lifebuoy_Normal.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/lifebuoy_Roughness.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/rope_diffuse.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/rope_normal.png
+Assets/Debris/lifebuoy/source/lifebuoy/lifebuoy/textures/rope_rougness.png
+Assets/Debris/lifebuoy/textures
+Assets/Debris/lifebuoy/textures/lifebuoy_AO.png
+Assets/Debris/lifebuoy/textures/lifebuoy_Albedo.png
+Assets/Debris/lifebuoy/textures/lifebuoy_Metalness.png
+Assets/Debris/lifebuoy/textures/lifebuoy_Normal.png
+Assets/Debris/lifebuoy/textures/lifebuoy_Roughness.png
+Assets/Debris/lifebuoy/textures/rope_diffuse.png
+Assets/Debris/lifebuoy/textures/rope_normal.png
+Assets/Debris/lifebuoy/textures/rope_rougness.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle.zip
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water-bottle.fbx
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_AmbientOclusion.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_BaseColor.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_Metallic.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_NormaMap-OpenGL.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_Opacity.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/source/plastic-water-bottle/plastic-water-bottle/plastic-water_Roughness.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_AmbientOclusion.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_BaseColor.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_Metallic.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_NormaMap-OpenGL.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_Opacity.png
+Assets/Debris/low-poly-dirty-plastic-bottle-game-ready/textures/plastic-water_Roughness.png
+Assets/Debris/model_50a_-_hawksbill_sea_turtle.glb
+Assets/Debris/plastic-bucket
+Assets/Debris/plastic-bucket/source
+Assets/Debris/plastic-bucket/source/Plastic_Bucket
+Assets/Debris/plastic-bucket/source/Plastic_Bucket.zip
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/Plastic_Bucket.fbx
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures/Plastic_Bucket_AO.png
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures/Plastic_Bucket_Albedo.png
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures/Plastic_Bucket_Metallic.png
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures/Plastic_Bucket_Normal.png
+Assets/Debris/plastic-bucket/source/Plastic_Bucket/Plastic_Bucket/textures/Plastic_Bucket_Roughness.png
+Assets/Debris/plastic-bucket/textures
+Assets/Debris/plastic-bucket/textures/Plastic_Bucket_AO.png
+Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Albedo.png
+Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Metallic.png
+Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Normal.png
+Assets/Debris/plastic-bucket/textures/Plastic_Bucket_Roughness.png
+Assets/Debris/plastic-crate
+Assets/Debris/plastic-crate-01
+Assets/Debris/plastic-crate-01/source
+Assets/Debris/plastic-crate-01/source/plastic_crate_1.fbx
+Assets/Debris/plastic-crate-01/textures
+Assets/Debris/plastic-crate-01/textures/ao_metallic_roughness.jpg
+Assets/Debris/plastic-crate-01/textures/base_color.jpg
+Assets/Debris/plastic-crate-01/textures/normal.jpg
+Assets/Debris/plastic-crate/source
+Assets/Debris/plastic-crate/source/PlasticCrate.fbx
+Assets/Debris/plastic-crate/textures
+Assets/Debris/plastic-crate/textures/Crate_Base_color.png
+Assets/Debris/plastic-crate/textures/Crate_Normal.png
+Assets/Debris/plastic-crate/textures/Crate_Roughness.png
+Assets/Debris/plastic-jerrycan
+Assets/Debris/plastic-jerrycan/source
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan.zip
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan.FBX
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan_AO.png
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan_Albedo.jpg
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan_Cavity.png
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan_Normal.png
+Assets/Debris/plastic-jerrycan/source/PlasticJerrycan/PlasticJerrycan_Roughness.png
+Assets/Debris/plastic-jerrycan/textures
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_AO.png
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Albedo.jpeg
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Cavity.png
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Normal.png
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Roughness.png
+Assets/Debris/plastic-jerrycan/textures/PlasticJerrycan_Thickness.png
+Assets/Debris/plastic-jerrycan/textures/internal_ground_ao_texture.jpeg
+Assets/Debris/plastic_barrel
+Assets/Debris/plastic_barrel/diffus.tga
+Assets/Debris/plastic_barrel/normal.tga
+Assets/Debris/plastic_barrel/plastic_barrel.FBX
+Assets/Debris/plastic_barrel/plastic_barrel.obj
+Assets/Debris/plastic_barrel/preview.jpg
+Assets/Debris/plastic_barrel/readme.txt
+Assets/Debris/plastic_barrel/specular.tga
+Assets/GPGPUI
+Assets/GPGPUI/Editor
+Assets/GPGPUI/Editor/GPGPExhibitUIAuthoring.cs
+Assets/GPGPUI/GPGP-UI-Guide.txt
+Assets/GPGPUI/GPGPExhibitUI.cs
+Assets/GPGPUI/GPGPUIContent.cs
+Assets/HeadsetPreview
+Assets/HeadsetPreview/CyberCanoeHeadsetSimulator.cs
+Assets/HeadsetPreview/CyberCanoe_Headset_Guide.txt
+Assets/HeadsetPreview/Editor
+Assets/HeadsetPreview/Editor/CyberCanoeHeadsetSetup.cs
+Assets/HeadsetPreview/Materials
+Assets/HeadsetPreview/Materials/CyberCanoeRoom.mat
+Assets/HeadsetPreview/Materials/CyberCanoeStereoScreen.mat
+Assets/HeadsetPreview/README.txt
+Assets/HeadsetPreview/Shaders
+Assets/HeadsetPreview/Shaders/CyberCanoeStereoScreen.shader
+Assets/Ocean
+Assets/Ocean/Editor
+Assets/Ocean/Editor/GPGPDebrisModelAuthoring.cs
+Assets/Ocean/Editor/GPGPDebrisTextureLibrary.cs
+Assets/Ocean/Editor/GPGPExhibitContentAuthoring.cs
+Assets/Ocean/Editor/GPGPLayeredCubeVisualizationEditor.cs
+Assets/Ocean/Editor/GPGPSeaTurtleAuthoring.cs
+Assets/Ocean/Editor/GPGPWaterValidation.cs
+Assets/Ocean/FloatingDebris.cs
+Assets/Ocean/GPGPDebrisBands.cs
+Assets/Ocean/GPGPLayerSurfaces.cs
+Assets/Ocean/GPGPLayeredCubeVisualization.cs
+Assets/Ocean/GPGPWaterCompartment.cs
+Assets/Ocean/GPGPWaterTest.cs
+Assets/Ocean/GPGP_Water_Guide.md
+Assets/Ocean/Materials
+Assets/Ocean/Materials/DarkGalleryFloor.mat
+Assets/Ocean/Materials/Debris_Blue.mat
+Assets/Ocean/Materials/Debris_Ivory.mat
+Assets/Ocean/Materials/Debris_Orange.mat
+Assets/Ocean/Materials/Debris_Yellow.mat
+Assets/Ocean/Materials/MAT_GPGP_DebrisImpostor.mat
+Assets/Ocean/Materials/MAT_GPGP_WaterSide.mat
+Assets/Ocean/Materials/MAT_GPGP_Water_Continuous_Baked.mat
+Assets/Ocean/Materials/MAT_GPGP_Water_Macro.mat
+Assets/Ocean/Materials/MAT_GPGP_Water_Mega.mat
+Assets/Ocean/Materials/MAT_GPGP_Water_Meso.mat
+Assets/Ocean/Materials/MAT_GPGP_Water_Micro.mat
+Assets/Ocean/Materials/TEX_GPGP_Caustics.mat
+Assets/Ocean/Materials/TEX_GPGP_ColorVariation.mat
+Assets/Ocean/Materials/TEX_GPGP_LayeredDebris.mat
+Assets/Ocean/Materials/TEX_GPGP_RippleHeight.mat
+Assets/Ocean/Materials/TEX_GPGP_WaterSide 1.mat
+Assets/Ocean/Materials/TEX_GPGP_WaterSide 2.mat
+Assets/Ocean/Materials/TEX_GPGP_WaterSide 3.mat
+Assets/Ocean/Materials/TEX_GPGP_WaterSide.mat
+Assets/Ocean/Materials/TEX_GPGP_WaveHeight.mat
+Assets/Ocean/Materials/smooth_concrete_floor_diff_4k.mat
+Assets/Ocean/OceanSurface.cs
+Assets/Ocean/README.md
+Assets/Ocean/SG_GPGP_Water.shadergraph
+Assets/Ocean/Shaders
+Assets/Ocean/Shaders/SH_GPGP_DebrisImpostor.shader
+Assets/Ocean/Shaders/SH_GPGP_WaterSide.shader
+Assets/Ocean/Textures
+Assets/Ocean/Textures/README.md
+Assets/Ocean/Textures/TEX_GPGP_Caustics.png
+Assets/Ocean/Textures/TEX_GPGP_ColorVariation.png
+Assets/Ocean/Textures/TEX_GPGP_DebrisAtlas.png
+Assets/Ocean/Textures/TEX_GPGP_LayeredDebris.png
+Assets/Ocean/Textures/TEX_GPGP_RippleHeight.png
+Assets/Ocean/Textures/TEX_GPGP_WaterSide.png
+Assets/Ocean/Textures/TEX_GPGP_WaveHeight.png
+Assets/Ocean/Textures/generation-prompts.json
+Assets/Ocean/Textures/smooth_concrete_floor_diff_4k.jpg
+Assets/Ocean/Textures/smooth_concrete_floor_disp_4k.png
+Assets/Ocean/Trash Accumulation Guide.txt
+Assets/Ocean/TrashAccumulation.cs
+Assets/Ocean/Whitebox Visualization Guide.txt
+Assets/Ocean/WhiteboxTrash.cs
+Assets/Ocean_Shader.shadergraph
+Assets/PacificExhibit
+Assets/PacificExhibit/Editor
+Assets/PacificExhibit/Editor/PacificCyberCanoeValidation.cs
+Assets/PacificExhibit/Editor/PacificExhibitBuilder.cs
+Assets/PacificExhibit/Editor/PacificExhibitIntegration.cs
+Assets/PacificExhibit/Editor/PacificKeller102Preview.cs
+Assets/PacificExhibit/Editor/PlasticTypePresentation.cs
+Assets/PacificExhibit/Editor/PlasticTypePresentationPreview.cs
+Assets/PacificExhibit/Materials
+Assets/PacificExhibit/Materials/ExhibitAtmosphere.asset
+Assets/PacificExhibit/Materials/Floor_WetSlate.mat
+Assets/PacificExhibit/Materials/Frame_Cyan.mat
+Assets/PacificExhibit/Materials/Glass_ClearBlue.mat
+Assets/PacificExhibit/Materials/Museum_Dark_Tile.mat
+Assets/PacificExhibit/Materials/PlasticType_ReflectiveFloor.mat
+Assets/PacificExhibit/Materials/Plinth_Graphite.mat
+Assets/PacificExhibit/Materials/Room_Charcoal.mat
+Assets/PacificExhibit/Materials/Room_LightStrips.mat
+Assets/PacificExhibit/Materials/Water_Layer_1.mat
+Assets/PacificExhibit/Materials/Water_Layer_2.mat
+Assets/PacificExhibit/Materials/Water_Layer_3.mat
+Assets/PacificExhibit/Materials/Water_Layer_4.mat
+Assets/PacificExhibit/Meshes
+Assets/PacificExhibit/Meshes/WaterSheet.asset
+Assets/PacificExhibit/PacificCyberCanoeAppearance.cs
+Assets/PacificExhibit/PacificExhibitOrbit.cs
+Assets/PacificExhibit/PacificExhibitSettings.cs
+Assets/PacificExhibit/PacificPlanarReflection.cs
+Assets/PacificExhibit/Prefabs
+Assets/PacificExhibit/Prefabs/PacificExhibit.prefab
+Assets/PacificExhibit/RenderTextures
+Assets/PacificExhibit/RenderTextures/Exhibit_Left_HDR.renderTexture
+Assets/PacificExhibit/RenderTextures/Exhibit_Right_HDR.renderTexture
+Assets/PacificExhibit/Shaders
+Assets/PacificExhibit/Shaders/Floor.shader
+Assets/PacificExhibit/Shaders/Glass.shader
+Assets/PacificExhibit/Shaders/Glow.shader
+Assets/PacificExhibit/Shaders/RippleWater.shader
+Assets/PacificExhibit/Textures
+Assets/PacificExhibit/Textures/Museum_Dark_Tile_BaseColor.png
+Assets/Scenes/Plastic_Type.unity
+Assets/Settings/DefaultVolumeProfile.asset
+Assets/Settings/PC_RPAsset.asset
+Assets/Settings/PC_Renderer.asset
+Assets/Settings/SampleSceneProfile.asset
+Assets/Settings/UniversalRenderPipelineGlobalSettings.asset
+Assets/Sounds/CC_Canoe Button Sound/universfield-click-button-140881.mp3
+Assets/TextMesh Pro/Fonts
+Assets/TextMesh Pro/Fonts/LiberationSans - OFL.txt
+Assets/TextMesh Pro/Fonts/LiberationSans.ttf
+Assets/TextMesh Pro/Resources
+Assets/TextMesh Pro/Resources/Fonts & Materials
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Drop Shadow.mat
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Outline.mat
+Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF.asset
+Assets/TextMesh Pro/Resources/LineBreaking Following Characters.txt
+Assets/TextMesh Pro/Resources/LineBreaking Leading Characters.txt
+Assets/TextMesh Pro/Resources/Style Sheets
+Assets/TextMesh Pro/Resources/Style Sheets/Default Style Sheet.asset
+Assets/TextMesh Pro/Resources/TMP Settings.asset
+Assets/TextMesh Pro/Shaders
+Assets/TextMesh Pro/Shaders/SDFFunctions.hlsl
+Assets/TextMesh Pro/Shaders/TMP_Bitmap-Custom-Atlas.shader
+Assets/TextMesh Pro/Shaders/TMP_Bitmap-Mobile.shader
+Assets/TextMesh Pro/Shaders/TMP_Bitmap.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF Overlay.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF SSD SpaceWarp.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF SSD.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF SpaceWarp.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-HDRP LIT.shadergraph
+Assets/TextMesh Pro/Shaders/TMP_SDF-HDRP UNLIT.shadergraph
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Masking.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile Overlay.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD SpaceWarp.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SSD.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile SpaceWarp.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile-2-Pass.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Mobile.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Surface-Mobile.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-Surface.shader
+Assets/TextMesh Pro/Shaders/TMP_SDF-URP Lit.shadergraph
+Assets/TextMesh Pro/Shaders/TMP_SDF-URP Unlit.shadergraph
+Assets/TextMesh Pro/Shaders/TMP_SDF.shader
+Assets/TextMesh Pro/Shaders/TMP_Sprite.shader
+Assets/TextMesh Pro/Shaders/TMPro.cginc
+Assets/TextMesh Pro/Shaders/TMPro_Mobile.cginc
+Assets/TextMesh Pro/Shaders/TMPro_Properties.cginc
+Assets/TextMesh Pro/Shaders/TMPro_Surface.cginc
+Assets/VRSharing
+Assets/VRSharing/Editor
+Assets/VRSharing/Editor/PacificVRPackageExport.cs
+Assets/VRSharing/Editor/PacificVRPackageSetup.cs
+Assets/VRSharing/README-FIRST.txt
+Assets/Wildlife
+Assets/Wildlife/SeaTurtle
+Assets/Wildlife/SeaTurtle/ATTRIBUTION.txt
+Assets/Wildlife/SeaTurtle/Prepared
+Assets/Wildlife/SeaTurtle/Prepared/Materials
+Assets/Wildlife/SeaTurtle/Prepared/Materials/SeaTurtle_Eyes.mat
+Assets/Wildlife/SeaTurtle/Prepared/Materials/SeaTurtle_Pale.mat
+Assets/Wildlife/SeaTurtle/Prepared/Materials/SeaTurtle_Shell.mat
+Assets/Wildlife/SeaTurtle/Prepared/Materials/SeaTurtle_Skin.mat
+Assets/Wildlife/SeaTurtle/Prepared/SeaTurtle.controller
+Assets/Wildlife/SeaTurtle/Prepared/SeaTurtle.prefab
+Assets/Wildlife/SeaTurtle/SeaTurtle.mtl
+Assets/Wildlife/SeaTurtle/SeaTurtle.obj
+Assets/Wildlife/SeaTurtle/Source
+Assets/Wildlife/SeaTurtle/Source/ConversionReport.json
+Assets/Wildlife/SeaTurtle/Source/Turtle_PolyGoogle.glb
+Assets/XR
+Assets/XR/Loaders
+Assets/XR/Loaders/OpenXRLoader.asset
+Assets/XR/Settings
+Assets/XR/Settings/OpenXR Editor Settings.asset
+Assets/XR/Settings/OpenXR Package Settings.asset
+Assets/XR/XRGeneralSettingsPerBuildTarget.asset

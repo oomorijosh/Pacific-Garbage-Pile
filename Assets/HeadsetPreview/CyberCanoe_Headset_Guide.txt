@@ -7,7 +7,7 @@ The current VR setup and usage instructions are in README.txt in this folder:
 That README covers Meta Quest and SteamVR connections, turning VR on and off,
 recentering, preview calibration, troubleshooting and LAVA presentation builds.
 
-Start with One time Unity setup. The VR mode switch is the checkbox beside
-the Cyber Canoe Headset Simulator component's title on
+Start with BEFORE IMPORT, then ADD PREVIEW TO YOUR SCENE. The VR mode switch
+is the checkbox beside the Cyber Canoe Headset Simulator component's title on
 CyberCanoe_HeadsetSimulator. Keep global Initialize XR on Startup off and the
 simulator's Initialize XR field on so the component controls headset startup.

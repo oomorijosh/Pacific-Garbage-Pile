@@ -26,9 +26,21 @@ unrelated scene objects outside that hierarchy.
 CONTROLS
 
 - D-pad left/right moves focus within the current row.
-- D-pad up/down changes between the three rows: category selectors,
-  information/Another item/automatic-mode controls, and story tabs.
+- D-pad up/down changes between the three rows: four category selectors,
+  four information/Another item/automatic-mode controls, and four story tabs
+  plus Hide UI in the header.
 - Start/Menu activates the focused control.
+- Select/Back/View toggles the UI. Tab does the same on a keyboard. You can
+  also focus Hide UI in the header with the D-pad and press Start/Menu.
+- Hiding slides the side panels outward, the header upward, and the bottom
+  navigation and centre note downward over 0.35 seconds. The featured model
+  travels with the right panel and is hidden with it. This clears the debris
+  box view without moving the cameras or the box.
+- A small Show UI control remains at the upper right while the panels are
+  hidden. Press Select/Back/View, Tab, or Start/Menu to restore them.
+  The D-pad does not change hidden controls. Your focus, card, category,
+  featured example, and automatic-mode setting are kept; the Overview timer
+  waits while hidden and resumes from the same point after restoration.
 - Confirm a category to show a random model from that category. Confirm the
   same category again, or activate Another item, to see another example.
   When alternatives are available, the next example avoids an immediate
@@ -43,8 +55,9 @@ Existing flight and waypoint controls remain available: A/South returns the
 camera home, B/East advances a waypoint, and X/West goes to the previous
 waypoint. Sticks, triggers and shoulders retain their camera navigation.
 The Y/North playback mapping and its saved enabled state are preserved.
-This UI reads D-pad and Start separately from the existing EventSystem.
-Touch and Quest-controller interaction are not supplied by this mockup.
+This UI reads D-pad, Start, Select and Tab separately from the existing
+EventSystem. Pointer, touch and Quest-controller interaction are not supplied
+by this mockup.
 
 WALL AND HOME VR
 

@@ -1,199 +1,144 @@
-CyberCanoe VR mode
+CYBER CANOE - HEADSET PREVIEW ADD-ON
 
-Use a headset at home to view this project's scene on a virtual CyberCanoe
-wall, then turn headset preview off to present on the physical LAVA display.
-Each headset eye sees the corresponding CyberCanoe stereo image. Moving your
-head changes where you view the virtual wall from; the existing CyberCanoe
-navigation moves the content while the virtual room stays stationary.
+Test your own Cyber Canoe scene at home on a virtual LAVA display, then turn
+preview off to present on the physical LED wall in class.
 
-This guide covers Windows PC headset preview in the Unity Editor. Quest 2,
-Quest 3, Quest 3S and Quest Pro can use Meta Link. SteamVR headsets can use
-SteamVR. The project already includes OpenXR and the desktop OpenXR loader.
-Running independently on a Quest requires a separate Android configuration.
+This add-on contains the headset viewer, virtual stereo screen, room materials,
+and setup/calibration tools. It does not include the Pacific garbage exhibit,
+student content, a replacement Cyber Canoe rig, or saved project settings.
+The setup tool connects to the Cyber Canoe cameras already in your scene.
 
-Requirements
+BEFORE IMPORT
 
-- Open the project with the Unity version in ProjectSettings/ProjectVersion.txt.
-- Use a Windows PC that meets the requirements of your headset's PC runtime.
-- Connect the headset through Meta Link or SteamVR before entering Play mode.
-- Use a scene containing the CyberCanoe rig, such as
-  Assets/Scenes/Plastic_Type.unity.
+Use your class's Cyber Canoe Unity project with Universal Render Pipeline (URP).
+The tested editor is Unity 6000.6.0f1. The class's Cyber Canoe package must already
+be installed: CC_CAMERA_SETUP, CC_CAMERAOFFSET, CC_SETTINGS and CC_CANVAS_SETUP
+are required. This add-on leaves those source files and their GUIDs alone.
 
-One time Unity setup
+1. Install the dependencies before importing the add-on. The supplied
+   REQUIRED-PACKAGES.json lists the tested package names and versions:
+     com.unity.inputsystem                   1.20.0
+     com.unity.render-pipelines.universal    17.6.0
+     com.unity.ugui                          2.6.0
+     com.unity.xr.management                 4.7.0
+     com.unity.xr.openxr                     1.18.0
+   In Window > Package Management > Package Manager, use Install package by
+   name for missing packages. URP and uGUI are usually already in the class
+   project. Alternatively, close Unity and merge the listed dependencies into
+   Packages/manifest.json, keeping the project's other entries. The supplied
+   JSON is a dependency list; do not replace an existing project's manifest.
+2. Under Edit > Project Settings > Player > Other Settings, set Active Input
+   Handling to Input System Package (New) or Both. Restart Unity if prompted.
+3. Use Assets > Import Package > Custom Package to import
+   CyberCanoe-HeadsetPreview.unitypackage. Import all its assets, then wait for
+   compilation. All installed files belong to Assets/HeadsetPreview.
 
-Stop Play mode before changing these settings.
+ADD PREVIEW TO YOUR SCENE
 
-1. Open Edit > Project Settings > XR Plug-in Management.
-2. On the Windows, Mac, Linux / desktop tab, keep the OpenXR provider enabled.
-3. Uncheck Initialize XR on Startup. This lets the simulator manage headset
-   startup and shutdown when its component is enabled.
-4. Open Assets/Scenes/Plastic_Type.unity, or your own CyberCanoe scene.
-5. Choose Tools > Cyber Canoe > Add Headset Screen Simulator.
-   If it already exists, this selects it without creating another one.
-6. Select CyberCanoe_HeadsetSimulator in the Hierarchy. In the Inspector,
-   enable the checkbox beside the Cyber Canoe Headset Simulator component's
-   title and check its Initialize XR field under Runtime.
-7. Save the scene.
+1. Open your own scene containing the Cyber Canoe rig.
+2. Choose Tools > Cyber Canoe > Set Up Headset Preview for Current Scene.
+   It finds CC_HEAD's CC_CAMERA_SETUP and the two CC_CAMERAOFFSET cameras that
+   share a projection screen under CC_HUB. It creates a separate headset room,
+   connects the cameras and stereo material, and prepares desktop OpenXR.
+   Running it again reuses the existing simulator. Save your scene afterwards.
+3. Adding preview preserves your current screen dimensions, CC_HEAD position,
+   eye render texture sizes and HDR choice. If the scene needs the supplied
+   Keller 102 LED wall measurements, choose:
+   Tools > Cyber Canoe > Apply LAVA LED Wall Calibration (Keller 102).
+   This deliberately changes the rig calibration in your current scene and
+   supports Undo. It does not move your scene content or CC_HUB navigation.
+4. Connect the headset before pressing Play:
+   - SteamVR headset: start SteamVR and select it as the active OpenXR runtime.
+   - Meta Quest: use the Windows Meta Link PC app with USB Link or Air Link;
+     set Meta Link as its active OpenXR runtime and launch Quest Link.
+5. Press Play and wear the headset. The first tracked pose places you at the
+   calibrated viewer position. Use Recenter Viewer at Calibrated Position in
+   the simulator Inspector during Play if the starting view needs resetting.
 
-Initialize XR controls whether the simulator can start a headset session.
-The checkbox beside the component title controls whether VR preview runs.
-Use the component checkbox to switch modes. Unchecking Initialize XR alone
-does not turn off preview if a headset session is already running.
+This is Windows PC VR preview in Unity, including Quest connected to a PC.
+The package does not configure standalone Android Quest applications.
+Use your scene's existing navigation controls. Headset/controller navigation
+and pointer interaction are not added by the preview tool.
 
-The saved project settings may differ from this setup. In particular, global
-XR startup can be enabled while a scene's Initialize XR field is unchecked.
-Check both settings when using the project for the first time.
+HOW THE CAMERAS AND SCREEN WORK
 
-Meta Quest connection
+Your scene's left/right Cyber Canoe cameras render two full-wall eye images.
+The simulator routes those images into a material on VirtualCyberCanoeScreen.
+A third, tracked HeadsetCamera views that screen from inside Headset_Room.
+The screen shader sends the appropriate content image to each headset eye.
 
-1. Install and open the Meta Link PC app, also called Meta Quest Link or
-   Meta Horizon Link. Connect the Quest through USB Link or wireless Air Link.
-2. In the PC app, open Settings > General. Under OpenXR Runtime, set Meta Link
-   as the active runtime.
-3. Wear the headset and launch Quest Link so the PC connection is active.
-4. Continue with Turn VR on below.
+Moving your head changes your view of the virtual wall. The Cyber Canoe content
+viewpoint remains calibrated to the classroom viewer, while your existing
+navigation controls move the scene. Keep CyberCanoe_HeadsetSimulator outside
+CC_HUB so navigation cannot move the room around your head. Keep rig parents
+at scale (1, 1, 1); one Unity unit represents one metre.
 
-This route uses Meta's OpenXR runtime. Some existing Inspector help text
-mentions SteamVR; that text also applies to Quest when Meta Link supplies the
-runtime. Headset viewing uses the project's existing OpenXR packages.
-Quest controller navigation is not configured by this simulator; use the
-scene's existing keyboard, gamepad, Space Mouse or waypoint controls.
+The saved Headset_Room stays inactive until preview starts. Do not enable it
+manually. A dedicated CC_HeadsetRoom user layer isolates it from scene content.
+The setup tool uses an existing layer with that name or reserves an unused one.
 
-Meta's Link setup and Unity Play mode instructions:
-https://developers.meta.com/vr/documentation/unity/unity-link/
+LAVA LED WALL PRESET (KELLER 102)
 
-SteamVR connection
+The supplied calibration matches the classroom XML provided with this project:
+  Physical wall:      6.047 x 2.042 metres
+  Wall centre:       (0, 1.75, 2.282) relative to CC_HUB
+  Head centre:       (0, 1.76, -2) relative to CC_HUB
+  Viewing distance:  4.282 metres, 0.01 metre above wall centre
+  Eye separation:    0.061 metre, normal side-by-side stereo
+  Each eye image:    4800 x 1620 pixels covering the entire physical wall
+  Combined output:   9600 x 1620 pixels
 
-1. Connect the headset to its PC runtime and start SteamVR.
-2. Confirm SteamVR detects the headset and is set as the active OpenXR runtime
-   in its settings.
-3. Continue with Turn VR on below.
+The preset requires existing CC settings to use 61 mm eye separation, normal
+eye order and side-by-side output; it checks those settings before changing
+geometry. The optional older 4080 x 1152 / 20 ft preset remains available for
+other displays. Use the Keller 102 preset for the supplied LED wall.
 
-Valve's Unity and OpenXR instructions:
-https://partner.steamgames.com/doc/steamhardware/steamframe/engines/unity
+Assets/HeadsetPreview/Calibration/CCUnityConfig.xml contains the supplied
+physical-wall configuration. The Unity Editor does not load that XML; apply
+the calibration menu to match its geometry during headset preview. Follow
+your class's Cyber Canoe build/configuration instructions for the real wall.
+In this Cyber Canoe runtime, a local CCUnityConfig.xml beside the executable
+is used when the application is launched with that folder as its working
+directory. Other classrooms/displays require their own calibration.
 
-Turn VR on at home
+TURN PREVIEW OFF FOR CLASS
 
-1. With Play mode stopped, select CyberCanoe_HeadsetSimulator.
-2. Check the box beside the Cyber Canoe Headset Simulator component's title.
-   Keep its Initialize XR field checked and global Initialize XR on Startup
-   unchecked, as described in One time Unity setup.
-3. Start the headset connection using the appropriate section above.
-4. Press Play in Unity and wear the headset. You should see a stationary room
-   and a virtual wall showing the scene in stereo.
-5. Look toward the wall. The first tracked headset pose sets your starting
-   viewpoint. For a new starting direction, face the desired direction and
-   click Recenter Viewer at Calibrated Position in the simulator's Inspector.
+Stop Play, select CyberCanoe_HeadsetSimulator, and uncheck the checkbox beside
+the Cyber Canoe Headset Simulator component's title. Save the scene.
+Keep global Initialize XR on Startup unchecked in XR Plug-in Management.
+Your original Cyber Canoe cameras, canvas, render targets and head transforms
+are restored when preview stops. The room is hidden and ordinary wall output
+can run without a headset. Keep the add-on and XR packages installed so the
+scene's scripts continue to compile. To preview at home again, enable the
+component and its Initialize XR field, connect the headset, and press Play.
 
-The Inspector's Status field reports startup, tracking and connection errors.
-The room starts inactive in the saved scene and is activated by the simulator;
-you do not need to activate Headset_Room manually.
+TROUBLESHOOTING
 
-Turn VR off for desktop or LAVA wall output
-
-1. Stop Play mode.
-2. Select CyberCanoe_HeadsetSimulator and uncheck the box beside the Cyber
-   Canoe Headset Simulator component's title.
-3. Confirm Initialize XR on Startup remains unchecked in Project Settings.
-4. Save the scene, then enter Play mode or build for Windows.
-
-Keep CC_HUB, CC_HEAD, both CyberCanoe eye cameras and the stereo output canvas
-in place. Disabling the simulator restores its original camera, head and
-canvas settings and hides the headset room. CyberCanoe stereo wall rendering
-continues without a headset. Keep the OpenXR provider installed and enabled
-so you can switch back to VR later.
-
-Stopping Play mode ends the current preview session. Disable the component
-before pressing Play again when you want to stay in wall mode. With global XR
-startup enabled, disabling the simulator can leave the headset runtime active.
-
-Prepare a wall presentation build
-
-- In File > Build Profiles, check the Scene List for your Windows build.
-  Include the intended presentation scene, such as Plastic_Type, and disable
-  headset simulation in every included scene that contains a simulator.
-  The project can still point to the original CC_LAVA_LCD_WALL_SCENE demo;
-  opening another scene does not automatically change the build list.
-- For the Planar Direct Light Pro LED display in Keller 102, use the supplied
-  Presentation/Keller102/CCUnityConfig.xml. This is the lab configuration
-  provided for this exhibit: 9600 x 1620 side-by-side output, 61 mm eye
-  separation, a 6.047 x 2.042 metre wall, and a viewer 4.282 metres from it.
-  Other physical displays need their own calibration.
-- A built application loads CCUnityConfig.xml from its working directory
-  first. Launching from the executable's folder lets you keep a local config
-  beside the executable. It overrides the shared configuration path in
-  Assets/CC_ALL/CC/CC_SETTINGS.asset, normally C:\CCUnityConfig.xml.
-  Without either file, the built application uses its saved scene settings.
-- XML calibration is applied by the built application, not by the Unity
-  Editor. Match the scene's preview geometry to the intended lab calibration
-  when you need the home preview to represent that display.
-
-Match the Keller 102 LavaLab LED wall
-
-1. Stop Play mode and keep the scene you want to present open.
-2. Choose Tools > Cyber Canoe > Apply LavaLab LED Wall Calibration (Keller 102),
-   or click the matching button on CyberCanoe_HeadsetSimulator.
-3. Save the scene. The action updates the projection screen, CC_HEAD and the
-   headset room in the current scene. It supports Undo and leaves the VR mode
-   switch and Initialize XR setting as you set them.
-4. At home, enable the simulator for headset preview as described above.
-   Before the lab presentation, disable it and save as described in Turn VR off.
-5. Build the intended scene for Windows. Copy
-   Presentation/Keller102/CCUnityConfig.xml beside the built .exe and launch
-   from that folder. For a shortcut, set Start in to the executable's folder.
-
-Each eye renders 4800 x 1620 pixels and covers the full 6.047 x 2.042 metre
-wall. The combined output is 9600 x 1620, with normal eye order. The wall
-centre is (0, 1.75, 2.282) metres and the head centre is (0, 1.76, -2) metres.
-Fullscreen stays 0 as supplied; the existing CC runtime positions its wall
-window at (0, 0). The XML is applied in a built app. The menu/Inspector action
-applies equivalent geometry and eye texture sizes for Unity headset preview.
-Calibration preserves the exhibit and CC_HUB navigation placement. Use the
-existing navigation controls to frame the content. The current Plastic_Type
-view crops the tall exhibit vertically; showing every layer at once requires
-a more distant viewing position in the scene while retaining these physical
-wall/head calibration values.
-
-Adjust the preview calibration
-
-Keep an existing scene's calibration unless you intend to change it.
-The older Plastic_Type preview used a 6.1887 x 1.75 metre screen, centred at
-1.85 metres high, viewed from 6.096 metres (20 feet), with 2040 x 1152 pixels
-per eye. Apply the Keller 102 action above to match the supplied LED wall.
-
-With Play mode stopped, select the simulator to adjust Viewing Distance Meters,
-Viewer Offset Meters, Per-Eye Texture Width and Per-Eye Texture Height.
-Select Virtual Screen to Adjust Size selects the virtual wall for editing.
-Keep CC_HUB and headset rig parents at scale (1, 1, 1) so units represent metres.
-Each eye image covers the whole wall; do not halve the wall's physical width.
-
-The optional Apply 4080 x 1152 SBS / 20 ft Center Calibration button resets
-eye texture sizes to 2040 x 1152, distance to 6.096 metres and viewer offsets
-to zero, then repositions the initial viewer. It overwrites custom preview
-settings. It does not measure the wall or turn VR on. For this presentation,
-use the Keller 102 action instead of the older 20-foot calibration button.
-
-Troubleshooting
-
-- No headset image: verify the connection inside the headset, the active
-  OpenXR runtime, the desktop OpenXR provider, the simulator component checkbox
-  and its Initialize XR field. Read Status and Unity's Console for the error.
-- Simulator disabled itself: a startup failure automatically disables the
-  component. Stop Play, fix the runtime or connection, enable the component
-  again, and press Play to retry.
-- Waiting for headset tracking: wear the connected headset and let its runtime
-  acquire tracking. Recenter waits for a tracked pose.
-- Wrong viewing direction: face the desired forward direction and use
-  Recenter Viewer at Calibrated Position during Play mode.
-- Room visible but wall blank: check the simulator's left and right content
-  camera references, source screen, screen material, and any Console errors.
+- Missing CC_* types: import the class's Cyber Canoe package first.
+- Missing Unity XR/Input System types: finish the dependency installation.
+- Setup cannot find a source rig: CC_HEAD needs CC_CAMERA_SETUP with its
+  settings and left/right cameras assigned; both cameras need CC_CAMERAOFFSET
+  pointing at the same projection screen, under an ancestor named CC_HUB.
+- No headset image: check its PC connection, active OpenXR runtime, simulator
+  component checkbox and Initialize XR field. Read Status and the Console.
 - Preview is slow: reduce both per-eye texture dimensions while preserving
-  their pixel aspect ratio. Keep the physical wall size unchanged.
-- Headset starts in wall mode: stop Play and confirm global Initialize XR on
-  Startup and the simulator component are both off in the scene being run.
-- Built app shows the wrong scene or layout: check the build Scene List and
-  the local/shared CCUnityConfig.xml used when launching the application.
+  their pixel aspect ratio. Keep the physical wall size and viewing distance.
+- Headset starts in class mode: keep global Initialize XR on Startup off and
+  disable the simulator in the scene you are actually running or building.
+- Pink room/screen: this add-on requires an active URP asset. Keep your class
+  project's URP pipeline; the setup tool does not replace its rendering assets.
 
-Use the headset preview to check scene scale, framing, stereo depth and label
-readability. Confirm final brightness, viewing limits and stereo appearance
-on the physical LAVA display before presenting.
+Headset preview helps assess scale, framing, stereo depth and label readability.
+Check final brightness and stereo appearance on the real wall before class.
+
+SHARE UPDATED ADD-ON FILES
+
+Choose Tools > Cyber Canoe > Export Headset Preview Add-on.
+Share Artifacts/CyberCanoe-HeadsetPreview-Unity.zip. The exporter includes only
+Assets/HeadsetPreview tools/materials/docs/calibration, excluding any generated
+project XR settings. It does not export your scene or content.
+
+Meta Link / Unity Play mode:
+https://developers.meta.com/vr/documentation/unity/unity-link/
+Unity asset packages:
+https://docs.unity.com/en-us/engine/6000.5/manual/assets-and-media/asset-packages/create

@@ -25,6 +25,7 @@ namespace GPGPUI
         [Range(.1f, .8f)] public float foregroundDepthMeters = .4f;
         [Tooltip("Seconds per Overview card while automatic cycling is running.")]
         [Min(5f)] public float overviewIntervalSeconds = 25f;
+        public CCaux_Waypointer waypointer;
 
         public int SelectedCategory { get; private set; } = 3;
         public int CurrentView { get; private set; }
@@ -83,6 +84,7 @@ namespace GPGPUI
 
         void OnEnable()
         {
+            if (waypointer != null) waypointer.OnWaypointChanged += SyncToWaypoint;
             if (!initialized) return;
             if (canvasRect) canvasRect.gameObject.SetActive(true);
             if (stage) stage.gameObject.SetActive(true);
@@ -90,6 +92,7 @@ namespace GPGPUI
 
         void OnDisable()
         {
+            if (waypointer != null) waypointer.OnWaypointChanged -= SyncToWaypoint;
             if (!Application.isPlaying) return;
             if (canvasRect) canvasRect.gameObject.SetActive(false);
             if (stage) stage.gameObject.SetActive(false);
@@ -142,6 +145,17 @@ namespace GPGPUI
             initialized = true;
             SyncToScreen();
             Refresh();
+        }
+        public void SyncToWaypoint(int index)
+        {
+            if (index == 0)
+            {
+                SelectView(0); // Overview
+            }
+            else if (index >= 1 && index <= 4)
+            {
+                SelectCategory(4 - index);
+            }
         }
 
         void ReleaseOwned(string ownedName)
@@ -199,7 +213,7 @@ namespace GPGPUI
                 AddControl(0, i, ShortSizes[i] + "   " + GPGPUIContent.CategoryRange(category),
                     80 + i * 1170, 1375, 1130, 118, 64);
             }
-            Text(canvasRect, "Gamepad instructions", "D-PAD  Browse     START  Select / another item", 80, 1530, 2950, 65, 43, White);
+            Text(canvasRect, "Gamepad instructions", "B/X - Switch scenes    D-PAD - Browse Options     START - Select    SELECT - Show/Hide UI", 80, 1530, 2950, 65, 43, White);
             cycleHint = Text(canvasRect, "Cycling status", "", 3020, 1524, 1670, 68, 38, Muted, TextAlignmentOptions.Right);
         }
 

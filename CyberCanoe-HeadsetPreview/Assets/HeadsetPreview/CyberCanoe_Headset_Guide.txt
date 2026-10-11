@@ -1,0 +1,17 @@
+CyberCanoe headset guide
+
+The current VR setup and usage instructions are in README.txt in this folder:
+
+    Assets/HeadsetPreview/README.txt
+
+That README covers Meta Quest and SteamVR connections, turning VR on and off,
+recentering, preview calibration, troubleshooting and LAVA presentation builds.
+
+You must install XR Plug-in Management and OpenXR Plugin yourself before
+importing the add-on. They are not bundled or installed automatically. Follow
+BEFORE IMPORT in README.txt for package names, tested versions and steps.
+
+Start with BEFORE IMPORT, then ADD PREVIEW TO YOUR SCENE. The VR mode switch
+is the checkbox beside the Cyber Canoe Headset Simulator component's title on
+CyberCanoe_HeadsetSimulator. Keep global Initialize XR on Startup off and the
+simulator's Initialize XR field on so the component controls headset startup.

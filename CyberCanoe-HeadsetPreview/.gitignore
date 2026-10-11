@@ -1,0 +1,9 @@
+# These XR settings are generated for the receiving Unity project.
+/Assets/HeadsetPreview/ProjectSettings/
+/Assets/HeadsetPreview/ProjectSettings.meta
+
+# Distribute this small package even if the parent Unity repo ignores packages.
+!/Downloads/CyberCanoe-HeadsetPreview.unitypackage
+
+.DS_Store
+Thumbs.db

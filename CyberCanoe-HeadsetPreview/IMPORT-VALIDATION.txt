@@ -1,0 +1,16 @@
+Cyber Canoe rig-only headset addon: isolated native-import validation
+Unity 6000.6.0f1
+Fixture originally contains only five existing Cyber Canoe core scripts, its own student scene, and installed registry dependencies.
+No headset, Play mode or exhibit content is required or started.
+PASS: Current student scene and existing content remain intact
+PASS: Room references, stereo screen and head tracking resolve
+PASS: Existing calibration, eye texture size and HDR are inferred
+PASS: Layer 31 conflict preserves student's layer and content
+PASS: Desktop OpenXR settings are registered with manual startup
+PASS: Setup is idempotent
+PASS: Keller 102 LED wall calibration applies exact measurements
+PASS: LED calibration can be undone without changing student content
+PASS: Saved student scene reopens with complete references
+PASS: No exhibit scenes, scripts, models or package dependencies were imported
+PASS: OpenXR and room layer registrations persist to project settings
+RESULT: PASS

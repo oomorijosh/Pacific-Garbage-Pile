@@ -8,7 +8,7 @@ navigation moves the content while the virtual room stays stationary.
 
 This guide covers Windows PC headset preview in the Unity Editor. Quest 2,
 Quest 3, Quest 3S and Quest Pro can use Meta Link. SteamVR headsets can use
-SteamVR. The project already includes OpenXR and the desktop OpenXR loader.
+SteamVR. This project already includes OpenXR and the desktop OpenXR loader.
 Running independently on a Quest requires a separate Android configuration.
 
 Requirements
@@ -18,6 +18,37 @@ Requirements
 - Connect the headset through Meta Link or SteamVR before entering Play mode.
 - Use a scene containing the CyberCanoe rig, such as
   Assets/Scenes/Plastic_Type.unity.
+
+Install XR packages before importing the shared add-on
+
+If you import the headset preview into your own CyberCanoe project, you must
+install Unity's XR packages yourself first. They are not included in the
+.unitypackage, and the preview setup tool does not download or install them.
+XR Plug-in Management starts the headset provider; OpenXR connects Unity to
+the headset runtime so it can display stereo images and track your head.
+
+1. Open Window > Package Management > Package Manager.
+2. Use Install package by name to install XR Plug-in Management first:
+     Name:    com.unity.xr.management
+     Version: 4.7.0
+3. Install OpenXR Plugin the same way:
+     Name:    com.unity.xr.openxr
+     Version: 1.18.0
+   If either package is already installed, check its version. These are the
+   tested versions. OpenXR also installs its package dependencies, including
+   Input System. Wait for installation and compilation to finish.
+4. Keep your class project's existing URP, uGUI and Input System packages.
+   The tested versions are URP 17.6.0, uGUI 2.6.0 and Input System 1.20.0.
+   Install any missing packages in Package Manager; preserve the project's
+   other dependencies. OpenXR's automatic dependencies do not guarantee
+   XR Plug-in Management 4.7.0 or Input System 1.20.0.
+5. Under Edit > Project Settings > Player > Other Settings, set Active Input
+   Handling to Input System Package (New) or Both. Restart Unity if prompted.
+6. Import CyberCanoe-HeadsetPreview.unitypackage using
+   Assets > Import Package > Custom Package, then wait for compilation.
+
+The class's CyberCanoe camera rig and scripts must already be installed.
+The headset preview is an add-on for that rig. Continue with Unity setup below.
 
 One time Unity setup
 
@@ -175,6 +206,8 @@ use the Keller 102 action instead of the older 20-foot calibration button.
 
 Troubleshooting
 
+- Missing Unity XR/Input System types after importing: install the packages
+  listed above yourself, then wait for Unity to finish compiling.
 - No headset image: verify the connection inside the headset, the active
   OpenXR runtime, the desktop OpenXR provider, the simulator component checkbox
   and its Initialize XR field. Read Status and Unity's Console for the error.

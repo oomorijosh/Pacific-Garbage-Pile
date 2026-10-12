@@ -100,6 +100,8 @@ public class CCaux_Waypointer : MonoBehaviour {
     public bool useSplineSmoothMovement = true;
 
     public GameObject mainNavigationNode = null;
+    public System.Action<int> OnWaypointChanged;
+    public int CurrentWaypointIndex { get; private set; } = 0;
     private Transform charCont;
     private LinkedList<Vector3> navPositionList = new LinkedList<Vector3>();
     private LinkedList<Quaternion> navRotationList = new LinkedList<Quaternion>();
@@ -315,7 +317,11 @@ public class CCaux_Waypointer : MonoBehaviour {
 
             startFramePosition = charCont.transform.position;
             startFrameRotation = charCont.transform.rotation;
-            
+
+            CurrentWaypointIndex = (CurrentWaypointIndex + 1) % navPositionList.Count;
+
+            OnWaypointChanged?.Invoke(CurrentWaypointIndex);
+
             endFramePosition = currentFramePos.Value;
             endFrameRotation = currentFrameRot.Value;
             startTime = Time.time;
@@ -340,6 +346,9 @@ public class CCaux_Waypointer : MonoBehaviour {
 
             startFramePosition = charCont.transform.position;
             startFrameRotation = charCont.transform.rotation;
+
+            CurrentWaypointIndex = (CurrentWaypointIndex - 1 + navPositionList.Count) % navPositionList.Count;
+            OnWaypointChanged?.Invoke(CurrentWaypointIndex);
 
             endFramePosition = currentFramePos.Value;
             endFrameRotation = currentFrameRot.Value;

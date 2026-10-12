@@ -25,6 +25,7 @@ namespace GPGPUI
         [Range(.1f, .8f)] public float foregroundDepthMeters = .4f;
         [Tooltip("Seconds per Overview card while automatic cycling is running.")]
         [Min(5f)] public float overviewIntervalSeconds = 25f;
+        public CCaux_Waypointer waypointer;
 
         public int SelectedCategory { get; private set; } = 3;
         public int CurrentView { get; private set; }
@@ -88,6 +89,7 @@ namespace GPGPUI
 
         void OnEnable()
         {
+            if (waypointer != null) waypointer.OnWaypointChanged += SyncToWaypoint;
             if (!initialized) return;
             if (canvasRect) canvasRect.gameObject.SetActive(true);
             ApplyUIVisibility();
@@ -95,6 +97,7 @@ namespace GPGPUI
 
         void OnDisable()
         {
+            if (waypointer != null) waypointer.OnWaypointChanged -= SyncToWaypoint;
             if (!Application.isPlaying) return;
             if (canvasRect) canvasRect.gameObject.SetActive(false);
             if (stage) stage.gameObject.SetActive(false);
@@ -151,6 +154,17 @@ namespace GPGPUI
             ApplyUIVisibility();
             SyncToScreen();
             Refresh();
+        }
+        public void SyncToWaypoint(int index)
+        {
+            if (index == 0)
+            {
+                SelectView(0); // Overview
+            }
+            else if (index >= 1 && index <= 4)
+            {
+                SelectCategory(4 - index);
+            }
         }
 
         void ReleaseOwned(string ownedName)

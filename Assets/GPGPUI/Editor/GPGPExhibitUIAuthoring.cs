@@ -100,6 +100,7 @@ namespace GPGPUI
                 ui.font = font;
                 ui.foregroundDepthMeters = foregroundDepth;
                 ui.overviewIntervalSeconds = overviewInterval;
+                if (previous) ui.waypointer = previous.waypointer;
                 ui.BuildPreview();
                 if (previous)
                 {

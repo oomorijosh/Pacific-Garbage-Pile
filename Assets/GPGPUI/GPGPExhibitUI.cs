@@ -28,6 +28,7 @@ namespace GPGPUI
         public CCaux_Waypointer waypointer;
 
         public int SelectedCategory { get; private set; } = 3;
+        public bool HasSelectedCategory { get; private set; }
         public int CurrentView { get; private set; }
         public int CurrentCard { get; private set; }
         public int FocusRow { get; private set; }
@@ -37,10 +38,16 @@ namespace GPGPUI
         public GameObject FeaturedSource { get; private set; }
         public GameObject FeaturedObject { get; private set; }
         public Transform CanvasTransform => canvasRect;
-        public bool ShowsCountryContext => CurrentView == 1 && CurrentCard == 0 &&
-            FeaturedSource && GPGPUIContent.EligibleCountryContext(SelectedCategory, FeaturedSource.name);
+        bool HasCountryCard => FeaturedSource &&
+            GPGPUIContent.EligibleCountryContext(SelectedCategory, FeaturedSource.name);
+        InfoCard[] CurrentDebrisCards => GPGPUIContent.DebrisCards(SelectedCategory,
+            FeaturedSource ? FeaturedSource.name : null);
+        public bool ShowsCountryContext => CurrentView == 1 &&
+            CurrentCard == CurrentDebrisCards.Length && HasCountryCard;
 
         const float Width = 4800f, Height = 1620f;
+        const int PreviewLayer = 30;
+        static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
         const float BoundsEpsilon = .000001f;
         const float PanelSlideSeconds = .35f;
         const float SideSlide = 1400f, HeaderSlide = 160f, BottomSlide = 500f;
@@ -57,7 +64,9 @@ namespace GPGPUI
         RectTransform leftPanelGroup, rightPanelGroup, headerGroup, bottomPanelGroup;
         Transform stage, modelPivot;
         TMP_Text title, badge, body, source, page, featureTitle, featureCaption, cycleHint;
-        RectTransform chart;
+        TMP_Text factHeadline, primaryMetricLabel, secondaryMetricLabel;
+        RectTransform chart, comparison, primaryMetricShare, secondaryMetricShare;
+        CCaux_Waypointer subscribedWaypointer;
         CanvasGroup cardFade;
         System.Random random;
         float elapsed, fadeElapsed = 1f, repeatElapsed;
@@ -72,6 +81,8 @@ namespace GPGPUI
             public Image Background;
             public Outline Outline;
             public TMP_Text Label;
+            public TMP_Text SelectedMarker;
+            public Image SelectedStripe;
         }
 
         void Awake()
@@ -89,15 +100,17 @@ namespace GPGPUI
 
         void OnEnable()
         {
-            if (waypointer != null) waypointer.OnWaypointChanged += SyncToWaypoint;
+            BindWaypointer();
             if (!initialized) return;
             if (canvasRect) canvasRect.gameObject.SetActive(true);
             ApplyUIVisibility();
+            if (waypointer) SyncToWaypoint(waypointer.CurrentWaypointIndex);
         }
 
         void OnDisable()
         {
-            if (waypointer != null) waypointer.OnWaypointChanged -= SyncToWaypoint;
+            if (subscribedWaypointer) subscribedWaypointer.OnWaypointChanged -= SyncToWaypoint;
+            subscribedWaypointer = null;
             if (!Application.isPlaying) return;
             if (canvasRect) canvasRect.gameObject.SetActive(false);
             if (stage) stage.gameObject.SetActive(false);
@@ -127,12 +140,14 @@ namespace GPGPUI
                 throw new InvalidOperationException("Assign the exhibit, Cyber Canoe head, hub and projection screen before building the GPGP UI.");
             if (!font) font = TMP_Settings.defaultFontAsset;
             if (!font) throw new InvalidOperationException("Assign a TextMesh Pro font asset before building the GPGP UI.");
+            initialized = false;
             ReleaseOwned("GPGP UI Canvas");
             ReleaseOwned("Featured Debris Stage");
             controls.Clear();
             Array.Clear(lastSource, 0, lastSource.Length);
             random = new System.Random(exhibit.randomSeed + 703);
             SelectedCategory = 3;
+            HasSelectedCategory = false;
             CurrentView = CurrentCard = FocusRow = FocusIndex = 0;
             AutoCycling = true;
             IsUIHidden = false;
@@ -151,19 +166,48 @@ namespace GPGPUI
             lastSource[3] = initial;
             ShowModel(initial);
             initialized = true;
+            BindWaypointer();
             ApplyUIVisibility();
             SyncToScreen();
-            Refresh();
+            if (waypointer) SyncToWaypoint(waypointer.CurrentWaypointIndex);
+            else Refresh();
         }
+
+        void BindWaypointer()
+        {
+            if (!waypointer && ccHub)
+            {
+                CCaux_Waypointer candidate = null;
+                foreach (var found in ccHub.GetComponentsInChildren<CCaux_Waypointer>(true))
+                {
+                    if (!found.isActiveAndEnabled || found.gameObject.scene != gameObject.scene) continue;
+                    // Multiple tours require an explicit Inspector assignment.
+                    if (candidate) { candidate = null; break; }
+                    candidate = found;
+                }
+                waypointer = candidate;
+            }
+            if (subscribedWaypointer == waypointer) return;
+            if (subscribedWaypointer) subscribedWaypointer.OnWaypointChanged -= SyncToWaypoint;
+            subscribedWaypointer = isActiveAndEnabled ? waypointer : null;
+            if (subscribedWaypointer) subscribedWaypointer.OnWaypointChanged += SyncToWaypoint;
+        }
+
         public void SyncToWaypoint(int index)
         {
+            if (!initialized) return;
             if (index == 0)
             {
-                SelectView(0); // Overview
+                HasSelectedCategory = false;
+                if (CurrentView != 0) { SelectView(0); SetAutoCycle(true); }
+                else Refresh();
             }
             else if (index >= 1 && index <= 4)
             {
-                SelectCategory(4 - index);
+                FocusRow = 0;
+                FocusIndex = index - 1;
+                if (CurrentView == 1 && HasSelectedCategory && SelectedCategory == 4 - index) Refresh();
+                else SelectCategory(4 - index);
             }
         }
 
@@ -197,11 +241,26 @@ namespace GPGPUI
             Panel(rightPanelGroup, "Object panel", 3470, 165, 1260, 1160, Ink);
             Text(leftPanelGroup, "Info eyebrow", "EXPLORE THE PATCH", 125, 194, 1120, 58, 40, Cyan);
             title = Text(leftPanelGroup, "Information heading", "", 125, 267, 1140, 158, 93, White);
+            title.enableAutoSizing = true;
+            title.fontSizeMin = 70;
+            title.fontSizeMax = 93;
             badge = Text(leftPanelGroup, "Category and origin", "", 125, 430, 1140, 102, 43, Cyan);
             var cardRoot = Rect(leftPanelGroup, "Card content", 125, 547, 1140, 650);
             cardFade = cardRoot.gameObject.AddComponent<CanvasGroup>();
             cardFade.blocksRaycasts = false;
             body = LocalText(cardRoot, "Facts", "", 0, 0, 1140, 395, 63, White);
+            factHeadline = LocalText(cardRoot, "Fact headline", "", 0, 0, 1140, 155, 126, Cyan);
+            factHeadline.enableAutoSizing = true;
+            factHeadline.fontSizeMin = 86;
+            factHeadline.fontSizeMax = 126;
+            factHeadline.textWrappingMode = TextWrappingModes.NoWrap;
+            comparison = Rect(cardRoot, "Piece count and mass comparison", 0, 0, 1140, 280);
+            primaryMetricLabel = LocalText(comparison, "Primary metric label", "", 0, 0, 1140, 74, 58, White);
+            PanelLocal(comparison, "Primary metric track", 0, 82, 1140, 36, new Color(.09f, .16f, .19f));
+            primaryMetricShare = PanelLocal(comparison, "Primary metric share", 0, 82, 1140, 36, Cyan);
+            secondaryMetricLabel = LocalText(comparison, "Secondary metric label", "", 0, 145, 1140, 74, 58, White);
+            PanelLocal(comparison, "Secondary metric track", 0, 227, 1140, 36, new Color(.09f, .16f, .19f));
+            secondaryMetricShare = PanelLocal(comparison, "Secondary metric share", 0, 227, 1140, 36, Cyan);
             chart = Rect(cardRoot, "Country sample chart", 0, 183, 1140, 351);
             BuildCountryChart(chart);
             source = LocalText(cardRoot, "Source and context", "", 0, 525, 1140, 96, 28, Muted);
@@ -226,8 +285,8 @@ namespace GPGPUI
                 AddControl(0, i, ShortSizes[i] + "   " + GPGPUIContent.CategoryRange(category),
                     80 + i * 1170, 1375, 1130, 118, 64);
             }
-            Text(bottomPanelGroup, "Gamepad instructions", "D-PAD  Browse    START  Select    SELECT / TAB  Hide UI", 80, 1530, 2950, 65, 43, White);
-            cycleHint = Text(bottomPanelGroup, "Cycling status", "", 3020, 1524, 1670, 68, 38, Muted, TextAlignmentOptions.Right);
+            Text(bottomPanelGroup, "Gamepad instructions", "X  Previous band   B  Next band   D-PAD  Browse   START  Select   SELECT / TAB  Hide UI", 80, 1530, 3300, 65, 38, White);
+            cycleHint = Text(bottomPanelGroup, "Cycling status", "", 3400, 1524, 1290, 68, 34, Muted, TextAlignmentOptions.Right);
             Control visibility = AddControl(2, 4, "SELECT  Hide UI", 4060, 23, 660, 86, 43);
             visibility.Background.name = "UI visibility control";
         }
@@ -258,6 +317,14 @@ namespace GPGPUI
             outline.effectDistance = new Vector2(4, -4);
             var text = LocalText(background, "Label", label, 15, 0, w - 30, h, size, White, TextAlignmentOptions.Center);
             var control = new Control { Row = row, Index = index, Background = background.GetComponent<Image>(), Outline = outline, Label = text };
+            if (row == 0)
+            {
+                text.fontSize = 56;
+                text.rectTransform.anchoredPosition = new Vector2(15, -9);
+                text.rectTransform.sizeDelta = new Vector2(w - 30, 68);
+                control.SelectedMarker = LocalText(background, "Selected marker", "SELECTED", 15, 79, w - 30, 34, 27, Cyan, TextAlignmentOptions.Center);
+                control.SelectedStripe = PanelLocal(background, "Selected stripe", 12, 0, w - 24, 5, Cyan).GetComponent<Image>();
+            }
             controls.Add(control);
             return control;
         }
@@ -342,6 +409,7 @@ namespace GPGPUI
         {
             if (sourceCategory < 0 || sourceCategory > 3) throw new ArgumentOutOfRangeException(nameof(sourceCategory));
             SelectedCategory = sourceCategory;
+            HasSelectedCategory = true;
             CurrentView = 1;
             CurrentCard = 0;
             AutoCycling = false;
@@ -358,6 +426,7 @@ namespace GPGPUI
         {
             if (view < 0 || view > 3) throw new ArgumentOutOfRangeException(nameof(view));
             CurrentView = view;
+            if (view == 1) HasSelectedCategory = true;
             CurrentCard = 0;
             AutoCycling = false;
             elapsed = 0f;
@@ -396,7 +465,8 @@ namespace GPGPUI
 
         int CardCount() => CurrentView == 0 ? GPGPUIContent.OverviewCards.Length :
             CurrentView == 2 ? GPGPUIContent.WildlifeCards.Length :
-            CurrentView == 3 ? GPGPUIContent.ActionCards.Length : 3;
+            CurrentView == 3 ? GPGPUIContent.ActionCards.Length :
+            CurrentDebrisCards.Length + (HasCountryCard ? 1 : 0);
 
         List<GameObject> SourcePool(int category)
         {
@@ -412,36 +482,34 @@ namespace GPGPUI
         {
             if (!title) return;
             chart.gameObject.SetActive(ShowsCountryContext);
-            body.rectTransform.sizeDelta = new Vector2(1140, ShowsCountryContext ? 178 : 475);
-            body.fontSize = ShowsCountryContext ? 45 : 63;
             if (CurrentView == 1)
             {
-                title.text = FeaturedSource ? GPGPUIContent.FriendlyModelName(FeaturedSource.name) : "No model available";
-                badge.text = GPGPUIContent.CategoryName(SelectedCategory) + "  " + GPGPUIContent.CategoryRange(SelectedCategory) + "\nOrigin unknown";
-                if (CurrentCard == 0)
-                {
-                    body.text = GPGPUIContent.CategoryDescription(SelectedCategory);
-                    if (ShowsCountryContext) body.text += " Markings can offer clues about an object's origin.";
-                }
-                else if (CurrentCard == 1)
-                    body.text = "Plastic can entangle wildlife or be mistaken for food. Proper disposal and recovery of lost gear help keep debris out of the ocean.";
-                else body.text = "The model illustrates a size category. Models are enlarged so small pieces can be seen. The bands show mass share, not ocean depth.";
-                source.text = ShowsCountryContext ? GPGPUIContent.CountryScope + "\n" + GPGPUIContent.CountrySource :
-                    "Illustrative model; its country of origin is unknown.\nNOAA / Lebreton et al. (2018)";
+                InfoCard card = ShowsCountryContext ?
+                    new InfoCard("Where markings pointed", "Markings offered clues about some large hard-plastic objects.",
+                        GPGPUIContent.CountryScope + "\n" + GPGPUIContent.CountrySource) :
+                    CurrentDebrisCards[CurrentCard];
+                title.text = CurrentCard == 0 ?
+                    (FeaturedSource ? GPGPUIContent.FriendlyModelName(FeaturedSource.name) : "No model available") : card.Heading;
+                badge.text = FeaturedSource && GPGPUIContent.IsRubberDebris(FeaturedSource.name) ?
+                    "Mega debris >50 cm\nRubber / Origin unknown" :
+                    GPGPUIContent.CategoryName(SelectedCategory) + "  " + GPGPUIContent.CategoryRange(SelectedCategory) + "\nOrigin unknown";
+                DisplayFact(card);
             }
             else
             {
                 InfoCard card = CurrentView == 0 ? GPGPUIContent.OverviewCards[CurrentCard] :
                     CurrentView == 2 ? GPGPUIContent.WildlifeCards[CurrentCard] : GPGPUIContent.ActionCards[CurrentCard];
                 title.text = card.Heading;
-                badge.text = Views[CurrentView].ToUpperInvariant();
-                body.text = card.Body;
-                source.text = card.Source;
+                badge.text = Views[CurrentView].ToUpperInvariant() +
+                    (CurrentView == 0 && !string.IsNullOrEmpty(card.Headline) ? " / 2018 STUDY ESTIMATE" : "");
+                DisplayFact(card);
             }
             page.text = "CARD " + (CurrentCard + 1) + " / " + CardCount() +
                 (CurrentView == 0 ? (AutoCycling ? "   AUTO" : "   PAUSED") : "   PINNED");
             featureTitle.text = FeaturedSource ? GPGPUIContent.FriendlyModelName(FeaturedSource.name) : "Model unavailable";
             featureCaption.text = CurrentView == 2 ? "Sea turtle - illustrative model.\nNets and lines can entangle wildlife." :
+                FeaturedSource && GPGPUIContent.IsRubberDebris(FeaturedSource.name) ?
+                "Rubber debris - illustrative model.\nOrigin unknown." :
                 "Enlarged illustrative model.\nOrigin unknown. Turn through the size categories below.";
             cycleHint.text = CurrentView == 0 ? (AutoCycling ? "Overview cycles every " + Mathf.Max(5f, overviewIntervalSeconds).ToString("0") + " seconds" : "Overview paused - select Resume") :
                 "Item facts stay until you change them";
@@ -450,10 +518,12 @@ namespace GPGPUI
                 bool visibility = control.Row == 2 && control.Index == 4;
                 bool focused = visibility && IsUIHidden || control.Row == FocusRow && control.Index == FocusIndex;
                 bool selected = control.Row == 2 && control.Index == CurrentView ||
-                    control.Row == 0 && control.Index == 3 - SelectedCategory || visibility && IsUIHidden;
+                    control.Row == 0 && HasSelectedCategory && control.Index == 3 - SelectedCategory || visibility && IsUIHidden;
                 control.Background.color = selected ? new Color(.04f, .22f, .26f) : Surface;
                 control.Label.color = selected ? Cyan : White;
                 control.Outline.effectColor = focused ? White : new Color(.1f, .27f, .3f, selected ? 1 : .35f);
+                if (control.SelectedMarker) control.SelectedMarker.gameObject.SetActive(selected);
+                if (control.SelectedStripe) control.SelectedStripe.gameObject.SetActive(selected);
                 if (control.Row == 1 && control.Index == 2)
                 {
                     control.Label.text = CurrentView == 0 ? (AutoCycling ? "Pause" : "Resume") : "Facts pinned";
@@ -469,6 +539,24 @@ namespace GPGPUI
                 cardFade.alpha = 0f;
             }
             Canvas.ForceUpdateCanvases();
+        }
+
+        void DisplayFact(InfoCard card)
+        {
+            bool headline = !string.IsNullOrEmpty(card.Headline);
+            factHeadline.gameObject.SetActive(headline);
+            factHeadline.text = card.Headline ?? string.Empty;
+            comparison.gameObject.SetActive(card.HasComparison);
+            primaryMetricLabel.text = card.PrimaryMetricLabel ?? string.Empty;
+            secondaryMetricLabel.text = card.SecondaryMetricLabel ?? string.Empty;
+            primaryMetricShare.sizeDelta = new Vector2(1140 * Mathf.Clamp01(card.PrimaryMetricFraction), 36);
+            secondaryMetricShare.sizeDelta = new Vector2(1140 * Mathf.Clamp01(card.SecondaryMetricFraction), 36);
+            float top = card.HasComparison ? 295 : headline ? 170 : 0;
+            body.rectTransform.anchoredPosition = new Vector2(0, -top);
+            body.rectTransform.sizeDelta = new Vector2(1140, ShowsCountryContext ? 178 : 475 - top);
+            body.fontSize = ShowsCountryContext ? 45 : card.HasComparison ? 54 : 63;
+            body.text = card.Body;
+            source.text = card.Source;
         }
 
         public void ToggleUIVisibility() => SetUIHidden(!IsUIHidden);
@@ -563,7 +651,7 @@ namespace GPGPUI
             FeaturedObject = Instantiate(prefab, modelPivot, false);
             FeaturedObject.name = "Featured - " + GPGPUIContent.FriendlyModelName(prefab.name);
             FeaturedObject.SetActive(true);
-            foreach (var child in FeaturedObject.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = 0;
+            foreach (var child in FeaturedObject.GetComponentsInChildren<Transform>(true)) child.gameObject.layer = PreviewLayer;
             bool animateWildlife = prefab == turtleModel;
             foreach (var behaviour in FeaturedObject.GetComponentsInChildren<Behaviour>(true))
                 if (!animateWildlife || !(behaviour is Animation || behaviour is Animator)) behaviour.enabled = false;
@@ -577,6 +665,23 @@ namespace GPGPUI
             {
                 renderer.shadowCastingMode = ShadowCastingMode.Off;
                 renderer.receiveShadows = false;
+                if (GPGPUIContent.IsRubberDebris(prefab.name))
+                {
+                    // Improve dark rubber's preview exposure on this clone.
+                    // Shared textures/materials and the gallery lights retain
+                    // their authored values, including under Forward+ lighting.
+                    Material[] slots = renderer.sharedMaterials;
+                    for (int index = 0; index < slots.Length; index++)
+                    {
+                        Material material = slots[index];
+                        if (!material || !material.HasProperty(BaseColorId)) continue;
+                        Color color = material.GetColor(BaseColorId);
+                        var block = new MaterialPropertyBlock();
+                        renderer.GetPropertyBlock(block, index);
+                        block.SetVector(BaseColorId, new Vector4(color.r * 8f, color.g * 8f, color.b * 8f, color.a));
+                        renderer.SetPropertyBlock(block, index);
+                    }
+                }
             }
             Bounds bounds = LocalMeshBounds(modelPivot);
             float diameter = Mathf.Max(BoundsEpsilon, bounds.size.magnitude);
@@ -630,7 +735,7 @@ namespace GPGPUI
             light.intensity = intensity;
             light.range = 2.1f;
             light.shadows = LightShadows.None;
-            light.cullingMask = 1;
+            light.cullingMask = 1 << PreviewLayer;
         }
 
         void SyncToScreen()

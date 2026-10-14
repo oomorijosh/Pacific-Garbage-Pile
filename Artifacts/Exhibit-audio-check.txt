@@ -1,0 +1,23 @@
+Exhibit audio validation; Unity 6000.6.0f1; isolated editor, no Play mode/XR.
+Assets/Sounds/Undertow.mp3: 249.992 s, stereo, 44100 Hz; background streaming.
+Assets/Sounds/calm wave.mp3: 179.760 s, stereo, 24000 Hz; background streaming.
+Authoring: one independent audio root, two reused looping stereo sources; existing rig, cameras, listener, water, debris and UI preserved across two passes.
+Startup: both loops start at zero; music rises smoothly while the bottom wave mix stays silent.
+Actual head height 0 %: music=0.1600; waves=0.0000; target=0.0000.
+Actual head height 4 %: music=0.1600; waves=0.0000; target=0.0000.
+Actual head height 8 %: music=0.1600; waves=0.0000; target=0.0000.
+Actual head height 25 %: music=0.1600; waves=0.0359; target=0.0359.
+Actual head height 50 %: music=0.1600; waves=0.1740; target=0.1740.
+Actual head height 75 %: music=0.1600; waves=0.3274; target=0.3274.
+Actual head height 100 %: music=0.1600; waves=0.4000; target=0.4000.
+Movement: 50 head-height changes retain both source identities, looping flags and nondecreasing sample positions.
+Saved Mega pose: head world Y=6.9600; normalized water height=0.7027; music=0.1600; waves=0.3017.
+Saved Macro pose: head world Y=-1.4400; normalized water height=0.3209; music=0.1600; waves=0.0679.
+Saved Meso pose: head world Y=-5.4600; normalized water height=0.1382; music=0.1600; waves=0.0046.
+Saved Micro pose: head world Y=-7.7400; normalized water height=0.0345; music=0.1600; waves=0.0000.
+Saved Overview pose: head world Y=0.7600; normalized water height=0.4209; music=0.1600; waves=0.1241.
+Navigation: real NextFrame/PrevFrame traversal through all five saved poses retains source identities and nondecreasing playheads; original CC rig was never moved.
+Lifecycle: explicit editor lifecycle callbacks plus actual component.enabled and root.SetActive toggles retain source identity; native source resumption asserted when editor playback is available.
+Native editor audio reported both sources playing; no headset or hardware listening test performed.
+Save/reopen: MP3 references, two sources, volume tuning and original CC_HEAD/water references retained.
+RESULT PASS: both clips loop; waves rise continuously with actual head height, silence at the bottom, constant music gain, preserved source/playhead identity and no rig mutations.

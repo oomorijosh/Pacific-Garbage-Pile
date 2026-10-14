@@ -1,0 +1,8 @@
+Original local archive: aged-plastic-garden-chair.zip
+
+Aged plastic garden chair
+Source FBX: source/PlasticChair_LP.fbx
+One mesh; 1,018 vertices and approximately 2,060 triangles after triangulation. Approximate dimensions: 0.592 x 0.594 x 0.831 m.
+Source geometry has an offset origin and uses Z-up orientation; center using imported mesh bounds. Base color, roughness, normal, ambient occlusion and curvature textures supplied at 4096 x 4096.
+
+No README, creator attribution or license document was included in the local archive. Preserve the original archive as provenance; no author or license is inferred here.

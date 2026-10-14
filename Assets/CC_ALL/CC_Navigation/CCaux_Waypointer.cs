@@ -100,6 +100,7 @@ public class CCaux_Waypointer : MonoBehaviour {
     public bool useSplineSmoothMovement = true;
 
     public GameObject mainNavigationNode = null;
+    // Reports the selected destination, including while the camera is travelling there.
     public System.Action<int> OnWaypointChanged;
     public int CurrentWaypointIndex { get; private set; } = 0;
     private Transform charCont;
@@ -125,6 +126,21 @@ public class CCaux_Waypointer : MonoBehaviour {
         charCont = mainNavigationNode.transform;
         if (loadWaypointFileOnStart)
             ReadWayPoints();
+        else
+            NotifyCurrentWaypointChanged();
+    }
+
+    void NotifyCurrentWaypointChanged() {
+        // Derive the index from the actual target so reloads, editing, and playback
+        // cannot leave the category selection out of step with the camera.
+        int index = 0;
+        LinkedListNode<Vector3> node = navPositionList.First;
+        while (node != null && node != currentFramePos) {
+            node = node.Next;
+            index++;
+        }
+        CurrentWaypointIndex = node != null ? index : 0;
+        OnWaypointChanged?.Invoke(CurrentWaypointIndex);
     }
 
     void Play(){
@@ -133,10 +149,6 @@ public class CCaux_Waypointer : MonoBehaviour {
     }
 
     void PlayFromCurrent(){
-
-        playingFrame = true;
-        playMode = true;
-
 
         if (navPositionList.Count > 0) {
             startFramePosition = charCont.transform.position;
@@ -149,6 +161,10 @@ public class CCaux_Waypointer : MonoBehaviour {
             endFramePosition = currentFramePos.Value;
             endFrameRotation = currentFrameRot.Value;
             startTime = Time.time;
+            playingFrame = true;
+            playMode = true;
+            nextPrevAnimation = false;
+            NotifyCurrentWaypointChanged();
     
         }
 
@@ -167,8 +183,10 @@ public class CCaux_Waypointer : MonoBehaviour {
 
             playingFrame = true;
             playMode = true;
+            nextPrevAnimation = false;
 
             startTime = Time.time;
+            NotifyCurrentWaypointChanged();
         }
     }
 
@@ -187,6 +205,11 @@ public class CCaux_Waypointer : MonoBehaviour {
 
         navPositionList.Clear();
         navRotationList.Clear();
+        currentFramePos = null;
+        currentFrameRot = null;
+        playMode = false;
+        playingFrame = false;
+        nextPrevAnimation = false;
         System.IO.StreamReader file =  new System.IO.StreamReader(waypointFile);
         if (file == null) return;
 
@@ -212,6 +235,7 @@ public class CCaux_Waypointer : MonoBehaviour {
             currentFrameRot = navRotationList.First;
         }
         file.Close();
+        NotifyCurrentWaypointChanged();
     }
 
     void SaveWayPoints() {
@@ -253,6 +277,7 @@ public class CCaux_Waypointer : MonoBehaviour {
             currentFramePos = currentFramePos.Previous;
             currentFrameRot = currentFrameRot.Previous;
         }
+        NotifyCurrentWaypointChanged();
         print("CC_aux_Waypointer number of key frames: "+navPositionList.Count);
     }
 
@@ -269,6 +294,7 @@ public class CCaux_Waypointer : MonoBehaviour {
             currentFramePos = currentFramePos.Next;
             currentFrameRot = currentFrameRot.Next;
         }
+        NotifyCurrentWaypointChanged();
         print("CC_aux_Waypointer number of key frames: "+navPositionList.Count);
 
     }
@@ -295,6 +321,10 @@ public class CCaux_Waypointer : MonoBehaviour {
                 charCont.transform.position = currentFramePos.Value;
                 charCont.transform.rotation = currentFrameRot.Value;
             }
+            playMode = false;
+            playingFrame = false;
+            nextPrevAnimation = false;
+            NotifyCurrentWaypointChanged();
         }
     }
 
@@ -318,15 +348,12 @@ public class CCaux_Waypointer : MonoBehaviour {
             startFramePosition = charCont.transform.position;
             startFrameRotation = charCont.transform.rotation;
 
-            CurrentWaypointIndex = (CurrentWaypointIndex + 1) % navPositionList.Count;
-
-            OnWaypointChanged?.Invoke(CurrentWaypointIndex);
-
             endFramePosition = currentFramePos.Value;
             endFrameRotation = currentFrameRot.Value;
             startTime = Time.time;
             playMode = true;
             nextPrevAnimation = true;
+            NotifyCurrentWaypointChanged();
 
         }
     }
@@ -347,14 +374,12 @@ public class CCaux_Waypointer : MonoBehaviour {
             startFramePosition = charCont.transform.position;
             startFrameRotation = charCont.transform.rotation;
 
-            CurrentWaypointIndex = (CurrentWaypointIndex - 1 + navPositionList.Count) % navPositionList.Count;
-            OnWaypointChanged?.Invoke(CurrentWaypointIndex);
-
             endFramePosition = currentFramePos.Value;
             endFrameRotation = currentFrameRot.Value;
             startTime = Time.time;
             playMode = true;
             nextPrevAnimation = true;
+            NotifyCurrentWaypointChanged();
 
         }
     }
@@ -374,7 +399,7 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
 
     void DoAnimation() {
 
-        if (!playMode) return;
+        if (!playMode || currentFramePos == null) return;
         if (!playingFrame) {
             if (currentFramePos.Next != null) {
                 startFramePosition = currentFramePos.Value;
@@ -389,6 +414,7 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
                     currentFramePos = navPositionList.First;
                     currentFrameRot = navRotationList.First;
                 }
+                NotifyCurrentWaypointChanged();
             } else {
                 if (loopPlayback) {
                     startFramePosition = currentFramePos.Value;
@@ -401,6 +427,7 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
                     endFrameRotation = currentFrameRot.Value;
                     startTime = Time.time;
                     playingFrame = true;
+                    NotifyCurrentWaypointChanged();
                 } else {
                     playMode = false;
                     playingFrame = false;
@@ -462,8 +489,9 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
 
 
     void Update () {
+        var keyboard = Keyboard.current;
 
-        if (Keyboard.current[recordKey].wasPressedThisFrame && enableRecordButton){
+        if (keyboard != null && keyboard[recordKey].wasPressedThisFrame && enableRecordButton){
         //if((Input.GetKeyDown(recordKey)) && enableRecordButton) {
             InsertAfter();
 
@@ -473,7 +501,7 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
 
         if (Gamepad.current != null) activatedGP = Gamepad.current[playButton].wasPressedThisFrame;
 
-        if ((activatedGP || Keyboard.current[playKey].wasPressedThisFrame) && enablePlayButton){
+        if ((activatedGP || (keyboard != null && keyboard[playKey].wasPressedThisFrame)) && enablePlayButton){
         //if((Input.GetKeyDown(playKey)||(Input.GetKeyDown(KeyCode.Space))) && enablePlayButton) {
             if (navPositionList.Count > 0) {
                 if (playMode) {
@@ -492,26 +520,26 @@ private static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3
         }
         if (Gamepad.current != null) activatedGP = Gamepad.current[nextButton].wasPressedThisFrame;
 
-        if ((activatedGP || Keyboard.current[nextKey].wasPressedThisFrame) && enableNextButton){
+        if ((activatedGP || (keyboard != null && keyboard[nextKey].wasPressedThisFrame)) && enableNextButton){
         //if((Input.GetKeyDown(nextKey)) && enableNextButton) {
             NextFrame();
         }
 
         if (Gamepad.current != null) activatedGP = Gamepad.current[previousButton].wasPressedThisFrame;
 
-        if ((activatedGP || Keyboard.current[previousKey].wasPressedThisFrame) && enablePreviousButton){
+        if ((activatedGP || (keyboard != null && keyboard[previousKey].wasPressedThisFrame)) && enablePreviousButton){
         //if ((Input.GetKeyDown(previousKey)) && enablePreviousButton) {
             PrevFrame();
 
         }
 
     
-        if (Keyboard.current[deleteKey].wasPressedThisFrame && enableDeleteButton){
+        if (keyboard != null && keyboard[deleteKey].wasPressedThisFrame && enableDeleteButton){
         //if ((Input.GetKeyDown(removeKey)) && enableDeleteButton) {
             Delete();
         }
 
-        if (Keyboard.current[saveKey].wasPressedThisFrame && enableSaveButton){
+        if (keyboard != null && keyboard[saveKey].wasPressedThisFrame && enableSaveButton){
         //if ((Input.GetKeyDown(saveKey)) && enableSaveButton) {
             SaveWayPoints();
             if (soundToPlayOnSave) {

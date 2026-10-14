@@ -23,6 +23,8 @@ public static class GPGPDebrisTextureLibrary
     {
         public string key, albedo, normal, metallic, roughness, occlusion, orm, specular;
         public bool transparent;
+        public bool normalDirectX;
+        public int textureMaxSize;
     }
 
     sealed class Source
@@ -30,15 +32,18 @@ public static class GPGPDebrisTextureLibrary
         public string model, alias;
         public int category;
         public Surface main, rope;
+        public bool centerModel;
     }
 
     static Surface Maps(string key, string folder, string albedo, string normal, string roughness,
-        string metallic = null, string occlusion = null, bool transparent = false)
+        string metallic = null, string occlusion = null, bool transparent = false,
+        bool normalDirectX = false, int textureMaxSize = 0)
     {
         return new Surface { key = key, albedo = folder + albedo, normal = folder + normal,
             roughness = roughness == null ? null : folder + roughness,
             metallic = metallic == null ? null : folder + metallic,
-            occlusion = occlusion == null ? null : folder + occlusion, transparent = transparent };
+            occlusion = occlusion == null ? null : folder + occlusion, transparent = transparent,
+            normalDirectX = normalDirectX, textureMaxSize = textureMaxSize };
     }
 
     static Source[] Sources()
@@ -76,7 +81,28 @@ public static class GPGPDebrisTextureLibrary
                 main = new Surface { key = "Plastic_Crate_01", albedo = "Assets/Debris/plastic-crate-01/textures/base_color.jpg",
                     normal = "Assets/Debris/plastic-crate-01/textures/normal.jpg",
                     // The channel content is consistent with ORM: R=AO, G=roughness, B=metallic.
-                    orm = "Assets/Debris/plastic-crate-01/textures/ao_metallic_roughness.jpg" } }
+                    orm = "Assets/Debris/plastic-crate-01/textures/ao_metallic_roughness.jpg" } },
+            new Source { category = 2, model = "Assets/Debris/Macroplastic/PlasticCanister.fbx",
+                alias = "Assets/Debris/7-plastic-canister-lowpoly/source/canister-7.fbx", centerModel = true,
+                main = Maps("Plastic_Canister", "Assets/Debris/7-plastic-canister-lowpoly/textures/",
+                    "canister-7_diffuse.png", "canister-7_Normal_DirectX.png", "canister-7_roughness.png",
+                    occlusion: "canister-7_AO.png", normalDirectX: true, textureMaxSize: 2048) },
+            new Source { category = 3, model = "Assets/Debris/Megaplastic/PlasticGardenChair.fbx",
+                alias = "Assets/Debris/aged-plastic-garden-chair/source/PlasticChair_LP.fbx", centerModel = true,
+                main = Maps("Plastic_Garden_Chair", "Assets/Debris/aged-plastic-garden-chair/textures/",
+                    "PlasticChair_LP_V2_BaseColor.default.png", "PlasticChair_LP_V2_Normal.default.png",
+                    "PlasticChair_LP_V2_Roughness.default.png", occlusion: "PlasticChair_LP_V2_AO.default.png",
+                    textureMaxSize: 2048) },
+            new Source { category = 3, model = "Assets/Debris/Megaplastic/TruckTire.fbx",
+                alias = "Assets/Debris/dirty-truck-tire/source/truck tire.fbx", centerModel = true,
+                main = Maps("Truck_Tire", "Assets/Debris/dirty-truck-tire/textures/",
+                    "truck_tire_tire__BaseColor.png", "truck_tire_tire__Normal.png", "truck_tire_tire__Roughness.png",
+                    metallic: "truck_tire_tire__Metallic.png", textureMaxSize: 2048) },
+            new Source { category = 3, model = "Assets/Debris/Megaplastic/TirePile.fbx",
+                alias = "Assets/Debris/dirty-old-tires/source/TirePile.fbx", centerModel = true,
+                main = Maps("Tire_Pile", "Assets/Debris/dirty-old-tires/textures/",
+                    "Tire01_Low_Tire01_BaseColor.png", "Tire01_Low_Tire01_Normal.png", "Tire01_Low_Tire01_Roughness.png",
+                    occlusion: "GrayscaleTire01_Low_Tire01_AO.png", textureMaxSize: 2048) }
         };
     }
 
@@ -96,6 +122,11 @@ public static class GPGPDebrisTextureLibrary
         }
         foreach (Source source in Sources())
         {
+            if (source.centerModel)
+            {
+                PrepareSourceModel(source.model);
+                PrepareSourceModel(source.alias);
+            }
             GameObject raw = AssetDatabase.LoadAssetAtPath<GameObject>(source.model);
             if (!raw || !File.Exists(source.main.albedo)) continue;
             Material main = PrepareMaterial(source.main, shader);
@@ -109,6 +140,16 @@ public static class GPGPDebrisTextureLibrary
             {
                 GameObject instance = Object.Instantiate(raw, temporary.transform);
                 instance.name = raw.name;
+                if (source.centerModel)
+                {
+                    Renderer[] renderers = instance.GetComponentsInChildren<Renderer>(true);
+                    if (renderers.Length == 0) throw new InvalidOperationException("Imported debris has no renderers: " + source.model);
+                    Bounds bounds = renderers[0].bounds;
+                    foreach (Renderer renderer in renderers.Skip(1)) bounds.Encapsulate(renderer.bounds);
+                    // Imported chair/tire meshes have distant pivots. Center the
+                    // wrapper without rewriting their geometry or unit conversion.
+                    instance.transform.localPosition -= temporary.transform.InverseTransformPoint(bounds.center);
+                }
                 foreach (Renderer renderer in instance.GetComponentsInChildren<Renderer>(true))
                 {
                     Material[] slots = renderer.sharedMaterials;
@@ -137,6 +178,24 @@ public static class GPGPDebrisTextureLibrary
         extraMega = additions.ToArray();
         AssetDatabase.SaveAssets();
         return prepared;
+    }
+
+    static void PrepareSourceModel(string path)
+    {
+        if (!FileExists(path)) return;
+        AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
+        var importer = AssetImporter.GetAtPath(path) as ModelImporter;
+        if (!importer) throw new InvalidOperationException("Expected an FBX model importer: " + path);
+        bool changed = !importer.useFileUnits || !importer.useFileScale || importer.globalScale != 1f ||
+            importer.importCameras || importer.importLights;
+        // Honor centimetre/millimetre FBX units consistently on a fresh import.
+        // Raw meshes and the original archives remain unchanged.
+        importer.useFileUnits = true;
+        importer.useFileScale = true;
+        importer.globalScale = 1f;
+        importer.importCameras = false;
+        importer.importLights = false;
+        if (changed) importer.SaveAndReimport();
     }
 
     /// <summary>Call after PrepareModels. The additional crate belongs to Megaplastic (category 3).</summary>
@@ -274,9 +333,9 @@ public static class GPGPDebrisTextureLibrary
 
     static Material PrepareMaterial(Surface surface, Shader shader)
     {
-        Texture2D albedo = ImportTexture(surface.albedo, true, false);
+        Texture2D albedo = ImportTexture(surface.albedo, true, false, maxSize: surface.textureMaxSize);
         if (!albedo) return null;
-        Texture2D normal = ImportTexture(surface.normal, false, true);
+        Texture2D normal = ImportTexture(surface.normal, false, true, surface.normalDirectX, surface.textureMaxSize);
         bool specular = !string.IsNullOrEmpty(surface.specular) && File.Exists(surface.specular);
         Texture2D mask = PackMask(surface, specular);
         EnsureFolder(MaterialRoot);
@@ -338,17 +397,21 @@ public static class GPGPDebrisTextureLibrary
         return material;
     }
 
-    static Texture2D ImportTexture(string path, bool color, bool normal)
+    static Texture2D ImportTexture(string path, bool color, bool normal, bool flipGreen = false, int maxSize = 0)
     {
         if (!FileExists(path)) return null;
         AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceSynchronousImport);
         var importer = AssetImporter.GetAtPath(path) as TextureImporter;
         if (!importer) return null;
         bool changed = importer.textureType != (normal ? TextureImporterType.NormalMap : TextureImporterType.Default) ||
-            importer.sRGBTexture != color || (normal && (importer.convertToNormalmap || importer.flipGreenChannel));
+            importer.textureShape != TextureImporterShape.Texture2D ||
+            importer.sRGBTexture != color || (normal && (importer.convertToNormalmap || importer.flipGreenChannel != flipGreen)) ||
+            (maxSize > 0 && importer.maxTextureSize != maxSize);
         importer.textureType = normal ? TextureImporterType.NormalMap : TextureImporterType.Default;
+        importer.textureShape = TextureImporterShape.Texture2D;
         importer.sRGBTexture = color;
-        if (normal) { importer.convertToNormalmap = false; importer.flipGreenChannel = false; }
+        if (normal) { importer.convertToNormalmap = false; importer.flipGreenChannel = flipGreen; }
+        if (maxSize > 0) importer.maxTextureSize = maxSize;
         if (changed) importer.SaveAndReimport();
         return AssetDatabase.LoadAssetAtPath<Texture2D>(path);
     }
@@ -364,9 +427,9 @@ public static class GPGPDebrisTextureLibrary
         }
     }
 
-    static Pixels Read(string path, bool color = false)
+    static Pixels Read(string path, bool color = false, int maxSize = 0)
     {
-        Texture2D texture = ImportTexture(path, color, false);
+        Texture2D texture = ImportTexture(path, color, false, maxSize: maxSize);
         if (!texture) return null;
         var importer = (TextureImporter)AssetImporter.GetAtPath(path);
         bool wasReadable = importer.isReadable;
@@ -396,11 +459,11 @@ public static class GPGPDebrisTextureLibrary
 
     static Texture2D PackMask(Surface surface, bool specular)
     {
-        Pixels orm = Read(surface.orm);
-        Pixels metallic = Read(surface.metallic);
-        Pixels roughness = Read(surface.roughness);
-        Pixels occlusion = Read(surface.occlusion);
-        Pixels spec = specular ? Read(surface.specular, true) : null;
+        Pixels orm = Read(surface.orm, maxSize: surface.textureMaxSize);
+        Pixels metallic = Read(surface.metallic, maxSize: surface.textureMaxSize);
+        Pixels roughness = Read(surface.roughness, maxSize: surface.textureMaxSize);
+        Pixels occlusion = Read(surface.occlusion, maxSize: surface.textureMaxSize);
+        Pixels spec = specular ? Read(surface.specular, true, surface.textureMaxSize) : null;
         Pixels[] maps = new[] { orm, metallic, roughness, occlusion, spec }.Where(map => map != null).ToArray();
         if (maps.Length == 0) return null;
         int width = maps.Max(map => map.width), height = maps.Max(map => map.height);
@@ -429,7 +492,7 @@ public static class GPGPDebrisTextureLibrary
         }
         finally { Object.DestroyImmediate(packed); }
         // Specular RGB is a color; its smoothness alpha is unaffected by sRGB sampling.
-        return ImportTexture(path, specular, false);
+        return ImportTexture(path, specular, false, maxSize: surface.textureMaxSize);
     }
 
     static void EnsureFolder(string path)

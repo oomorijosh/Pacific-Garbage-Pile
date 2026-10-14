@@ -1,0 +1,9 @@
+Original local archive: dirty-truck-tire.zip
+
+Dirty truck tire
+Source FBX: source/truck tire.fbx
+One mesh; 5,851 vertices and 11,147 triangles. Approximate diameter: 0.956 m; thickness: 0.363 m. FBX unit scale is 0.1 (millimeters); geometry is offset from its origin.
+Base color, roughness, normal and metallic textures supplied at 4096 x 4096.
+Rubber tire used as illustrative debris, not as a plastic composition sample or evidence that this specific object was observed at the exhibit location.
+
+No README, creator attribution or license document was included in the local archive. Preserve the original archive as provenance; no author or license is inferred here.

@@ -68,6 +68,16 @@ shares continue to convey the existing data rather than actual ocean depth.
 Prepared debris materials have emission, specular highlights and environment
 reflections disabled to keep them from glowing under the exhibit lighting.
 
+ADDITIONAL ARCHIVE MODELS
+
+The plastic canister is in Macroplastic (about 41 cm tall). The aged garden
+chair, truck tire and tire pile are in Mega (>50 cm). Their original ZIPs
+and extracted source textures are preserved beside the category folders.
+Prepared prefabs center the imported models without changing their meshes.
+Runtime textures use a 2048-pixel maximum; the canister's DirectX normal map
+has its green channel flipped for Unity. The UI identifies tires as rubber
+debris and keeps the plastic-study figures separate from those examples.
+
 SEA TURTLE
 
 Tools > Pacific Exhibit > Add or Refresh Sea Turtle adds the credited turtle

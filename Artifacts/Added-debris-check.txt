@@ -1,0 +1,17 @@
+Added debris import, preservation and rendering validation; Unity 6000.6.0f1.
+Two population passes: old pool assignments retained, new entries deduplicated; density, seed, mixing, dimensions, motion and all four mass-share bounds unchanged.
+Piece counts: 810,202,148,215; pool sizes: 2,3,5,11.
+Plastic_Canister: 1208 triangles; centered bounds (0.338702, 0.409569, 0.293967); textured matte URP material; <=2048 textures; normal convention verified.
+Plastic_Garden_Chair: 2060 triangles; centered bounds (0.592271, 0.830764, 0.593909); textured matte URP material; <=2048 textures; normal convention verified.
+Truck_Tire: 11147 triangles; centered bounds (0.36302, 0.956115, 0.956107); textured matte URP material; <=2048 textures; normal convention verified.
+Tire_Pile: 8448 triangles; centered bounds (1.61766, 0.961806, 1.30876); textured matte URP material; <=2048 textures; normal convention verified.
+UI: all four new source-pool models feature correctly with friendly names and one category marker; both tire models use rubber cards and cannot display the plastic country chart.
+Plastic_Canister: 1208 triangles; centered bounds (0.338702, 0.409569, 0.293967); textured matte URP material; <=2048 textures; normal convention verified.
+Plastic_Garden_Chair: 2060 triangles; centered bounds (0.592271, 0.830764, 0.593909); textured matte URP material; <=2048 textures; normal convention verified.
+Truck_Tire: 11147 triangles; centered bounds (0.36302, 0.956115, 0.956107); textured matte URP material; <=2048 textures; normal convention verified.
+Tire_Pile: 8448 triangles; centered bounds (1.61766, 0.961806, 1.30876); textured matte URP material; <=2048 textures; normal convention verified.
+Save/reopen: persistent prefabs, meshes, materials and normal import settings retained. Only the isolated scene was saved.
+Capture cleanup: restored transient URP material initialization for Simple; before/after JSON retained in Artifacts.
+Capture cleanup: restored transient URP material initialization for hawksbill.body; before/after JSON retained in Artifacts.
+Evidence: four actual calibrated CC left-eye images, one right-eye tire image, and a native Unity-rendered four-model contact sheet; all camera/UI state restored; captures were not saved into the scene.
+RESULT PASS: new textured debris integrated into original pools and bands; scene geometry, water, turtle, lighting, stereo cameras, navigation and authored UI preserved.

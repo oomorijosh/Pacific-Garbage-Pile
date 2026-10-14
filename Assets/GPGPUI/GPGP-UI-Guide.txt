@@ -30,6 +30,13 @@ CONTROLS
   four information/Another item/automatic-mode controls, and four story tabs
   plus Hide UI in the header.
 - Start/Menu activates the focused control.
+- B/East moves to the next camera stop; X/West moves to the previous stop.
+  The five saved stops are Overview, Mega, Macro, Meso, and Micro. Entering a
+  band selects its category, updates its facts and enlarged example, and
+  highlights its bottom selector with a cyan stripe and SELECTED label.
+  The white focus border shows which control Start/Menu would activate.
+  The Overview camera stop shows all sizes and clears the SELECTED marker.
+  Browsing story tabs keeps the current category highlighted.
 - Select/Back/View toggles the UI. Tab does the same on a keyboard. You can
   also focus Hide UI in the header with the D-pad and press Start/Menu.
 - Hiding slides the side panels outward, the header upward, and the bottom
@@ -50,6 +57,18 @@ CONTROLS
 - The automatic Overview cards change about every 25 seconds. D-pad or Start
   interaction pauses automatic changes. Use the middle row's Pause/Resume
   control to resume or pause them explicitly while Overview is selected.
+
+Overview includes the 2018 study's estimated area, piece count, and floating
+plastic mass, each with its year and source. Debris facts depend on the size
+category. Micro compares 94% of pieces with 8% of mass using separate bars;
+Mega explains the fishing-net mass estimate; Macro includes the dated buoy
+from the 2019 research collection. These facts describe the research, while
+the featured models remain illustrative. Eligible large hard-plastic models
+have a separate country-sample card, scoped to 232 identifiable objects.
+
+The Waypointer reference on GPGP Stereo UI can be assigned explicitly. When
+empty, the UI connects to the single active waypointer beneath CC_HUB.
+Rebuilding the preview preserves an explicitly assigned reference.
 
 Existing flight and waypoint controls remain available: A/South returns the
 camera home, B/East advances a waypoint, and X/West goes to the previous

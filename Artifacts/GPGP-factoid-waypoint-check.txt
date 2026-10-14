@@ -1,0 +1,10 @@
+Factoid and waypoint regression; Unity 6000.6.0f1; isolated editor, no Play mode/XR.
+Navigation: twelve next and twelve previous selections traverse Overview, Mega, Macro, Meso, Micro with both wrap directions; every real linked-list target matches its category and emits once.
+Lifecycle: initialization at a preselected Meso target, repeated rebuild/enable, unsubscribe while disabled, and immediate Micro synchronization on re-enable all verified.
+Input: virtual B/East and X/West press edges drive the real waypointer Update with Keyboard.current null; the selected footer/category follows both bindings. Temporary input state/devices restored.
+Tour: PlayFromStart, automatic target advancement and loop, reload to Overview, and stale-index recovery verified against actual linked-list nodes.
+Facts/layout: approved 2018 Overview estimates, 94%/8% comparison geometry and labels, separate country sample card, selected-band fill/marker independent of D-pad focus, all visible card text and four category labels within their rectangles, and X/B footer instructions verified.
+Authoring: Rebuild Preview preserves its explicit waypointer reference; Undo restores the preceding UI hierarchy/reference.
+Scene: regenerated only the owned UI; retained its resolved waypointer; all original rig objects and camera inputs/poses unchanged before saving the isolated preview.
+Evidence: Overview, selected Micro (both actual CC eyes), and dedicated country-card PNGs captured at 2400x810; all camera state restored; captures were not saved into the scene.
+RESULT PASS: target/category synchronization, lifecycle, fact cards, chart geometry, independent footer selection/focus and original rig protection.

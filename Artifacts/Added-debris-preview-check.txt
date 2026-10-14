@@ -1,0 +1,16 @@
+Saved-scene debris and preview validation; no rebuild, scene save, Play mode or XR.
+Plastic_Canister: 1208 triangles; centered bounds (0.338702, 0.409569, 0.293967); textured matte URP material; <=2048 textures; normal convention verified.
+Plastic_Garden_Chair: 2060 triangles; centered bounds (0.592271, 0.830764, 0.593909); textured matte URP material; <=2048 textures; normal convention verified.
+Truck_Tire: 11147 triangles; centered bounds (0.36302, 0.956115, 0.956107); textured matte URP material; <=2048 textures; normal convention verified.
+Tire_Pile: 8448 triangles; centered bounds (1.61766, 0.961806, 1.30876); textured matte URP material; <=2048 textures; normal convention verified.
+UI: all four new source-pool models feature correctly with friendly names and one category marker; both tire models use rubber cards and cannot display the plastic country chart.
+Preview isolation: all featured renderers and both owned lights use layer 30; both existing content-camera masks include it; original exhibit renderers remain off that layer and water remains on Default.
+Rubber visibility: preview light intensities remain .35/.18 for every model; all four source models' shared materials remain unchanged.
+Added-debris-Plastic_Canister-left-eye.png: unchanged upper-water luminance 0.036743.
+Added-debris-Plastic_Garden_Chair-left-eye.png: unchanged upper-water luminance 0.036741.
+Added-debris-Truck_Tire-left-eye.png: unchanged upper-water luminance 0.0367254.
+Added-debris-Tire_Pile-left-eye.png: unchanged upper-water luminance 0.0367112.
+Capture cleanup: restored transient URP material initialization for Simple; before/after JSON retained in Artifacts.
+Capture cleanup: restored transient URP material initialization for hawksbill.body; before/after JSON retained in Artifacts.
+Evidence: four actual calibrated CC left-eye images, one right-eye tire image, and a native Unity-rendered four-model contact sheet; all camera/UI state restored; captures were not saved into the scene.
+RESULT PASS: new textured debris integrated into original pools and bands; scene geometry, water, turtle, lighting, stereo cameras, navigation and authored UI preserved.

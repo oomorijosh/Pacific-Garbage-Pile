@@ -1,0 +1,9 @@
+Original local archive: dirty-old-tires.zip
+
+Dirty old tire pile
+Source FBX: source/TirePile.fbx
+Three source geometry definitions and four source mesh model instances. Each geometry has 1,408 vertices and approximately 2,816 triangles after triangulation.
+Base color, roughness, normal and ambient occlusion textures supplied at 2048 x 4096. Original FBX texture references contain author-machine paths; resolve using this archive's textures.
+Rubber tires used as illustrative debris, not as plastic composition samples or evidence that this specific pile was observed at the exhibit location.
+
+No README, creator attribution or license document was included in the local archive. Preserve the original archive as provenance; no author or license is inferred here.

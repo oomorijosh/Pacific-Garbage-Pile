@@ -1,0 +1,8 @@
+Original local archive: 7-plastic-canister-lowpoly.zip
+
+Plastic canister
+Source FBX: source/canister-7.fbx
+One mesh; 604 vertices and 1,208 triangles. Approximate dimensions: 0.339 x 0.294 x 0.410 m after source transforms and units.
+Diffuse, roughness, ambient occlusion and DirectX normal textures supplied at 4096 x 4096. internal_ground_ao_texture.jpeg is a separate 512 x 512 image.
+
+No README, creator attribution or license document was included in the local archive. Preserve the original archive as provenance; no author or license is inferred here.

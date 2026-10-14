@@ -1,0 +1,49 @@
+EXHIBIT AUDIO
+
+Undertow.mp3 and calm wave.mp3 each play as continuous loops. Both start from
+silence; music fades to a quiet steady 0.16 volume. Waves fade toward 0.4 at
+the top of the water and toward exact silence throughout the lowest Micro
+band, with 0.65-second smoothing so travel between layers does not jump.
+
+The lowest 8% of the water is silent (Silent Bottom Fraction = 0.08).
+Above it, the wave target follows SmoothStep from zero at the Micro band's
+upper boundary to Waves Max Volume at the surface.
+It follows CC_HEAD's actual world position converted into the continuous
+GPGPWaterCompartment's local coordinates. It does not follow the selected
+debris category, and it does not use the headset room's tracking camera.
+The water compartment's position, rotation, scale and size are respected.
+At the bottom, an inaudible smoothing tail settles to exact zero; playback
+continues underneath so rising again does not restart the recording.
+
+Both sources use stereo 2D playback. Wave volume conveys vertical closeness
+to the surface, while retaining the recording's stereo sound regardless of
+the direction the viewer faces. The waves source is positioned at the water
+surface for inspection. This mix is an exhibit atmosphere rather than a
+claim about how actual ocean sounds attenuate with depth.
+
+The audio root is separate from the UI. X/B travel, category changes, and
+UI visibility do not restart or stop either track. No listener, camera,
+navigation binding, or global audio setting is created or changed.
+Disabling the audio component pauses its sources. Deactivating the entire
+audio root can stop them in Unity; reactivating restores their last observed
+playheads and fades the same loops back in rather than starting at zero.
+
+Setup: Tools > Pacific Exhibit > Add or Update Exhibit Audio. The command
+adds one independent GPGP Exhibit Audio root, or updates its two owned
+sources and references. Existing volume and smoothing settings are kept.
+The operation supports Undo. Save the scene after setup.
+
+Tune Music Volume, Waves Max Volume, Silent Bottom Fraction, and Mix Smooth
+Seconds on the audio root after listening on the final exhibit speakers.
+Unity's native looping is enabled. Listen for an audible seam in the
+supplied files and adjust the recording if needed.
+
+Music credit for the Scott Buckley Undertow recording:
+'Undertow' by Scott Buckley - released under CC-BY 4.0.
+www.scottbuckley.com.au
+https://www.scottbuckley.com.au/library/undertow/
+https://creativecommons.org/licenses/by/4.0/
+Keep this attribution with the exhibit's public credits/documentation.
+
+The wave filename alone does not establish its original creator/license.
+Retain the supplied recording's source and license with the exhibit files.

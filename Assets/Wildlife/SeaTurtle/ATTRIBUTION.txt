@@ -31,6 +31,15 @@ turtle and its prepared prefab. Enter Play mode to see the swimming animation.
 Open Prepared/SeaTurtle.controller in the Animator window to inspect the
 Swim Cycle clip and adjust the state's Speed.
 
+The scene turtle also has a camera-aware swimming route. Use Tools > Pacific
+Exhibit > Add or Update Turtle Swim Route to attach or refresh it without
+rebuilding the model. In Play mode it swims a slow oval in the visible water
+and smoothly adjusts its route as the camera travels between bands. Its
+whole body stays inside the water. Large camera jumps can briefly leave it
+out of view while it catches up. Tune the GPGPSeaTurtleSwimmer component on
+the scene's Sea Turtle object. The prepared prefab stays in place so the
+Wildlife UI preview keeps its existing framing and flipper animation.
+
 ARCHIVED ASSET: TURTLE BY POLY BY GOOGLE
 
 The following source and converted files remain in the project as archived

@@ -76,6 +76,7 @@ public static class GPGPSeaTurtleAuthoring
         turtle.transform.localRotation = rotation;
         turtle.transform.localScale = Vector3.one * length;
         Undo.RegisterCreatedObjectUndo(turtle, "Create sea turtle");
+        GPGPSeaTurtleSwimAuthoring.TryAddOrUpdate(exhibit);
         Undo.CollapseUndoOperations(undoGroup);
         EditorSceneManager.MarkSceneDirty(exhibit.gameObject.scene);
         Debug.Log("GPGP_SEA_TURTLE: Added a swimming hawksbill turtle in the upper water band; asset notes are in " +

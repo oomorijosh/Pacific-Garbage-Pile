@@ -185773,6 +185773,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1102261934}
+  - component: {fileID: 1102261935}
   m_Layer: 0
   m_Name: Sea Turtle
   m_TagString: Untagged
@@ -185780,6 +185781,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1102261935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1102261933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4097d8a8c24a46a9e6cfc8f7cbe5d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GPGPSeaTurtleSwimmer
+  water: {fileID: 512900361}
+  cameraSetup: {fileID: 5175678938489736074}
+  projectionScreen: {fileID: 1608545539}
+  exhibitUI: {fileID: 1308929470}
+  cruiseSpeed: 0.65
+  retargetSpeed: 1.4
+  acceleration: 0.7
+  turnSpeed: 25
+  orbitRadii: {x: 3, y: 1.8}
+  depthVariation: 0.25
+  bodyClearance: 0.12
+  visibleRegion:
+    serializedVersion: 2
+    x: 0.3
+    y: 0.27
+    width: 0.4
+    height: 0.63
+  animatedModelBounds:
+    m_Center: {x: -0.0028480887, y: -0.039435714, z: 0.028962463}
+    m_Extent: {x: 0.5013436, y: 0.298956, z: 0.45262024}
+  hasAnimatedModelBounds: 1
 --- !u!4 &1102261934
 Transform:
   m_ObjectHideFlags: 0
